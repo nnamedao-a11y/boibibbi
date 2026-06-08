@@ -75,6 +75,15 @@ EVENT_KINDS = {
     "call_logged",
     "deposit_received",
     "contract_signed",
+    # Phase Final / Block 2 — Sales lifecycle events
+    "sale_created",
+    "sale_updated",
+    "sale_completed",
+    "sale_cancelled",
+    # Phase Final / Block 3 — Meeting lifecycle events
+    "meeting_scheduled",
+    "meeting_completed",
+    "meeting_cancelled",
 }
 
 

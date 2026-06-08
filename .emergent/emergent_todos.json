@@ -1,0 +1,58 @@
+[
+  {
+    "content": "Block 1: Workflow Binding",
+    "status": "completed"
+  },
+  {
+    "content": "Block 1: E2E testing",
+    "status": "completed"
+  },
+  {
+    "content": "Block 2: Sales Entity",
+    "status": "completed"
+  },
+  {
+    "content": "Block 2: E2E testing",
+    "status": "completed"
+  },
+  {
+    "content": "Block 3: Meetings + Calendar (.ics only)",
+    "status": "completed"
+  },
+  {
+    "content": "Block 3: E2E testing",
+    "status": "completed"
+  },
+  {
+    "content": "Block 4: Tasks Final",
+    "status": "completed"
+  },
+  {
+    "content": "Block 4: E2E testing",
+    "status": "completed"
+  },
+  {
+    "content": "Block 5: Calculator Final (admin visibility controls)",
+    "status": "in_progress"
+  },
+  {
+    "content": "Block 5: E2E testing",
+    "status": "pending"
+  },
+  {
+    "content": "Block 6: Lead Operations (Bulk Reassign + 30m/2h reminders)",
+    "status": "pending"
+  },
+  {
+    "content": "Block 6: E2E testing",
+    "status": "pending"
+  },
+  {
+    "content": "Block 7: Cleanup + Audit (Change History, Manager Instructions, Folder rename, i18n)",
+    "status": "pending"
+  },
+  {
+    "content": "Block 7: E2E final testing",
+    "status": "pending"
+  }
+]

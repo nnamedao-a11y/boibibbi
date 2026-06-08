@@ -54,6 +54,9 @@ import RoadmapTab from '../components/customer360/RoadmapTab';
 import CommentsTab from '../components/customer360/CommentsTab';
 import TasksTab from '../components/customer360/TasksTab';
 import TimelineTab from '../components/customer360/TimelineTab';
+// Phase Final / Block 2 & Block 3 — Sales & Meetings tabs
+import SalesTab from '../components/customer360/SalesTab';
+import MeetingsTab from '../components/customer360/MeetingsTab';
 
 const Customer360 = () => {
   const { t } = useLang();
@@ -248,7 +251,7 @@ const Customer360 = () => {
 
       {/* Tabs */}
       <div className="flex gap-1 border-b border-[#E4E4E7] overflow-x-auto -mx-4 px-4 sm:mx-0 sm:px-0" style={{ scrollbarWidth: 'none' }}>
-        {['overview', 'roadmap', 'comments', 'tasks', 'legal', 'leads', 'quotes', 'deals', 'invoices', 'orders', 'payments', 'deposits', 'calls', 'contracts', 'documents', 'timeline'].map((tab) => (
+        {['overview', 'roadmap', 'comments', 'tasks', 'legal', 'leads', 'quotes', 'deals', 'sales', 'meetings', 'invoices', 'orders', 'payments', 'deposits', 'calls', 'contracts', 'documents', 'timeline'].map((tab) => (
           <button
             key={tab}
             onClick={() => setActiveTab(tab)}
@@ -391,6 +394,16 @@ const Customer360 = () => {
 
         {activeTab === 'invoices' && (
           <InvoicesTab customerId={id} />
+        )}
+
+        {/* Phase Final / Block 2 — Sales tab (sold vehicles for this customer) */}
+        {activeTab === 'sales' && (
+          <SalesTab customerId={id} />
+        )}
+
+        {/* Phase Final / Block 3 — Meetings tab (calendar items for this customer) */}
+        {activeTab === 'meetings' && (
+          <MeetingsTab customerId={id} />
         )}
 
         {activeTab === 'orders' && (

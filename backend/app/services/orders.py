@@ -155,6 +155,9 @@ async def create_order_from_invoice(invoice: Dict[str, Any]) -> Dict[str, Any]:
         "qty": it.get("qty", 1),
         "price": it.get("price", 0),
         "line_total": it.get("line_total", 0),
+        # Phase Final / Block 1 — keep workflow_template_id binding visible
+        # on the order summary for audit / Customer Cabinet trace.
+        "workflow_template_id": it.get("workflow_template_id"),
     } for it in items]
 
     order_id = f"ord_{int(datetime.now(timezone.utc).timestamp())}_{uuid.uuid4().hex[:6]}"

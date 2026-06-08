@@ -68,6 +68,8 @@ import {
   Crown,
   Storefront,
   Compass,
+  CurrencyDollar as Banknote,
+  CalendarCheck,
 } from '@phosphor-icons/react';
 
 const Layout = () => {
@@ -286,6 +288,10 @@ const Layout = () => {
       items: [
         { path: '/admin/leads', icon: UserPlus, labelKey: 'leads' },
         { path: '/admin/customers', icon: UserCircle, labelKey: 'customers' },
+        // Phase Final / Block 2 — Sales entity (sold vehicles, USA/Korea/Other).
+        { path: '/admin/sales', icon: Banknote, labelKey: 'sales_nav' },
+        // Phase Final / Block 3 — Meetings + Calendar (.ics export).
+        { path: '/admin/meetings', icon: CalendarCheck, labelKey: 'meetings_nav' },
         // Wave 19 — Customer Portal View. Cross-cutting read-only screen
         // (manager / team_lead / admin) that answers "what is the customer
         // currently seeing about their order?" via 5 read-only blocks:

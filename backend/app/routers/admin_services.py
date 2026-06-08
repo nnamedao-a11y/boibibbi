@@ -149,6 +149,11 @@ async def admin_create_service(data: Dict[str, Any] = Body(...), user: dict = De
             {"key": "in_progress", "label": "В роботі"},
             {"key": "completed",   "label": "Готово"},
         ],
+        # Phase Final / Block 1 (Workflow Binding) — live link to
+        # workflow_templates. When set, the resolver fetches steps from
+        # the template at invoice-creation time; inline ``workflow`` is
+        # ignored. ``None`` means "use inline workflow" (legacy services).
+        "workflow_template_id": (data.get("workflow_template_id") or data.get("workflowTemplateId") or None),
         "is_active": bool(data.get("is_active", True)),
         "created_at": datetime.now(timezone.utc).isoformat(),
         "created_by": user.get("email") or user.get("id"),
@@ -160,7 +165,7 @@ async def admin_create_service(data: Dict[str, Any] = Body(...), user: dict = De
 
 @router.patch("/{service_id}", dependencies=[Depends(require_master_admin)])
 async def admin_update_service(service_id: str, data: Dict[str, Any] = Body(...)):
-    allowed = {"name", "name_en", "description", "category", "default_price", "currency", "default_qty", "workflow", "is_active"}
+    allowed = {"name", "name_en", "description", "category", "default_price", "currency", "default_qty", "workflow", "workflow_template_id", "is_active"}
     upd = {k: v for k, v in (data or {}).items() if k in allowed}
     if not upd:
         raise HTTPException(400, "Nothing to update")

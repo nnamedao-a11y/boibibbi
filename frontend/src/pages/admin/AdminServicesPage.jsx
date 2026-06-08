@@ -36,6 +36,10 @@ const emptyService = () => ({
   default_price: 0,
   currency: 'USD',
   default_qty: 1,
+  // Phase Final / Block 1 — live template binding. When set, the backend
+  // resolver uses template.steps at invoice-creation time instead of the
+  // inline workflow array below.
+  workflow_template_id: null,
   // Workflow labels stay as English fallback; consumers (manager view) localize at render time.
   workflow: [
     { key: 'pending',     label: 'Pending' },
@@ -425,7 +429,49 @@ export default function AdminServicesPage() {
                     </button>
                   </div>
                   <div className="mt-3 border-t border-[#E4E4E7]" />
-                  <div className="mt-4 rounded-2xl border border-[#E4E4E7] bg-white" data-testid="service-editor-workflow-steps-list">
+
+                  {/* Phase Final / Block 1 — Live Template Binding control.
+                      When a template_id is set, order steps are resolved
+                      LIVE from the template at invoice-creation time.
+                      When unbound, the inline step list (below) is used. */}
+                  <div className="mt-4 rounded-2xl border border-violet-200 bg-violet-50/40 px-4 py-3">
+                    <div className="flex items-start gap-3 flex-wrap">
+                      <Sparkles className="w-4 h-4 text-violet-600 mt-1 shrink-0" />
+                      <div className="min-w-0 flex-1">
+                        <p className="text-sm font-semibold text-[#18181B]">
+                          Live Workflow Template Binding
+                        </p>
+                        <p className="text-[12px] text-zinc-600 mt-0.5">
+                          When bound, order steps are resolved LIVE from the chosen template
+                          (editing the template updates ALL bound services). Leave unbound to
+                          use the custom inline steps below.
+                        </p>
+                        <div className="mt-2 flex items-center gap-2 flex-wrap">
+                          <WhiteSelect
+                            value={editor.workflow_template_id || ''}
+                            onChange={(e) => setEditor({ ...editor, workflow_template_id: e.target.value || null })}
+                            data-testid="service-editor-workflow-template-bind"
+                            className="min-w-[260px]"
+                          >
+                            <option value="">— Custom (use inline steps) —</option>
+                            {templates.map((tpl) => (
+                              <option key={tpl.id} value={tpl.id}>
+                                {tpl.name} ({(tpl.steps || []).length} steps)
+                                {tpl.is_default ? ' • default' : ''}
+                              </option>
+                            ))}
+                          </WhiteSelect>
+                          {editor.workflow_template_id && (
+                            <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-violet-700 bg-violet-100 px-2 py-1 rounded-md">
+                              BOUND — inline steps below are IGNORED
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className={`mt-4 rounded-2xl border border-[#E4E4E7] bg-white ${editor.workflow_template_id ? 'opacity-50 pointer-events-none' : ''}`} data-testid="service-editor-workflow-steps-list">
                     {(editor.workflow || []).length === 0 ? (
                       <p className="p-6 text-sm text-zinc-500 text-center">No steps yet — add one or apply a template.</p>
                     ) : (

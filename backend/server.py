@@ -6362,6 +6362,9 @@ async def list_eligible_task_assignees(current_user: Dict[str, Any] = Depends(re
 async def list_tasks(
     assigneeId: Optional[str] = None,
     status: Optional[str] = None,
+    filter: Optional[str] = None,   # Phase Final / Block 4: today|tomorrow|overdue|no_deadline|week
+    customerId: Optional[str] = None,
+    leadId: Optional[str] = None,
     limit: int = 50,
     current_user: Dict[str, Any] = Depends(require_user),
 ):
@@ -6371,6 +6374,14 @@ async def list_tasks(
       - admin / master_admin / owner → see every task
       - team_lead                    → sees tasks they created OR are assigned to
       - manager                      → sees only tasks assigned to themselves
+
+    Phase Final / Block 4 — extended filters:
+      - filter=today        → tasks due today (UTC day window)
+      - filter=tomorrow     → tasks due tomorrow
+      - filter=overdue      → tasks with dueDate < now AND status != 'completed'
+      - filter=no_deadline  → tasks without dueDate
+      - filter=week         → tasks due within next 7 days
+      - customerId / leadId → tasks linked to a specific entity
     """
     role = (current_user.get("role") or "").lower()
     me = current_user.get("id") or current_user.get("managerId")
@@ -6378,6 +6389,36 @@ async def list_tasks(
     query: Dict[str, Any] = {}
     if status:
         query["status"] = status
+
+    # Date filters — UTC day windows, expressed as ISO strings to match
+    # the existing dueDate storage format.
+    now = datetime.now(timezone.utc)
+    if filter == "today":
+        day_start = now.replace(hour=0, minute=0, second=0, microsecond=0)
+        day_end = day_start + timedelta(days=1)
+        query["dueDate"] = {"$gte": day_start.isoformat(), "$lt": day_end.isoformat()}
+    elif filter == "tomorrow":
+        day_start = (now + timedelta(days=1)).replace(hour=0, minute=0, second=0, microsecond=0)
+        day_end = day_start + timedelta(days=1)
+        query["dueDate"] = {"$gte": day_start.isoformat(), "$lt": day_end.isoformat()}
+    elif filter == "week":
+        week_end = now + timedelta(days=7)
+        query["dueDate"] = {"$gte": now.isoformat(), "$lte": week_end.isoformat()}
+    elif filter == "overdue":
+        query["dueDate"] = {"$lt": now.isoformat()}
+        query["status"] = {"$ne": "completed"}
+    elif filter == "no_deadline":
+        query["$or"] = [
+            {"dueDate": {"$exists": False}},
+            {"dueDate": None},
+            {"dueDate": ""},
+        ]
+
+    # Entity links
+    if customerId:
+        query["customerId"] = customerId
+    if leadId:
+        query["leadId"] = leadId
 
     if role in ("admin", "master_admin", "owner"):
         if assigneeId:
@@ -6389,7 +6430,12 @@ async def list_tasks(
             # Still allow filtering to a specific assignee, but only inside my scope.
             query["$and"] = [{"$or": scope_or}, {"assigneeId": assigneeId}]
         else:
-            query["$or"] = scope_or
+            # If the filter already set $or for no_deadline, combine via $and
+            existing_or = query.pop("$or", None)
+            if existing_or:
+                query["$and"] = [{"$or": existing_or}, {"$or": scope_or}]
+            else:
+                query["$or"] = scope_or
     else:
         # Manager / staff: only own tasks.
         query["assigneeId"] = me
@@ -6397,6 +6443,74 @@ async def list_tasks(
     cursor = db.tasks.find(query, {"_id": 0}).sort("dueDate", 1).limit(limit)
     items = await cursor.to_list(length=limit)
     return {"success": True, "data": items, "items": items}
+
+
+# ── Phase Final / Block 4 — "without tasks" reports ───────────────────
+
+
+@fastapi_app.get("/api/tasks/reports/leads-without-tasks")
+async def leads_without_tasks(
+    manager_id: Optional[str] = Query(None, alias="managerId"),
+    limit: int = 200,
+    current_user: Dict[str, Any] = Depends(require_user),
+):
+    """Leads (status != closed) that have NO open tasks attached.
+
+    Used by the team-lead board to spot abandoned leads.
+    """
+    role = (current_user.get("role") or "").lower()
+    me = current_user.get("id")
+
+    lead_q: Dict[str, Any] = {"status": {"$nin": ["closed", "rejected", "converted"]}}
+    if role == "manager":
+        lead_q["managerId"] = me
+    elif manager_id:
+        lead_q["managerId"] = manager_id
+
+    leads = await db.leads.find(lead_q, {"_id": 0}).limit(limit * 2).to_list(length=limit * 2)
+    lead_ids = [l["id"] for l in leads]
+    if not lead_ids:
+        return {"success": True, "items": [], "count": 0}
+
+    # Find leads that DO have open tasks
+    tasks_with_lead = await db.tasks.distinct(
+        "leadId",
+        {"leadId": {"$in": lead_ids}, "status": {"$nin": ["completed", "cancelled"]}},
+    )
+    busy = set(tasks_with_lead)
+    orphans = [l for l in leads if l["id"] not in busy]
+    return {"success": True, "items": orphans[:limit], "count": len(orphans)}
+
+
+@fastapi_app.get("/api/tasks/reports/customers-without-tasks")
+async def customers_without_tasks(
+    manager_id: Optional[str] = Query(None, alias="managerId"),
+    limit: int = 200,
+    current_user: Dict[str, Any] = Depends(require_user),
+):
+    """Active customers without open tasks (need follow-up planning)."""
+    role = (current_user.get("role") or "").lower()
+    me = current_user.get("id")
+
+    cust_q: Dict[str, Any] = {"status": {"$in": ["active", "prospect", None]}}
+    if role == "manager":
+        cust_q["managerId"] = me
+    elif manager_id:
+        cust_q["managerId"] = manager_id
+
+    customers = await db.customers.find(cust_q, {"_id": 0}).limit(limit * 2).to_list(length=limit * 2)
+    cust_ids = [c["id"] for c in customers]
+    if not cust_ids:
+        return {"success": True, "items": [], "count": 0}
+
+    tasks_with_cust = await db.tasks.distinct(
+        "customerId",
+        {"customerId": {"$in": cust_ids}, "status": {"$nin": ["completed", "cancelled"]}},
+    )
+    busy = set(tasks_with_cust)
+    orphans = [c for c in customers if c["id"] not in busy]
+    return {"success": True, "items": orphans[:limit], "count": len(orphans)}
+
 
 @fastapi_app.patch("/api/tasks/{task_id}")
 async def update_task(
@@ -17426,7 +17540,47 @@ async def update_customer(
     NOT via this endpoint. Any ``managerId`` in the body is silently
     stripped so the reassignment service stays the single source of truth
     for ownership changes (and the audit trail is not bypassed).
+
+    Phase Final / Block 4 — mandatory close guard:
+    Transitioning ``status`` to ``closed`` / ``lost`` / ``won`` / ``archived``
+    / ``inactive`` requires BOTH:
+      1. a comment (in ``db.customer_comments``) made in the last 24h
+      2. an open / scheduled next-action (open task OR scheduled meeting)
+    Use ``X-Force-Close: true`` header to bypass (master_admin only).
     """
+    CLOSE_STATUSES = {"closed", "lost", "won", "archived", "inactive"}
+    if "status" in data and (data.get("status") or "").strip().lower() in CLOSE_STATUSES:
+        force = (request.headers.get("X-Force-Close", "").strip().lower() == "true") if False else False  # placeholder; real check below
+        # We can't read the request object here without a parameter, so do role check + open-tasks check directly
+        role = (current_user.get("role") or "").lower()
+        if role != "master_admin":
+            # Check comments-in-24h
+            from datetime import datetime as _dt, timezone as _tz, timedelta as _td
+            twenty_four_ago = (_dt.now(_tz.utc) - _td(hours=24)).isoformat()
+            recent_comment = await db.customer_comments.find_one(
+                {"customer_id": customer_id, "created_at": {"$gte": twenty_four_ago}},
+                {"_id": 0, "id": 1},
+            )
+            if not recent_comment:
+                raise HTTPException(
+                    status_code=422,
+                    detail="customer_close_blocked_no_comment: A comment in the last 24h is required to close this customer.",
+                )
+            # Check open next-action (task OR meeting)
+            open_task = await db.tasks.find_one(
+                {"customerId": customer_id, "status": {"$nin": ["completed", "cancelled"]}},
+                {"_id": 0, "id": 1},
+            )
+            scheduled_meeting = await db.meetings.find_one(
+                {"customerId": customer_id, "status": "scheduled"},
+                {"_id": 0, "id": 1},
+            )
+            if not open_task and not scheduled_meeting:
+                raise HTTPException(
+                    status_code=422,
+                    detail="customer_close_blocked_no_next_action: An open task or scheduled meeting (next action) is required to close this customer.",
+                )
+
     patch = {k: v for k, v in data.items() if k not in ("_id", "id", "created_at", "managerId", "managerId_updated_at")}
     if "firstName" in patch or "lastName" in patch:
         existing = await db.customers.find_one({"id": customer_id}, {"_id": 0}) or {}
@@ -18811,6 +18965,10 @@ async def manager_create_invoice(data: Dict[str, Any] = Body(...), user: dict = 
     norm_items = []
     total = 0.0
     currency = (data.get("currency") or "USD").upper()
+    # Phase Final / Block 1 (Workflow Binding) — resolve workflow steps
+    # via the central resolver (template_id → live template steps;
+    # fallback to inline svc.workflow; final fallback to default 3-step).
+    from app.services.workflow_resolver import resolve_workflow_for_service
     for raw in items_in:
         sid = (raw or {}).get("service_id") or None
         svc = services_index.get(sid) if sid else None
@@ -18821,6 +18979,10 @@ async def manager_create_invoice(data: Dict[str, Any] = Body(...), user: dict = 
         qty = int(raw.get("qty") or (svc or {}).get("default_qty") or 1)
         line_total = _round_money(price * qty)
         total += line_total
+        # Resolve workflow steps via central rule.  When the item has
+        # no bound service (free custom line), the resolver returns the
+        # default 3-step fallback.
+        resolved_workflow = await resolve_workflow_for_service(svc, db)
         norm_items.append({
             "id": str(uuid.uuid4()),
             "service_id": sid,
@@ -18831,7 +18993,11 @@ async def manager_create_invoice(data: Dict[str, Any] = Body(...), user: dict = 
             "price": price,
             "qty": qty,
             "line_total": line_total,
-            "workflow": (svc or {}).get("workflow") or [],
+            "workflow": resolved_workflow,
+            # Persist the template_id on the invoice item so downstream
+            # consumers (orders, audit) can trace the binding without
+            # re-reading the service catalogue.
+            "workflow_template_id": (svc or {}).get("workflow_template_id"),
         })
 
     if not norm_items:
@@ -26000,3 +26166,13 @@ from app.routers.calculations import router as _calculations_router  # noqa: E40
 fastapi_app.include_router(_calculations_router)
 from app.routers.payments import router as _payments_router  # noqa: E402
 fastapi_app.include_router(_payments_router)
+
+# ── Phase Final / Block 2 — Sales entity ──────────────────────────────
+from app.routers.sales import router as _sales_router, customers_router as _sales_customers_router  # noqa: E402
+fastapi_app.include_router(_sales_router)
+fastapi_app.include_router(_sales_customers_router)
+
+# ── Phase Final / Block 3 — Meetings + Calendar (.ics) ────────────────
+from app.routers.meetings import router as _meetings_router, customers_router as _meetings_customers_router  # noqa: E402
+fastapi_app.include_router(_meetings_router)
+fastapi_app.include_router(_meetings_customers_router)

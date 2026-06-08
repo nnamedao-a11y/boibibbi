@@ -64,6 +64,8 @@ import Customers from './pages/Customers';
 // Deposits page deprecated — replaced by Legal Workflow (P0.3 tab). Redirect lives in routes.
 // import Deposits from './pages/Deposits';
 import Tasks from './pages/Tasks';
+import Sales from './pages/Sales';
+import Meetings from './pages/Meetings';
 import Staff from './pages/Staff';
 import Settings from './pages/Settings';
 import Documents from './pages/Documents';
@@ -561,6 +563,10 @@ function App() {
               {/* Legacy /admin/deposits — fully redirected to new Legal Workflow (P0.3 tab). */}
               <Route path="deposits" element={<Navigate to="/admin/legal?tab=deposit_v2" replace />} />
               <Route path="tasks" element={<Tasks />} />
+              {/* Phase Final / Block 2 — Sales entity */}
+              <Route path="sales" element={<Sales />} />
+              {/* Phase Final / Block 3 — Meetings + Calendar */}
+              <Route path="meetings" element={<Meetings />} />
               <Route path="staff" element={<Staff />} />
               <Route path="documents" element={<Navigate to="/admin/insights?tab=revenue" replace />} />
               <Route path="documents-legacy" element={<Documents />} />
