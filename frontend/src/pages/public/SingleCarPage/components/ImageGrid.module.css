@@ -1,0 +1,781 @@
+/* =============================================================================
+ * ImageGrid (FrameComponent3) \u2014 pixel spec (May 2026)
+ *
+ *   \u2022 Wrapper       : sides 100, no top padding (sits 150 px below icon row)
+ *   \u2022 Hero image    : 848\u00d7636
+ *   \u2022 Sub thumbs    : 8 cards in 2 rows \u00d7 4 cols, each 203\u00d7152, gap 12
+ *   \u2022 Image column  : 848\u00d7964 total (636 + 12 + 152 + 12 + 152)
+ *   \u2022 Info card     : 848\u00d7964 (matches image column)
+ *
+ * Typography (Mazzard H family):
+ *   \u2022 TRADED button text  : 156\u00d734 button, 14 SemiBold (600)
+ *   \u2022 Section titles      : 18 SemiBold (600)
+ *   \u2022 Field labels        : 14 Medium  (500) white
+ *   \u2022 Field values        : 14 Bold    (700) orange
+ *   \u2022 Description body    : 14 Regular (400) gray #949494
+ *   \u2022 CTA button          : 327\u00d745, 14 Medium (500)
+ * ====================================================================== */
+.imageGridWrapper {
+  align-self: stretch;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  /*
+   * STRICT pixel spec at desktop (≥ 1280 px):
+   *   • padding-left   : 100 px
+   *   • padding-right  : 100 px
+   *   • padding-bottom : 128 px (until next section)
+   *   • padding-top    : 0     (370 px from header bottom is owned by
+   *                              NavigationHeader's padding-bottom of 142)
+   */
+  padding: 0 100px 128px;
+  box-sizing: border-box;
+}
+@media screen and (max-width: 1279px) {
+  .imageGridWrapper {
+    padding: 0 clamp(16px, 7.81vw, 100px) clamp(48px, 10vw, 128px);
+  }
+}
+.imageGrid {
+  align-self: stretch;
+  width: 100%;
+  max-width: 1720px;          /* 848 + 24 gap + 848 = exact Figma layout cap */
+  margin: 0 auto;
+  /*
+   * CSS Grid guarantees BOTH columns are equal width (1fr each) AND equal
+   * height (align-items: stretch). Combined with .imageColumn's
+   * aspect-ratio 848/964, the height of BOTH blocks is driven by their
+   * (equal) width — so the two cards are always perfect twins.
+   */
+  display: grid;
+  grid-template-columns: minmax(0, 848px) minmax(0, 848px);
+  justify-content: center;
+  align-items: stretch;
+  gap: clamp(12px, 1.25vw, 24px);
+}
+
+/* ---------- LEFT \u2014 photos column locked to 848:964 aspect ratio ----- */
+.imageColumn {
+  width: 100%;
+  min-width: 0;
+  max-width: 848px;
+  aspect-ratio: 848 / 964;             /* width-driven height \u2192 width \u00d7 1.1368 */
+  display: grid;
+  grid-template-rows: 636fr 152fr 152fr;
+  gap: 12px;
+}
+.image15Icon {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  border-radius: 0;
+}
+.thumbRow {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  align-items: stretch;
+  gap: 12px;
+}
+.image16Icon {
+  width: 100%;
+  height: 100%;
+  border-radius: 0;
+  object-fit: cover;
+  display: block;
+}
+/* ── ALL IMAGES tile (last cell of row 2) ─────────────────────────────────
+ * Figma spec (May 2026):
+ *   • Tile size           : 203 × 152 (matches a thumb cell, fills the grid)
+ *   • Dark gray surface   : #16161A (same as info card / public theme)
+ *   • Icon block          : 76 × 48 PNG asset that already contains the
+ *                            stacked photo glyph + "ALL IMAGES" caption
+ *                            (/single-car/all-images-icon.png).
+ *   • Dynamic count       : Mazzard 12 Medium #707070, sits to the right
+ *                            of the PNG to complete the "ALL IMAGES (30)"
+ *                            phrase. Real count comes from `imageCount`
+ *                            (backend `image_count`, otherwise images.length).
+ *   • Interaction         : click → opens full-screen lightbox over ALL photos
+ */
+.allImagesCard {
+  width: 100%;
+  height: 100%;
+  border-radius: 0;
+  background-color: var(--color-gray-500);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border: 0;
+  padding: 0;
+  color: #9A9A95;
+  transition: background-color 0.18s ease, color 0.18s ease, transform 0.18s ease;
+}
+.allImagesCard:hover {
+  background-color: #1E1E22;
+  color: #FEAE00;
+  transform: translateY(-1px);
+}
+/* Stacked layout — picture icon on TOP, "ALL IMAGES (N)" label BELOW.
+ * Both elements are horizontally centred inside the 203×152 tile and the
+ * whole composition is vertically centred via the parent's flex centering.
+ * The icon is rendered as inline SVG (uses currentColor) so it stays sharp
+ * at any density and inherits the hover-tint colour.
+ */
+.allImagesInner {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  text-align: center;
+}
+.allImagesIcon {
+  width: 44px;
+  height: 44px;
+  display: block;
+  flex-shrink: 0;
+  color: currentColor;
+  transition: opacity 0.18s ease;
+}
+.allImagesCount {
+  font-size: 12px;
+  line-height: 1;
+  text-transform: uppercase;
+  font-family: var(--font-mazzard);
+  color: currentColor;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+  transition: opacity 0.18s ease;
+}
+
+/* ---------- RIGHT — info card: stretches to MATCH photo column height -- */
+.infoCard {
+  width: 100%;
+  min-width: 0;
+  max-width: 848px;
+  /* Grid container has align-items: stretch → height auto-matches
+     photo column (aspect-ratio driven). The explicit `align-self: stretch`
+     + `height: 100%` are defensive in case some viewport/round-off causes
+     the implicit stretch to leave a sub-pixel gap (which is exactly the
+     "right card looks slightly shorter" issue we hit at certain widths). */
+  align-self: stretch;
+  height: 100%;
+  background-color: var(--color-gray-500);
+  overflow: hidden;
+  display: flex;
+  align-items: flex-start;
+  padding: 32px;                       /* strict spec */
+  box-sizing: border-box;
+}
+.infoCardInner {
+  flex: 1;
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: space-between;
+  gap: 56px;                            /* description bottom → CTA top */
+}
+.infoBlocks {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 32px;                            /* Vehicle Info / Auction Details / Description */
+}
+.tradedRow {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-end;
+}
+.tradedButton {
+  cursor: pointer;
+  border: 1px solid var(--color-orange-100);
+  padding: 8px 10px;
+  background-color: transparent;
+  width: 154px;
+  height: 34px;
+  border-radius: 0;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.tradedButton:hover {
+  background-color: var(--color-chocolate-200);
+}
+.tradedText {
+  font-size: 16px;
+  line-height: 99.9%;
+  text-transform: uppercase;
+  font-family: var(--font-mazzard);
+  font-weight: 600;          /* SemiBold */
+  color: var(--color-orange-100);
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 32px;                            /* divider line → content (Description title → body 32 px) */
+}
+.sectionHeader {
+  align-self: stretch;
+  border-bottom: 1px solid var(--color-dimgray-200);
+  display: flex;
+  align-items: center;
+  padding: 0 0 12px;
+}
+.sectionTitle {
+  font-size: 18px;                      /* H SemiBold 18 px per spec */
+  line-height: 99.9%;
+  text-transform: uppercase;
+  font-family: var(--font-mazzard);
+  font-weight: 600;          /* SemiBold */
+  color: var(--color-white);
+  margin: 0;
+}
+.detailsGrid {
+  display: flex;
+  align-items: flex-start;
+  gap: clamp(16px, 1.67vw, 32px);
+}
+.detailsCol {
+  flex: 1 1 0;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: clamp(16px, 1.4vw, 26px);    /* row gap between Brand/Model/Year/... — a touch more air */
+  min-width: 0;
+}
+.detailRow {
+  align-self: stretch;
+  display: flex;
+  align-items: center;
+  /* user spec: at least 14 px between label and value at every viewport */
+  gap: clamp(14px, 1.25vw, 22px);
+  flex-wrap: nowrap;
+}
+.detailLabel {
+  /* Wider label slot so single-word labels like
+   * "Transmission" / "Engine volume" / "Body type" / "Drive type"
+   * comfortably fit on ONE line at every viewport.
+   * Longer multi-word labels (e.g. "Estimated total price") gracefully
+   * wrap to 2 lines only when the value next to them is short — see
+   * `.detailRowWide` modifier for the special "Estimated total price"
+   * row that gets a wider label slot so even that one fits on one line
+   * when the viewport allows it. */
+  width: clamp(110px, 9.5vw, 165px);
+  flex-shrink: 0;
+  font-size: 14px;
+  line-height: 1.4;
+  text-transform: none;
+  font-family: var(--font-mazzard);
+  font-weight: 500;          /* Medium */
+  color: var(--color-white);
+}
+.detailValue {
+  flex: 1 1 auto;
+  min-width: 0;
+  font-size: 14px;
+  line-height: 1.4;
+  text-transform: uppercase;
+  font-family: var(--font-mazzard);
+  font-weight: 700;          /* Bold */
+  color: var(--color-orange-100);
+  word-break: break-word;
+}
+.detailValueLg {
+  flex: 1 1 auto;
+  min-width: 0;
+  font-size: 14px;
+  line-height: 1.4;
+  text-transform: uppercase;
+  font-family: var(--font-mazzard);
+  font-weight: 700;          /* Bold */
+  color: var(--color-orange-100);
+  margin: 0;
+  word-break: break-word;
+}
+
+/* ── DESCRIPTION ───────────────────────────────────────────────────────────
+ * Figma spec (May 2026):
+ *   • Frame           : 784 × 64 px (fits up to 2 lines comfortably)
+ *   • Body font       : 14 px Mazzard H Regular (400)
+ *   • Body color      : #949494
+ *   • Line-height     : 24 px (loose, allows 2-line wrap inside 64 px frame)
+ *   • Layout          : natural word-wrap up to 2 lines; the short copy
+ *                       produced by `buildDescription()` typically fits on
+ *                       a SINGLE line, but the 64-px frame keeps the card
+ *                       balance intact if a longer auction record leaks in.
+ */
+.description {
+  align-self: stretch;
+  /* Width follows parent (info card content area = 784 at desktop spec). */
+  max-width: 784px;
+  min-height: 64px;
+  font-size: 14px;
+  line-height: 24px;
+  font-family: var(--font-mazzard);
+  font-weight: 400;          /* Regular */
+  color: var(--color-gray-100);   /* #949494 */
+  /* Allow up to 2 lines (line-clamp); the short copy fits in one line on
+   * the 784-px frame. No nowrap / ellipsis — text must be readable. */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  word-break: normal;
+  overflow-wrap: break-word;
+}
+
+/* CTA button slot — single yellow button (327×45) horizontally centered.
+ * No secondary link per Figma spec. */
+.ctaSlot {
+  align-self: stretch;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+/* ── Photo gallery: button resets + interactivity ─────────────────────── */
+.heroButton,
+.thumbButton {
+  appearance: none;
+  border: 0;
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  cursor: pointer;
+  display: block;
+  border-radius: 0;
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.18s ease, box-shadow 0.18s ease, opacity 0.18s ease;
+}
+.heroButton:hover,
+.thumbButton:hover { transform: translateY(-1px); box-shadow: 0 8px 24px rgba(0,0,0,0.45); }
+.heroButton:hover .image15Icon,
+.thumbButton:hover .image16Icon { opacity: 0.92; }
+
+/* ── Lightbox (full-screen photo gallery) ─────────────────────────────── */
+.lightbox {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.94);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+}
+.lightboxImg {
+  max-width: 96vw;
+  max-height: 92vh;
+  object-fit: contain;
+  box-shadow: 0 12px 48px rgba(0,0,0,0.6);
+  border-radius: 0;
+}
+.lightboxClose,
+.lightboxNav {
+  position: absolute;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.18);
+  color: #fff;
+  cursor: pointer;
+  font-family: var(--font-mazzard);
+  transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+.lightboxClose {
+  top: 24px; right: 24px;
+  width: 48px; height: 48px;
+  border-radius: 50%;
+  font-size: 26px;
+  line-height: 1;
+}
+.lightboxNav {
+  top: 50%;
+  transform: translateY(-50%);
+  width: 56px; height: 56px;
+  border-radius: 50%;
+  font-size: 32px;
+  line-height: 1;
+}
+.lightboxPrev { left: 24px; }
+.lightboxNext { right: 24px; }
+.lightboxClose:hover,
+.lightboxNav:hover { background: rgba(254,174,0,0.18); border-color: rgba(254,174,0,0.5); color: #FEAE00; }
+.lightboxCount {
+  position: absolute;
+  bottom: 28px; left: 50%;
+  transform: translateX(-50%);
+  color: #c8c8c8;
+  font-family: var(--font-mazzard);
+  font-size: 13px;
+  background: rgba(0,0,0,0.5);
+  padding: 6px 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.12);
+}
+
+
+/* ── Mobile carousel (visible ≤ 768 px, hidden on desktop) ────────── */
+.mobileGallery { display: none; }
+.mobileInfoCard { display: none; }
+.mobileScroller {}
+.mobileSlide {}
+.mobileSlideImg {}
+.mobileDots {}
+.mobileDot {}
+.mobileDotActive {}
+.mobileInfoInner {}
+.mobileTradedRow {}
+.mobileTradedBtn {}
+.mobileSection {}
+.mobileSectionHeader {}
+.mobileSectionTitle {}
+.mobileVehicleGrid {}
+.mobRow {}
+.mobRowSpan {}
+.mobRowLarge {}
+.mobLabel {}
+.mobValue {}
+.mobileDescription {}
+.mobileCta {}
+
+/* ── Responsive ─────────────────────────────────────────────────────────
+ * Desktop / laptop scaling is fully handled by clamp() above — no fixed
+ * breakpoints, just smooth proportional sizing from ~860 px to 1920+ px.
+ * Below 860 px we switch to a stacked single-column layout for tablets/
+ * phones (mobile spec to be revisited separately).
+ * ───────────────────────────────────────────────────────────────────── */
+@media screen and (max-width: 860px) {
+  .imageGridWrapper { padding: 0 24px 64px; }
+  .imageGrid {
+    grid-template-columns: 1fr;       /* single column stack */
+    gap: 16px;
+  }
+  .imageColumn {
+    max-width: 100%;
+    aspect-ratio: auto;
+    display: flex;
+    flex-direction: column;
+  }
+  .heroButton, .thumbButton { height: auto; }
+  .heroButton { aspect-ratio: 848 / 636; }
+  .thumbButton { aspect-ratio: 203 / 152; }
+  .thumbRow {
+    display: flex;
+    flex-wrap: wrap;
+    height: auto;
+  }
+  .image16Icon,
+  .allImagesCard,
+  .thumbButton {
+    flex: 1 1 calc((100% - 36px) / 4);
+    max-width: none;
+  }
+  .allImagesCard { aspect-ratio: 203 / 152; height: auto; }
+  .infoCard { max-width: 100%; padding: 24px; }
+  .detailsGrid { gap: 24px; flex-wrap: wrap; }
+  .detailsCol { flex: 1 1 100%; gap: 20px; }
+  .detailLabel { width: 105px; font-size: 14px; }
+  .detailValue, .detailValueLg { font-size: 14px; }
+  .infoBlocks { gap: 32px; }
+}
+
+/* ============================================================================
+ * MOBILE PIXEL-PERFECT SPEC (≤ 768 px, reference viewport 360 px)
+ *
+ *   Black page background hosts:
+ *     • Image carousel  — 336 × 240 cards (12 L / 12 R), horizontal snap
+ *     • Pagination dots — MAX 8 dots, active orange 10 px, inactive 8 px
+ *                         (windowed mapping when photo count > 8)
+ *
+ *   Then a 360 × 935 gray card (#1D1D1B) sits flush to the edges with
+ *   12 L / 12 R inner padding and stacks:
+ *     • TRADED chip (top right, 4 px radius)
+ *     • Vehicle Information section
+ *     • Auction Details section
+ *     • Description section
+ *     • EXACT COST IN BULGARIA CTA (solid orange, 4 px radius)
+ *
+ *   Typography:
+ *     • Section title    : Mazzard H Bold, 18 px, white, uppercase
+ *     • Field label      : Mazzard H Regular, 14 px, #949494, Title Case
+ *     • Field value      : Mazzard H Bold, 16 px, #FEAE00, uppercase
+ *     • Bid price value  : Mazzard H Bold, 24 px, #FEAE00
+ *     • Description body : Mazzard H Regular, 14 px, #949494, 1.4 line height
+ *     • TRADED text      : Mazzard H Bold, 14 px, #FEAE00, uppercase
+ *     • CTA text         : Mazzard H SemiBold, 14 px, #000, uppercase
+ *
+ *   Vehicle Info / Auction Details use a 2-col grid (1fr 1fr, gap 16 16).
+ *   Location row spans both columns. Labels sit above values, 6 px gap.
+ * ========================================================================= */
+@media screen and (max-width: 768px) {
+  /* Section wrapper — kill side paddings so the gray card is full-bleed. */
+  .imageGridWrapper {
+    padding: 0;
+    overflow-x: hidden;
+    width: 100%;
+    min-width: 0;
+    max-width: 100vw;
+    background-color: #000;
+  }
+
+  /* Hide the desktop photo column entirely on mobile. */
+  .imageColumn { display: none !important; }
+  /* Hide the desktop info card — the mobile version below replaces it. */
+  .infoCard { display: none !important; }
+
+  /* Stacked single-column container — switch to flex (avoids grid track
+   * min-content blowup when an item's natural width > viewport). */
+  .imageGrid {
+    display: flex;
+    flex-direction: column;
+    grid-template-columns: none;
+    gap: 0;
+    max-width: 100vw;
+    width: 100%;
+    min-width: 0;
+    overflow: hidden;
+  }
+
+  /* ── MOBILE GALLERY — horizontally-scrollable carousel ────────────────
+   * Carousel area sits on BLACK background with 12 px L/R outer padding so
+   * the image cards are 336 px wide (360 − 24). 240 px tall per Figma. */
+  .mobileGallery {
+    display: block;
+    width: 100vw;
+    min-width: 0;
+    max-width: 100vw;
+    margin: 0;
+    padding: 0 12px;
+    background-color: #000;
+    overflow: hidden;
+    box-sizing: border-box;
+  }
+  .mobileScroller {
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    height: 240px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: stretch;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    box-sizing: border-box;
+    border-radius: 0;                 /* strict spec — sharp corners on mobile */
+  }
+  .mobileScroller::-webkit-scrollbar { display: none; }
+  .mobileSlide {
+    flex: 0 0 100%;
+    width: 100%;
+    max-width: 100%;
+    height: 240px;
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+    appearance: none;
+    border: 0;
+    margin: 0;
+    padding: 0;
+    background: var(--color-gray-500);
+    cursor: pointer;
+    display: block;
+    box-sizing: border-box;
+  }
+  .mobileSlideImg {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  /* ── PAGINATION DOTS — max 8, active orange (10 px), inactive #5A5A5A ── */
+  .mobileDots {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    margin: 16px 0 16px 0;
+    padding: 0 12px;
+    flex-wrap: nowrap;
+    background-color: #000;
+    min-height: 12px;
+  }
+  .mobileDot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: #5A5A5A;        /* muted gray visible on black */
+    border: 0;
+    flex-shrink: 0;
+    transition: background-color 0.18s ease, transform 0.18s ease, width 0.18s ease, height 0.18s ease;
+  }
+  .mobileDotActive {
+    width: 10px;
+    height: 10px;
+    background-color: var(--color-orange-100);   /* #FEAE00 */
+  }
+
+  /* ── MOBILE INFO CARD — gray (#1D1D1B), 12 L / 12 R inside, 32 bottom ── */
+  .mobileInfoCard {
+    display: block;
+    width: 100%;
+    max-width: 100vw;
+    background-color: #1D1D1B;
+    box-sizing: border-box;
+    padding: 16px 12px 32px;
+  }
+  .mobileInfoInner {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 24px;
+  }
+
+  /* TRADED chip — right aligned, 4 px radius, orange ring */
+  .mobileTradedRow {
+    display: flex;
+    justify-content: flex-end;
+  }
+  .mobileTradedBtn {
+    cursor: pointer;
+    border: 1px solid #FEAE00;
+    background: transparent;
+    color: #FEAE00;
+    font-family: var(--font-mazzard);
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 1;
+    text-transform: uppercase;
+    padding: 9px 20px;
+    border-radius: 4px;
+    height: 34px;
+    box-sizing: border-box;
+    letter-spacing: 0.02em;
+    transition: background-color 0.15s ease;
+  }
+  .mobileTradedBtn:hover { background-color: rgba(254, 174, 0, 0.08); }
+
+  /* Section block — header (with 1 px divider) + 16 px gap → content. */
+  .mobileSection {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 16px;                       /* divider line → content (default) */
+  }
+  /* Description override: line → text gap is 24 px per spec. */
+  .mobileSectionDescription { gap: 24px; }
+
+  .mobileSectionHeader {
+    border-bottom: 1px solid #555452;  /* divider — 1 px, color per spec */
+    padding-bottom: 8px;               /* title text → divider line */
+  }
+  .mobileSectionTitle {
+    margin: 0;
+    font-family: var(--font-mazzard);
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 1;
+    color: #FFFFFF;
+    text-transform: uppercase;
+    letter-spacing: 0.01em;
+  }
+
+  /* 2-col paired grid: Brand|Model, Year|Mileage, etc. */
+  .mobileVehicleGrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 16px;
+    row-gap: 16px;
+    align-items: start;
+  }
+  .mobRow {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+    min-width: 0;
+    width: 100%;
+  }
+  .mobRowSpan { grid-column: 1 / -1; }
+  .mobLabel {
+    color: #949494;
+    font-family: var(--font-mazzard);
+    font-weight: 400;                /* H Regular */
+    font-size: 14px;
+    line-height: 1;
+    letter-spacing: 0;
+  }
+  .mobValue {
+    color: #FEAE00;
+    font-family: var(--font-mazzard);
+    font-size: 14px;
+    line-height: 1.1;
+    text-transform: uppercase;
+    word-break: break-word;
+    overflow-wrap: anywhere;
+    width: 100%;
+  }
+  /* Value weight variants per spec:                                       */
+  /*  • Vehicle Info field values (Year=2025, AIR, SEDAN, etc.) → H Medium */
+  /*  • Auction Details standard values (LOT/VIN/COPART/Updated) → H Reg.  */
+  /*  • Location value                                            → H Bold */
+  .mobValueRegular { font-weight: 400; }
+  .mobValueMedium  { font-weight: 500; }
+  .mobValueBold    { font-weight: 700; }
+
+  /* Bid Price / Estimated Total — H Medium 20 px per spec. */
+  .mobRowLarge .mobValue {
+    font-size: 20px;
+    font-weight: 500;
+    line-height: 1.05;
+  }
+
+  /* Description body */
+  .mobileDescription {
+    color: #C8C8C8;
+    font-family: var(--font-mazzard);
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 1.45;
+    word-break: normal;
+    overflow-wrap: break-word;
+  }
+
+  /* CTA — full-width filled orange button, 4 px radius. 32 px above per
+   * spec: section→CTA gap is 32, the default infoInner gap is 24, so we
+   * add 8 px margin-top on the button itself (24 + 8 = 32). */
+  .mobileCta {
+    width: 100%;
+    height: 45px;
+    background-color: #FEAE00;
+    color: #000;
+    font-family: var(--font-mazzard);
+    font-weight: 500;                /* H Medium */
+    font-size: 14px;
+    text-transform: uppercase;
+    border: 0;
+    border-radius: 4px;
+    cursor: pointer;
+    letter-spacing: 0.03em;
+    transition: background-color 0.15s ease;
+    margin-top: 8px;
+  }
+  .mobileCta:hover { background-color: #FFBF2D; }
+}
+
+/* ── Earlier responsive — clamp-based desktop-to-tablet scaling ───────── */

@@ -1,0 +1,1611 @@
+.servicesTitleWrapper {
+  align-self: stretch;
+  padding: var(--padding-0) var(--padding-0) var(--padding-5) var(--padding-1);
+  flex-shrink: 0;
+  text-align: center;
+  font-size: var(--fs-60);
+  color: var(--color-black);
+  font-family: var(--font-mazzard);
+}
+.ourServicesWrapper,
+.servicesTitle,
+.servicesTitleWrapper {
+  display: flex;
+  align-items: flex-start;
+  box-sizing: border-box;
+  max-width: 100%;
+}
+.servicesTitle {
+  flex: 1;
+  background-color: var(--color-orange-100);
+  overflow: hidden;
+  flex-direction: column;
+  padding: 110.7px 82px 115.5px 97px;
+  gap: 105.3px;
+}
+.ourServicesWrapper {
+  padding: var(--padding-0);
+  align-self: stretch;
+  justify-content: center;
+}
+.ourServices {
+  margin: 0;
+  width: auto;
+  position: relative;
+  font-size: inherit;
+  line-height: 100%;
+  text-transform: uppercase;
+  font-weight: 700;
+  font-family: inherit;
+  display: inline-block;
+  white-space: nowrap;
+}
+.servicesCards {
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 97.2px;
+  max-width: 100%;
+}
+.frameParent,
+.serviceDetailsColumn {
+  align-self: stretch;
+  display: flex;
+  align-items: flex-start;
+  max-width: 100%;
+}
+.serviceDetailsColumn {
+  flex-direction: column;
+  gap: 12.9px;
+}
+.frameParent {
+  justify-content: center;
+  gap: var(--gap-12);
+}
+.frameChild,
+.rectangleParent {
+  border-radius: var(--br-4);
+  background-color: var(--color-gray-300);
+  max-width: 100%;
+}
+.rectangleParent {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 32.6px var(--padding-27) 65.5px;
+  box-sizing: border-box;
+  gap: 52.4px;
+  min-width: var(--min-w-280);
+  text-align: left;
+  font-size: var(--fs-24);
+  color: var(--color-white);
+  font-family: var(--font-mazzard);
+}
+.frameChild {
+  width: 430.8px;
+  height: var(--height-323_2);
+  position: relative;
+  display: none;
+  flex-shrink: 0;
+}
+.frameContainer,
+.frameGroup {
+  display: flex;
+  align-items: flex-start;
+}
+.frameGroup {
+  align-self: stretch;
+  flex-direction: column;
+  gap: 41.7px;
+  max-width: 100%;
+  flex-shrink: 0;
+}
+.frameContainer {
+  width: 70px;
+  height: 54px;
+  flex-shrink: 0;
+}
+/* Single combined IMPORT icon (globe + arrow) — replaces the previous
+   6-piece SVG composition. Rendered natively at 70×54 with stroke-width
+   2 so the globe stays a perfect circle and the arrow → is clean. */
+.importIcon {
+  display: block;
+  width: 70px;
+  height: 54px;
+}
+
+/* Single combined Registration & Certification icon — replaces the
+   previous 6-piece composition. Rendered natively at 66×70 with
+   stroke-width 2 everywhere so the document outline, both check-marks
+   and the certification badge ring all stay sharp at any zoom level. */
+.registrationIcon {
+  display: block;
+  width: 66px;
+  height: 70px;
+  flex-shrink: 0;
+}
+
+/* Single combined Financing icon — replaces the previous 8-piece
+   composition. Rendered natively at 68×62 with stroke-width 2 so the
+   coin circle, banknote outline and dashes remain crisp. */
+.financingIcon {
+  display: block;
+  width: 68px;
+  height: 62px;
+  flex-shrink: 0;
+}
+
+/* Single combined Parts Sourcing & Delivery icon — replaces the previous
+   5-piece composition (sun rays + circle + box outline + horizontal
+   divider + vertical seam). Rendered natively at 56×46 with stroke-width
+   2 everywhere, so the internal box divider lines (which previously
+   scaled to ~0 px stroke) are now crisp 2 px lines. */
+.partsSourcingIcon {
+  display: block;
+  width: 56px;
+  height: 46px;
+  flex-shrink: 0;
+}
+
+/* Single combined Home Delivery icon — EXACT Figma geometry:
+   house 51.81 × 46.63, car 41.4 × 20.7, wheels 7.8 × 7.8, total
+   icon 74.2 × 65.7.  Rendered natively at stroke-width 2 (no scaling
+   artefacts → wheels are now genuine circles with 2 px stroke). */
+.homeDeliveryIcon {
+  display: block;
+  width: 74.2px;
+  height: 65.7px;
+  flex-shrink: 0;
+}
+
+/* Single combined Auto Service icon — outer shell 58 × 58 (the original
+   shield/notched path) + GPS-fix crosshair 20 × 20 centred inside.
+   ViewBox is 60×60 with a 1 px margin so the rounded notch corners
+   (which extend ~0.5 px past the 58×58 path bbox after stroke=2) are
+   NOT clipped. All strokes native 2 px, colour #F5B800. */
+.autoServiceIcon {
+  display: block;
+  width: 60px;
+  height: 60px;
+  flex-shrink: 0;
+}
+.vectorParent {
+  height: var(--height-52);
+  flex: 1;
+  position: relative;
+}
+.vectorIcon {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+.vectorIcon2 {
+  position: absolute;
+  top: 26px;
+  left: 0;
+  width: var(--width-52);
+  height: var(--height-2);
+  z-index: 2;
+}
+.vectorIcon3,
+.vectorIcon4 {
+  position: absolute;
+  top: 0;
+  left: 26px;
+  width: var(--width-12);
+  height: var(--height-52);
+  z-index: 3;
+}
+.vectorIcon4 {
+  left: 14px;
+  z-index: 4;
+}
+.frameWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: var(--padding-8) var(--padding-0) var(--padding-0);
+}
+.vectorGroup {
+  width: 13px;
+  height: var(--height-10);
+  position: relative;
+}
+.vectorIcon5 {
+  position: absolute;
+  top: 5px;
+  left: 0;
+  width: 13px;
+  height: var(--height-2);
+  z-index: 2;
+}
+.vectorIcon6 {
+  position: absolute;
+  top: 0;
+  left: 8px;
+  width: var(--width-5);
+  height: var(--height-10);
+  z-index: 3;
+}
+.importWrapper {
+  align-self: stretch;
+  display: flex;
+  align-items: flex-start;
+  padding: var(--padding-0) var(--padding-0) var(--padding-0) var(--padding-2);
+  box-sizing: border-box;
+  max-width: 100%;
+}
+.import {
+  margin: 0;
+  flex: 1;
+  position: relative;
+  font-size: inherit;
+  line-height: 99.9%;
+  text-transform: uppercase;
+  font-weight: 400;
+  font-family: inherit;
+  display: inline-block;
+  max-width: 100%;
+  z-index: 1;
+}
+.weHelpYouFindTheRightCarWrapper {
+  width: 357.4px;
+  display: flex;
+  align-items: flex-start;
+  padding: var(--padding-0) var(--padding-4);
+  box-sizing: border-box;
+  max-width: 100%;
+  flex-shrink: 0;
+  font-size: var(--fs-14);
+}
+.weHelpYou {
+  height: var(--height-51);
+  flex: 1;
+  position: relative;
+  line-height: 99.9%;
+  display: inline-block;
+  max-width: 100%;
+  z-index: 1;
+}
+.rectangleGroup {
+  width: var(--width-418_4);
+  border-radius: var(--br-4);
+  background-color: var(--color-gray-300);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 32.6px var(--padding-14) 84.2px var(--padding-30);
+  box-sizing: border-box;
+  gap: 41.7px;
+  max-width: 100%;
+  text-align: left;
+  font-size: var(--fs-24);
+  color: var(--color-white);
+  font-family: var(--font-mazzard);
+}
+.eUAdaptation,
+.frameItem {
+  position: relative;
+  flex-shrink: 0;
+}
+.frameItem {
+  width: var(--width-418_4);
+  height: var(--height-323_2);
+  border-radius: var(--br-4);
+  background-color: var(--color-gray-300);
+  display: none;
+  max-width: 100%;
+}
+.eUAdaptation {
+  width: var(--width-52);
+  height: var(--height-52);
+}
+.vectorIcon10,
+.vectorIcon11,
+.vectorIcon8,
+.vectorIcon9 {
+  position: absolute;
+  top: 13.5px;
+  left: 1.5px;
+  width: var(--width-5);
+  height: var(--height-5);
+  z-index: 2;
+}
+.vectorIcon10,
+.vectorIcon11,
+.vectorIcon9 {
+  left: 45.5px;
+}
+.vectorIcon10,
+.vectorIcon11 {
+  top: 33.5px;
+  left: 1.5px;
+}
+.vectorIcon11 {
+  left: 45.5px;
+}
+.vectorIcon12 {
+  position: absolute;
+  top: 12.6px;
+  left: 9.9px;
+  width: 29.6px;
+  height: 29.4px;
+  z-index: 2;
+}
+.adaptationToEuropeanStandarParent {
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 22.7px;
+  max-width: 100%;
+  flex-shrink: 0;
+}
+.adaptationToEuropean,
+.weAdaptThe {
+  position: relative;
+  line-height: 99.9%;
+  z-index: 1;
+}
+.adaptationToEuropean {
+  margin: 0;
+  width: 340.2px;
+  height: var(--height-56);
+  font-size: inherit;
+  text-transform: uppercase;
+  font-weight: 400;
+  font-family: inherit;
+  display: inline-block;
+  max-width: 100%;
+}
+.weAdaptThe {
+  font-size: var(--fs-14);
+}
+.rectangleContainer {
+  width: var(--width-418_4);
+  border-radius: var(--br-4);
+  background-color: var(--color-gray-300);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 31.1px var(--padding-25) 65.5px var(--padding-29);
+  box-sizing: border-box;
+  gap: 24.8px;
+  max-width: 100%;
+  text-align: left;
+  font-size: var(--fs-24);
+  color: var(--color-white);
+  font-family: var(--font-mazzard);
+}
+.frameDiv {
+  width: 66px;
+  height: var(--height-70);
+  position: relative;
+  flex-shrink: 0;
+}
+.vectorContainer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: var(--width-44);
+  height: var(--height-56);
+}
+.vectorIcon14,
+.vectorIcon15,
+.vectorIcon16 {
+  position: absolute;
+  top: 16px;
+  left: 8px;
+  width: var(--width-28);
+  height: var(--height-2);
+  z-index: 2;
+}
+.vectorIcon15,
+.vectorIcon16 {
+  top: 26px;
+}
+.vectorIcon16 {
+  top: 29px;
+  width: var(--width-20);
+  height: var(--height-13);
+}
+.vectorParent2 {
+  position: absolute;
+  top: 42px;
+  left: 38px;
+  width: var(--width-28);
+  height: var(--height-28);
+}
+.vectorIcon17 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+}
+.vectorIcon18 {
+  position: absolute;
+  top: 8px;
+  left: 7px;
+  width: var(--width-14);
+  height: var(--height-11);
+  z-index: 3;
+}
+.registrationAndCertification {
+  margin: 0;
+  width: 340.2px;
+  height: var(--height-56);
+  position: relative;
+  font-size: inherit;
+  line-height: 99.9%;
+  text-transform: uppercase;
+  font-weight: 400;
+  font-family: inherit;
+  display: inline-block;
+  max-width: 100%;
+  z-index: 1;
+  flex-shrink: 0;
+}
+.weHandleFullRegistrationInWrapper {
+  align-self: stretch;
+  display: flex;
+  align-items: flex-start;
+  padding: var(--padding-0) var(--padding-1);
+  box-sizing: border-box;
+  max-width: 100%;
+  flex-shrink: 0;
+  font-size: var(--fs-14);
+}
+.frameSection,
+.rectangleDiv {
+  border-radius: var(--br-4);
+  background-color: var(--color-gray-300);
+  max-width: 100%;
+}
+.frameSection {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 29.1px var(--padding-29) 67.2px;
+  box-sizing: border-box;
+  gap: 55.5px;
+  min-width: var(--min-w-280);
+  text-align: left;
+  font-size: var(--fs-24);
+  color: var(--color-white);
+  font-family: var(--font-mazzard);
+}
+.rectangleDiv {
+  width: var(--width-429_8);
+  height: var(--height-323_2);
+  position: relative;
+  display: none;
+  flex-shrink: 0;
+}
+.frameParent2 {
+  width: 314.9px;
+  gap: 31.4px;
+  flex-shrink: 0;
+}
+.frameParent2,
+.frameParent3,
+.frameParent4 {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.frameParent3 {
+  gap: var(--gap-6);
+}
+.frameParent4 {
+  padding: var(--padding-19) var(--padding-26) var(--padding-11);
+  position: relative;
+  isolation: isolate;
+}
+.vectorIcon19,
+.vectorParent3 {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+.vectorParent3 {
+  margin: 0 !important;
+  flex-shrink: 0;
+}
+.vectorIcon19 {
+  max-width: 100%;
+  overflow: hidden;
+  max-height: 100%;
+  z-index: 1;
+}
+.vectorIcon20 {
+  position: absolute;
+  top: 12px;
+  left: 0;
+  width: 68px;
+  height: var(--height-2);
+  z-index: 2;
+}
+.vectorIcon21 {
+  width: var(--width-16);
+  height: var(--height-16);
+  position: relative;
+  z-index: 2;
+  flex-shrink: 0;
+}
+.vectorParent4 {
+  align-self: stretch;
+  height: var(--height-10);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  padding: var(--padding-0) var(--padding-0) var(--padding-2);
+  box-sizing: border-box;
+}
+.frameWrapper2,
+.vectorIcon22 {
+  align-self: stretch;
+  flex-shrink: 0;
+}
+.vectorIcon22 {
+  height: var(--height-2);
+  position: relative;
+  max-width: 100%;
+  overflow: hidden;
+  z-index: 1;
+}
+.frameWrapper2 {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-end;
+  padding: var(--padding-0) var(--padding-8) var(--padding-0) var(--padding-10);
+}
+.vectorParent5 {
+  height: var(--height-8);
+  flex: 1;
+  position: relative;
+}
+.vectorIcon23,
+.vectorIcon24,
+.vectorIcon25 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: var(--width-2);
+  height: var(--height-8);
+  z-index: 2;
+}
+.vectorIcon24,
+.vectorIcon25 {
+  left: 24px;
+}
+.vectorIcon25 {
+  left: 48px;
+}
+.vectorWrapper {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-end;
+  padding: var(--padding-0) var(--padding-2);
+  flex-shrink: 0;
+}
+.vectorIcon26 {
+  height: var(--height-2);
+  width: 100%;
+  position: relative;
+  z-index: 3;
+}
+.financingWrapper {
+  align-self: stretch;
+  display: flex;
+  align-items: flex-start;
+  padding: var(--padding-0) var(--padding-0) var(--padding-0) var(--padding-3);
+}
+.financing {
+  margin: 0;
+  flex: 1;
+  position: relative;
+  font-size: inherit;
+  line-height: 99.9%;
+  text-transform: uppercase;
+  font-weight: 400;
+  font-family: inherit;
+  z-index: 1;
+}
+.weConnectYouWithTbiBankAWrapper {
+  width: 336.2px;
+  padding: var(--padding-0) var(--padding-3);
+  box-sizing: border-box;
+  flex-shrink: 0;
+  font-size: var(--fs-14);
+}
+.frameParent5,
+.frameWrapper3,
+.rectangleParent2,
+.weConnectYouWithTbiBankAWrapper {
+  display: flex;
+  align-items: flex-start;
+  max-width: 100%;
+}
+.frameParent5 {
+  align-self: stretch;
+  justify-content: center;
+  gap: 3.1px;
+}
+.frameWrapper3,
+.rectangleParent2 {
+  flex-direction: column;
+  box-sizing: border-box;
+}
+.frameWrapper3 {
+  flex: 1;
+  padding: var(--padding-0) 9px var(--padding-0) var(--padding-0);
+  min-width: 354px;
+  text-align: left;
+  font-size: var(--fs-24);
+  color: var(--color-white);
+  font-family: var(--font-mazzard);
+}
+.rectangleParent2 {
+  align-self: stretch;
+  border-radius: var(--br-4);
+  background-color: var(--color-gray-300);
+  padding: 34.7px var(--padding-27) 94.7px;
+  gap: 46.7px;
+}
+.frameParent6 {
+  width: 53px;
+  height: 43px;
+  position: relative;
+  flex-shrink: 0;
+}
+.vectorParent6 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: var(--width-36);
+  height: var(--height-36);
+}
+.vectorIcon27,
+.vectorParent7 {
+  position: absolute;
+  width: var(--width-24);
+}
+.vectorIcon27 {
+  top: 6px;
+  left: 6px;
+  height: var(--height-24);
+  z-index: 1;
+}
+.vectorParent7 {
+  top: 21px;
+  left: 29px;
+  height: var(--height-22);
+}
+.vectorIcon29 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 3;
+}
+.vectorIcon30,
+.vectorIcon31 {
+  position: absolute;
+  top: 8px;
+  left: 0;
+  width: var(--width-24);
+  height: var(--height-2);
+  z-index: 4;
+}
+.vectorIcon31 {
+  top: 0;
+  left: 12px;
+  width: var(--width-2);
+  height: var(--height-8);
+  z-index: 5;
+}
+.partsDetail {
+  width: 330px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 14.1px;
+  max-width: 100%;
+  flex-shrink: 0;
+}
+.partsSourcingAndDeliveryWrapper {
+  width: 239.2px;
+  display: flex;
+  align-items: flex-start;
+  padding: var(--padding-0) var(--padding-4);
+  box-sizing: border-box;
+}
+.partsSourcingAnd {
+  margin: 0;
+  height: var(--height-56);
+  flex: 1;
+  position: relative;
+  font-size: inherit;
+  line-height: 99.9%;
+  text-transform: uppercase;
+  font-weight: 400;
+  font-family: inherit;
+  display: inline-block;
+  z-index: 1;
+}
+.rectangleParent3 {
+  flex: 0.9644;
+  border-radius: var(--br-4);
+  background-color: var(--color-gray-300);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 7.9px var(--padding-12) 94.7px;
+  box-sizing: border-box;
+  gap: 42.1px;
+  min-width: var(--min-w-396);
+  max-width: 100%;
+  text-align: left;
+  font-size: var(--fs-24);
+  color: var(--color-white);
+  font-family: var(--font-mazzard);
+}
+.frameParent7 {
+  width: 321px;
+  display: flex;
+  align-items: flex-end;
+  gap: 0.5px;
+  max-width: 100%;
+  flex-shrink: 0;
+}
+.geminiSvg11Parent {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--gap-16_5);
+  min-width: 162px;
+}
+.geminiSvg11 {
+  width: var(--width-100);
+  height: var(--height-100);
+  position: relative;
+  z-index: 1;
+}
+.serviceImage,
+.serviceTitle {
+  display: flex;
+  align-items: flex-start;
+}
+.serviceTitle {
+  align-self: stretch;
+  padding: var(--padding-0) var(--padding-0) var(--padding-0) var(--padding-18);
+}
+.serviceImage {
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: var(--padding-0) var(--padding-0) var(--padding-24_5);
+}
+.autoRepairServiceSvgrepoCoIcon {
+  width: 100%;
+  height: var(--height-70);
+  position: relative;
+  z-index: 1;
+}
+.serviceDetails {
+  width: 360.3px;
+  display: flex;
+  align-items: flex-start;
+  padding: var(--padding-0) var(--padding-15);
+  box-sizing: border-box;
+  max-width: 100%;
+  flex-shrink: 0;
+  font-size: var(--fs-14);
+}
+.weHandleAll {
+  flex: 1;
+  position: relative;
+  line-height: 99.9%;
+  display: inline-block;
+  max-width: 100%;
+  z-index: 1;
+}
+.rectangleParent4 {
+  flex: 0.8693;
+  border-radius: var(--br-4);
+  background-color: var(--color-gray-300);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: var(--padding-11_9) var(--padding-32) 77.7px;
+  box-sizing: border-box;
+  gap: 25.5px;
+  min-width: var(--min-w-396);
+  max-width: 100%;
+  text-align: left;
+  font-size: var(--fs-24);
+  color: var(--color-white);
+  font-family: var(--font-mazzard);
+}
+.geminiSvg1Icon {
+  width: 85px;
+  height: 85px;
+  position: relative;
+  z-index: 1;
+  flex-shrink: 0;
+}
+.frameParent8 {
+  width: 330px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16.1px;
+  max-width: 100%;
+  flex-shrink: 0;
+}
+.detailingAndCleaningWrapper {
+  width: 236.1px;
+  display: flex;
+  align-items: flex-start;
+  padding: var(--padding-0) var(--padding-2);
+  box-sizing: border-box;
+}
+.weProvideProfessional {
+  height: var(--height-51);
+  position: relative;
+  font-size: var(--fs-14);
+  line-height: 99.9%;
+  display: inline-block;
+  z-index: 1;
+}
+.rectangleParent5 {
+  flex: 0.9073;
+  border-radius: var(--br-4);
+  background-color: var(--color-gray-300);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 25.9px var(--padding-24) 56px;
+  box-sizing: border-box;
+  gap: 57.8px;
+  min-width: var(--min-w-396);
+  max-width: 100%;
+  text-align: left;
+  font-size: var(--fs-24);
+  color: var(--color-white);
+  font-family: var(--font-mazzard);
+}
+.frameParent9 {
+  width: 364.7px;
+  display: flex;
+  align-items: flex-end;
+  gap: 53.5px;
+  max-width: 100%;
+  flex-shrink: 0;
+}
+.frameParent10 {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 38.8px;
+  min-width: 151px;
+}
+.frameParent11 {
+  width: 74.2px;
+  height: 65.7px;
+  position: relative;
+}
+.vectorParent8 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 51.8px;
+  height: 46.6px;
+}
+.vectorIcon33,
+.vectorIcon34 {
+  position: absolute;
+  top: 31.1px;
+  left: 16.9px;
+  width: var(--width-2);
+  height: 15.5px;
+  z-index: 2;
+}
+.vectorIcon34 {
+  left: 35px;
+}
+.vectorIcon35 {
+  position: absolute;
+  top: 31.1px;
+  left: 16.9px;
+  width: 18.1px;
+  height: var(--height-2);
+  z-index: 3;
+}
+.vectorIcon36 {
+  position: absolute;
+  top: 41px;
+  left: 32.8px;
+  width: 41.4px;
+  height: 20.7px;
+  z-index: 3;
+}
+.vectorIcon37,
+.vectorIcon38 {
+  position: absolute;
+  top: 57.9px;
+  left: 38px;
+  width: 7.8px;
+  height: 7.8px;
+  z-index: 4;
+}
+.vectorIcon38 {
+  left: 61.3px;
+}
+.homeDeliveryWrapper {
+  align-self: stretch;
+  display: flex;
+  align-items: flex-start;
+  padding: var(--padding-0) var(--padding-0) var(--padding-0) var(--padding-2);
+}
+.frameChild6 {
+  height: var(--height-70);
+  width: var(--width-78);
+  position: relative;
+  transform: rotate(180deg);
+  z-index: 1;
+}
+.contactButtonService {
+  align-self: stretch;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: var(--padding-0);
+  box-sizing: border-box;
+  max-width: 100%;
+}
+@media screen and (max-width: 1850px) {
+  .frameParent {
+    flex-wrap: wrap;
+  }
+  .frameSection,
+  .rectangleParent {
+    flex: 1;
+  }
+  .frameParent5 {
+    flex-wrap: wrap;
+  }
+}
+@media screen and (max-width: 1350px) {
+  .servicesTitle {
+    gap: 53px;
+    padding: var(--padding-72) 41px var(--padding-75) var(--padding-48);
+    box-sizing: border-box;
+  }
+  .ourServicesWrapper {
+    padding-left: 0;
+    padding-right: 0;
+    box-sizing: border-box;
+  }
+  .contactButtonService {
+    padding-left: 0;
+    padding-right: 0;
+    justify-content: center;
+    box-sizing: border-box;
+  }
+}
+@media screen and (max-width: 925px) {
+  .servicesTitle {
+    gap: var(--gap-26);
+    padding-left: var(--padding-24);
+    padding-top: var(--padding-47);
+    padding-bottom: var(--padding-49);
+    box-sizing: border-box;
+  }
+  .ourServicesWrapper {
+    padding-left: 0;
+    padding-right: 0;
+    box-sizing: border-box;
+  }
+  .ourServices {
+    font-size: var(--fs-48);
+    line-height: var(--lh-48);
+  }
+  .servicesCards {
+    gap: var(--gap-49);
+  }
+  .frameWrapper3,
+  .rectangleParent3,
+  .rectangleParent4,
+  .rectangleParent5 {
+    min-width: 100%;
+  }
+  .contactButtonService {
+    padding-left: 0;
+    padding-right: 0;
+    box-sizing: border-box;
+  }
+}
+@media screen and (max-width: 450px) {
+  .ourServicesWrapper {
+    padding-left: var(--padding-20);
+    padding-right: var(--padding-20);
+    box-sizing: border-box;
+  }
+  .ourServices {
+    font-size: var(--fs-36);
+    line-height: var(--lh-36);
+  }
+  .servicesCards {
+    gap: var(--gap-24);
+  }
+  .rectangleParent {
+    gap: var(--gap-26);
+  }
+  .frameGroup {
+    gap: var(--gap-21);
+  }
+  .import {
+    font-size: var(--fs-19);
+    line-height: var(--lh-19);
+  }
+  .rectangleGroup {
+    gap: var(--gap-21);
+  }
+  .adaptationToEuropean,
+  .registrationAndCertification {
+    font-size: var(--fs-19);
+    line-height: var(--lh-19);
+  }
+  .frameSection {
+    gap: var(--gap-28);
+  }
+  .frameParent2 {
+    gap: var(--gap-16);
+  }
+  .financing {
+    font-size: var(--fs-19);
+    line-height: var(--lh-19);
+  }
+  .rectangleParent2 {
+    gap: var(--gap-23);
+  }
+  .partsSourcingAnd {
+    font-size: var(--fs-19);
+    line-height: var(--lh-19);
+  }
+  .rectangleParent3 {
+    gap: var(--gap-21);
+    flex: 1;
+  }
+  .frameParent7 {
+    flex-wrap: wrap;
+  }
+  .rectangleParent4 {
+    flex: 1;
+  }
+  .rectangleParent5 {
+    gap: 29px;
+    flex: 1;
+  }
+  .frameParent9 {
+    gap: var(--gap-27);
+    flex-wrap: wrap;
+  }
+  .contactButtonService {
+    padding-left: var(--padding-20);
+    padding-right: var(--padding-20);
+    box-sizing: border-box;
+  }
+}
+
+
+/* ============================================================================
+ * UNIFORM 4×2 GRID OVERRIDE
+ * Original Figma export gave each card a different min-width / flex value,
+ * which caused row 1 ≠ row 2 widths and uneven spacing. Force a clean
+ * 4-column CSS Grid for both rows so all 8 cards render at identical width.
+ * ========================================================================== */
+
+.frameParent,
+.frameParent5 {
+  align-self: stretch;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  justify-content: stretch;
+  align-items: stretch;
+  width: 100%;
+  max-width: 100%;
+}
+
+.rectangleParent,
+.rectangleGroup,
+.rectangleContainer,
+.frameSection,
+.frameWrapper3,
+.rectangleParent3,
+.rectangleParent4,
+.rectangleParent5 {
+  flex: unset;
+  width: auto;
+  min-width: 0;
+  max-width: 100%;
+  align-self: stretch;
+  border-radius: var(--br-4);
+  background-color: var(--color-gray-300);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: 32.6px 28px 40px 28px;
+  box-sizing: border-box;
+  gap: 30px;
+  min-height: 360px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Hide the legacy decorative absolute background squares (.frameChild,
+   .frameItem, .rectangleDiv) — the new grid layout already paints the dark
+   card background, so these would create double layers / horizontal scroll. */
+.rectangleParent > .frameChild,
+.rectangleGroup > .frameItem,
+.rectangleContainer > .frameItem,
+.frameSection > .rectangleDiv,
+.frameWrapper3 > .rectangleParent2 > .rectangleDiv,
+.rectangleParent3 > .rectangleDiv,
+.rectangleParent4 > .rectangleDiv,
+.rectangleParent5 > .rectangleDiv {
+  display: none !important;
+}
+
+/* Inside `.frameWrapper3` there is an extra wrapper (.rectangleParent2) that
+   needs to behave like its sibling cards. */
+.frameWrapper3 {
+  padding: 0;
+  background-color: transparent;
+  min-height: 0;
+}
+.frameWrapper3 .rectangleParent2 {
+  width: 100%;
+  height: 100%;
+  min-height: 360px;
+  border-radius: var(--br-4);
+  background-color: var(--color-gray-300);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 32.6px 28px 40px 28px;
+  box-sizing: border-box;
+  gap: 30px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Responsive: 2 columns on tablets, 1 column on mobile */
+@media screen and (max-width: 1100px) {
+  .frameParent,
+  .frameParent5 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media screen and (max-width: 600px) {
+  .frameParent,
+  .frameParent5 {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Make sure the heading/section-padding inside cards is consistent */
+.frameGroup,
+.eUAdaptation,
+.frameDiv,
+.frameParent2,
+.frameParent6,
+.frameParent7,
+.frameParent9 {
+  align-self: stretch;
+}
+
+/* ── Auto Service card layout fix: icon → title → description ──────────── */
+.rectangleParent3 .frameParent7 {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 30px;
+  padding: 0;
+}
+.rectangleParent3 .geminiSvg11 {
+  width: 70px;
+  height: 70px;
+  display: block;
+}
+.rectangleParent3 .serviceTitle {
+  padding: 0;
+  display: block;
+  width: 100%;
+}
+.rectangleParent3 .serviceTitle h3 {
+  text-align: left;
+  font-size: 24px;
+  line-height: 100%;
+  font-weight: 500;
+  text-transform: uppercase;
+  margin: 0;
+  color: var(--color-white);
+  font-family: var(--font-mazzard);
+}
+.rectangleParent3 .serviceDetails {
+  width: 100%;
+  padding: 0;
+}
+.rectangleParent3 .weHandleAll {
+  font-size: 16px;
+  line-height: 140%;
+  color: var(--color-white);
+  font-weight: 400;
+}
+
+/* ── FIND A CAR button: visually match Figma (459 × 56, yellow text) ───── */
+.contactButtonService {
+  margin-top: 60px;
+}
+.contactButtonService button {
+  height: 56px !important;
+  width: min(459px, 90%) !important;
+  border-radius: var(--br-6) !important;
+  background-color: #000 !important;
+}
+.contactButtonService button > div {
+  font-family: 'Mazzard H', 'Mazzard', system-ui, sans-serif !important;
+  font-size: 14px !important;
+  line-height: 14px !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.04em;
+  color: #FEAE00 !important;
+}
+
+
+/* ============================================================================
+ * "OUR SERVICES" — parallax + 3D tilt layer
+ * --------------------------------------------------------------------------
+ * The 8 service cards stay perfectly aligned in their flex grid at all times.
+ * The parallax effect lives INSIDE each card: the icon, headings and body
+ * text drift on their own Z-planes while the card surface itself never
+ * leaves the grid. The only outer-card transformation is the 3D tilt that
+ * fires on hover (one card at a time, so the row stays balanced).
+ *
+ *   --p-scroll    0..1 progress as the section traverses the viewport.
+ *   --p-mx        −0.5..0.5 normalised cursor X inside the section.
+ *   --p-my        −0.5..0.5 normalised cursor Y inside the section.
+ *   --ctx         −0.5..0.5 normalised cursor X inside the hovered card.
+ *   --cty         −0.5..0.5 normalised cursor Y inside the hovered card.
+ *   --depth       per-card depth weight (0.55..1.15) — drives the parallax
+ *                 magnitude so each card's contents float at a different
+ *                 speed, manufacturing genuine 3D depth.
+ *   --stagger     integer card index used to delay the entrance animation.
+ *
+ * All cards share a single `perspective` on the parent so the hover-tilt
+ * converges to one consistent vanishing point — the section reads as one
+ * cohesive 3D scene, not 8 isolated tiles.
+ * ========================================================================== */
+
+.servicesTitle {
+  /* Establishes the 3D scene for all 8 cards. 1300 px is the new sweet
+     spot — close enough that the tilt is clearly readable, far enough
+     that the card never visibly intrudes on its neighbours. */
+  perspective: 1300px;
+  perspective-origin: 50% 30%;
+}
+
+/* The rows keep flex `align-items: stretch` so all cards in a row have
+   exactly the same height, regardless of content length. This eliminates
+   the "ragged" alignment the user pointed out. */
+.frameParent,
+.frameParent5 {
+  align-items: stretch;
+}
+.rectangleParent,
+.rectangleGroup,
+.rectangleContainer,
+.frameSection,
+.rectangleParent2,
+.rectangleParent3,
+.rectangleParent4,
+.rectangleParent5 {
+  /* Card surface fills the row — height matches its tallest sibling. */
+  height: 100%;
+}
+.frameWrapper3 {
+  /* This is the wrapper around card-5 (PARTS SOURCING). It needs to
+     stretch like its siblings so the row stays uniform. */
+  align-self: stretch;
+  display: flex;
+  flex: 1;
+}
+.frameWrapper3 > .rectangleParent2 {
+  flex: 1;
+  align-self: stretch;
+}
+
+.parallaxCard {
+  /* Defaults — overwritten via inline style by the React effect. */
+  --depth: 1;
+  --p-scroll: 0;
+  --p-mx: 0;
+  --p-my: 0;
+  --ctx: 0;
+  --cty: 0;
+  --stagger: 0;
+  --tilt: 0;
+  --lift: 0;
+
+  /* The card itself owns a 3D context so the icon/inner layers can sit on
+     their own Z-plane and parallax independently. */
+  transform-style: preserve-3d;
+  transform-origin: center center;
+  position: relative;
+  will-change: transform, box-shadow;
+
+  /* Entry state — invisible + a tiny lift. The .cardEntered class flips
+     this on once the IntersectionObserver fires. The card NEVER leaves
+     its grid slot during scroll — only inner elements parallax. */
+  opacity: 0;
+  transform: translate3d(0, 16px, 0);
+
+  transition:
+    transform 900ms cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 900ms cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 520ms cubic-bezier(0.22, 1, 0.36, 1);
+
+  /* Staggered entrance — 70ms between each card so the row "cascades" in. */
+  transition-delay: calc(var(--stagger) * 70ms);
+}
+
+/* Once visible: card returns to its natural grid position. Only the hover
+   tilt and the Z lift can transform the OUTER surface — both are explicit
+   hover-only effects, so unhovered cards always sit flush in the grid. */
+.cardEntered {
+  opacity: 1;
+  transform:
+    translate3d(0, 0, calc(var(--lift) * 1px))
+    rotateX(calc(var(--cty) * var(--tilt) * -1deg))
+    rotateY(calc(var(--ctx) * var(--tilt) * 1deg));
+}
+
+/* When the card is hovered: the surface tilts in 3D, lifts toward the
+   viewer and grows a hair — three coordinated cues that make the
+   depth read clearly without ever spilling onto the neighbouring cards.
+
+   Magnitudes balanced for "noticeable but never showy":
+     • tilt   ±8°    — clearly visible at a glance.
+     • lift   30px   — punches the card forward by a meaningful amount
+                       without overlapping its row siblings.
+     • scale  1.02   — a hint of growth that grounds the lift.
+*/
+.cardHover {
+  --tilt: 8;
+  --lift: 30;
+  z-index: 5;
+  transition:
+    transform 380ms cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 380ms cubic-bezier(0.22, 1, 0.36, 1);
+  box-shadow:
+    0 32px 56px -28px rgba(0, 0, 0, 0.55),
+    0 16px 28px -16px rgba(0, 0, 0, 0.42),
+    0 0 0 1px rgba(254, 174, 0, 0.1) inset,
+    0 0 40px -12px rgba(254, 174, 0, 0.12);
+}
+.cardHover.cardEntered {
+  /* Adds a slight scale on top of the tilt/lift the .cardEntered base
+     rule applies. Composes cleanly so we don't fight specificity. */
+  transform:
+    translate3d(0, 0, calc(var(--lift) * 1px))
+    rotateX(calc(var(--cty) * var(--tilt) * -1deg))
+    rotateY(calc(var(--ctx) * var(--tilt) * 1deg))
+    scale(1.02);
+}
+
+/* ── Stylistic policy ──────────────────────────────────────────────────
+ *
+ * The card itself is the only thing that animates on hover — its inner
+ * contents (icons, headings, body copy) stay exactly where Figma put
+ * them. No "parallax-inside-parallax". The 3D tilt on the surface is
+ * enough to sell depth without dissolving the card's typographic grid.
+ *
+ * Keep this section short: NO `.cardHover .vector*`, NO `.cardHover h2`,
+ * NO `.cardHover .weHelpYou` overrides — they would re-introduce the
+ * inner parallax we deliberately removed.
+ * ────────────────────────────────────────────────────────────────────── */
+
+/* Reduced-motion users get a static section: no entrance, no parallax. */
+@media (prefers-reduced-motion: reduce) {
+  .parallaxCard,
+  .parallaxCard * {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+  .parallaxCard.cardHover {
+    box-shadow: none;
+  }
+}
+
+/* Touch / mobile: keep the entrance fade-in but skip the heavy 3D tilt
+   (no hover available + would feel sluggish on low-end devices). */
+@media (hover: none), (pointer: coarse), (max-width: 768px) {
+  .parallaxCard {
+    transform: translate3d(0, 12px, 0);
+  }
+  .cardEntered {
+    transform: translate3d(0, 0, 0);
+  }
+  .parallaxCard.cardHover {
+    transform: translate3d(0, 0, 0);
+    box-shadow: none;
+  }
+  .cardEntered .vectorParent,
+  .cardEntered .vectorParent2,
+  .cardEntered .vectorParent3,
+  .cardEntered .vectorParent4,
+  .cardEntered .vectorParent5,
+  .cardEntered .vectorParent6,
+  .cardEntered .vectorParent7,
+  .cardEntered .vectorParent8,
+  .cardEntered .vectorContainer,
+  .cardEntered .vectorGroup,
+  .cardEntered .eUAdaptation,
+  .cardEntered .frameDiv,
+  .cardEntered .frameContainer,
+  .cardEntered .geminiSvg1Icon,
+  .cardEntered .geminiSvg11 {
+    transform: none;
+  }
+}
+
+/* ============================================================================
+   UNIFIED SERVICE CARD LAYOUT  ·  2026-05-16 session
+   ────────────────────────────────────────────────────────────────────────────
+   Per design spec, every one of the 8 "Our Services" cards must share an
+   IDENTICAL internal geometry:
+
+       •  Card body            459.825 × 459.825 (square)
+                                — currently we use the existing row layout
+                                  which sizes them via `flex:1` → ~426 wide
+                                  on a 1920 desktop. We pin the HEIGHT to
+                                  ~ 360 px (matches the rest of the visual
+                                  system) and let the width flex with the
+                                  grid so the marketing layout above /
+                                  below the section stays untouched.
+
+       •  Background plate     full-bleed inside the card, gray #1d1d1b,
+                                4 px radius                                  ↳ rendered via `.serviceCardBg` (absolute inset:0)
+
+       •  Icon                 absolute   top: 30 px   left: 30 px
+       •  Title (H Medium 24)  absolute   top: 126.51 px   left: 30 px
+       •  Description (H 14)   absolute   top: 215 px      left: 30 px
+                                (uniform left margin across all 8 cards)
+
+   The legacy card-specific classes (.rectangleParent, .rectangleGroup,
+   .rectangleContainer, .frameSection, .frameWrapper3, .rectangleParent3,
+   .rectangleParent4, .rectangleParent5) are still attached so the
+   `.parallaxCard` JS lookup keeps working — but every layout-affecting
+   property is reset by the `.serviceCard` rule below.
+============================================================================ */
+
+.serviceCard {
+  /* Wipe legacy flex/padding from the old per-card rules. */
+  position: relative !important;
+  flex: 1 1 0 !important;
+  align-self: stretch;
+  min-width: var(--min-w-280, 280px);
+  height: 360px !important;
+  padding: 0 !important;
+  gap: 0 !important;
+  display: block !important;
+  background-color: transparent !important;
+  border-radius: 0 !important;
+  box-sizing: border-box;
+  overflow: visible;
+}
+
+/* Gray rounded background plate (full-bleed inside each card). */
+.serviceCardBg {
+  position: absolute;
+  inset: 0;
+  border-radius: 4px;
+  background-color: var(--color-gray-300);
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Icon — pinned to (top:30, left:30) in every card. Acts as positioning
+   context for legacy fragment wrappers (.eUAdaptation, .frameParent6,
+   .frameParent11, etc.) that live inside, so original fragment top/left
+   offsets are preserved exactly as the original Figma export produced. */
+.serviceCardIcon {
+  position: absolute;
+  top: 30px;
+  left: 30px;
+  display: block;
+  z-index: 2;
+  pointer-events: none;
+  /* Crisp SVG strokes on retina */
+  shape-rendering: geometricPrecision;
+}
+
+/* Title — H Medium 24, pinned to (top:126.51, left:30, right:30). */
+.serviceCardTitle {
+  position: absolute !important;
+  top: 126.51px !important;
+  left: 30px !important;
+  right: 30px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  width: auto !important;
+  height: auto !important;
+  max-width: none !important;
+
+  font-family: var(--font-mazzard, 'Mazzard H', 'Mazzard', system-ui, sans-serif) !important;
+  font-size: 24px !important;
+  line-height: 100% !important;
+  font-weight: 500 !important;  /* H Medium */
+  text-transform: uppercase;
+  letter-spacing: 0;
+  color: var(--color-white);
+  z-index: 2;
+}
+
+/* Description — H Medium 14, pinned to (top:215, left:30, right:30). */
+.serviceCardDesc {
+  position: absolute !important;
+  top: 215px !important;
+  left: 30px !important;
+  right: 30px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  width: auto !important;
+  height: auto !important;
+  max-width: none !important;
+
+  font-family: var(--font-mazzard, 'Mazzard H', 'Mazzard', system-ui, sans-serif) !important;
+  font-size: 14px !important;
+  line-height: 140% !important;
+  font-weight: 500 !important;  /* H Medium */
+  letter-spacing: 0;
+  color: var(--color-white);
+  z-index: 2;
+}
+
+/* Override leftover Auto-Service-specific h3 rule which was forcing 700. */
+.rectangleParent3 .serviceCardTitle {
+  font-weight: 500 !important;
+}
+
+/* ── Mobile / tablet: relax the absolute geometry, let cards stack ─────── */
+@media (max-width: 925px) {
+  .serviceCard {
+    height: auto !important;
+    min-height: 320px;
+  }
+  .serviceCardDesc {
+    /* Pin to icon-relative bottom so wrapped text never collides. */
+    top: 200px !important;
+  }
+}

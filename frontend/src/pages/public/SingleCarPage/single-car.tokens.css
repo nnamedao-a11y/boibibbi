@@ -1,0 +1,236 @@
+/* =========================================================================
+ * Single Car (Figma 'BIBICARS (Origine)') — design tokens.
+ *
+ * Imported once from SingleCarPage.jsx. These CSS custom properties match the
+ * values from `app/global.css` in the original Anima/Figma export so the
+ * `single-car1.module.css`-style class names that reference `var(--gap-72)`,
+ * `var(--fs-80)`, etc. resolve correctly in our React app.
+ *
+ * Scoped to `.singleCarRoot` to avoid clashing with any other token system
+ * already defined globally (figma_home tokens, shadcn, etc.).
+ * ====================================================================== */
+
+.singleCarRoot {
+  /* ── Color ───────────────────────────────────────────────────────────── */
+  --color-black: #000;
+  --color-chocolate-100: #cc7a00;
+  --color-chocolate-200: rgba(204, 122, 0, 0.09);
+  --color-dimgray-100: #5e5e5e;
+  --color-dimgray-200: #555452;
+  --color-gainsboro-100: #e8e8e8;
+  --color-gainsboro-200: #d9d9d9;
+  --color-gray-100: #949494;
+  --color-gray-200: #282826;
+  --color-gray-300: #2c2418;
+  --color-gray-400: #222220;
+  --color-gray-500: #1d1d1b;
+  --color-gray-600: rgba(255, 255, 255, 0.7);
+  --color-orange-100: #feae00;
+  --color-orange-200: rgba(254, 174, 0, 0.8);
+  --color-saddlebrown: #644310;
+  --color-white: #fff;
+  --color-whitesmoke: #efefef;
+
+  /* ── Gap ─────────────────────────────────────────────────────────────── */
+  --gap-0: 0px;
+  --gap-3: 3px;
+  --gap-5: 5px;
+  --gap-10: 10px;
+  --gap-12: 12px;
+  --gap-14: 14px;
+  --gap-16: 16px;
+  --gap-18: 18px;
+  --gap-20: 20px;
+  --gap-22: 22px;
+  --gap-24: 24px;
+  --gap-26: 26px;
+  --gap-28: 28px;
+  --gap-32: 32px;
+  --gap-36: 36px;
+  --gap-44: 44px;
+  --gap-48: 48px;
+  --gap-56: 56px;
+  --gap-64: 64px;
+  --gap-68: 68px;
+  --gap-72: 72px;
+  --gap-107: 107px;
+  --gap-255: 255px;
+  --gap-274: 274px;
+  --gap-10_8: 10.8px;
+  --gap-120_3: 120.3px;
+  --gap-4_5: 4.5px;
+  --gap-8_5: 8.5px;
+
+  /* ── Padding ─────────────────────────────────────────────────────────── */
+  --padding-0: 0px;
+  --padding-01: 0;
+  --padding-1: 1px;
+  --padding-2: 2px;
+  --padding-4: 4px;
+  --padding-5: 5px;
+  --padding-6: 6px;
+  --padding-7: 7px;
+  --padding-8: 8px;
+  --padding-10: 10px;
+  --padding-11: 11px;
+  --padding-12: 12px;
+  --padding-14: 14px;
+  --padding-15: 15px;
+  --padding-16: 16px;
+  --padding-17: 17px;
+  --padding-19: 19px;
+  --padding-20: 20px;
+  --padding-22: 22px;
+  --padding-26: 26px;
+  --padding-28: 28px;
+  --padding-32: 32px;
+  --padding-36: 36px;
+  --padding-44: 44px;
+  --padding-60: 60px;
+  --padding-72: 72px;
+  --padding-76: 76px;
+  --padding-100: 100px;
+  --padding-11_5: 11.5px;
+  --padding-17_5: 17.5px;
+  --padding-22_5: 22.5px;
+  --padding-3_2: 3.2px;
+  --padding-40_5: 40.5px;
+
+  /* ── Border Radius ───────────────────────────────────────────────────── */
+  --br-4: 4px;
+  --br-6: 6px;
+  --br-8: 8px;
+
+  /* ── Font ────────────────────────────────────────────────────────────── */
+  --font-helvetica-now-display: 'Helvetica Now Display', system-ui, sans-serif;
+  --font-mazzard: 'Mazzard H', 'Mazzard', system-ui, -apple-system, sans-serif;
+
+  /* ── Font Size ───────────────────────────────────────────────────────── */
+  --fs-12: 12px;
+  --fs-13: 13px;
+  --fs-14: 14px;
+  --fs-16: 16px;
+  --fs-18: 18px;
+  --fs-19: 19px;
+  --fs-20: 20px;
+  --fs-24: 24px;
+  --fs-26: 26px;
+  --fs-32: 32px;
+  --fs-40: 40px;
+  --fs-80: 80px;
+
+  /* ── Borders ─────────────────────────────────────────────────────────── */
+  --border-1: 1px solid var(--color-dimgray-100);
+  --border-2: 1px solid var(--color-dimgray-100);
+  --border-11: 1px solid var(--color-dimgray-200);
+
+  /* ── Width / Height tokens ───────────────────────────────────────────── */
+  --height-12: 12px;
+  --height-13: 13px;
+  --height-15: 15px;
+  --height-17: 17px;
+  --height-18: 18px;
+  --height-19: 19px;
+  --height-21: 21px;
+  --height-22: 22px;
+  --height-24: 24px;
+  --height-28: 28px;
+  --height-30: 30px;
+  --height-32: 32px;
+  --height-40: 40px;
+  --height-41: 41px;
+  --height-45: 45px;
+  --height-50: 50px;
+  --height-60: 60px;
+  --height-64: 64px;
+  --height-83: 83px;
+  --height-100: 100px;
+  --height-152: 152px;
+  --height-764: 764px;
+  --height-1089_5: 1089.5px;
+  --height-160_5: 160.5px;
+  --height-373_5: 373.5px;
+  --height-49_5: 49.5px;
+  --height-61_5: 61.5px;
+  --min-w-100: 100px;
+  --min-w-213: 213px;
+  --width-16: 16px;
+  --width-18: 18px;
+  --width-24: 24px;
+  --width-27: 27px;
+  --width-32: 32px;
+  --width-36: 36px;
+  --width-40: 40px;
+  --width-47: 47px;
+  --width-54: 54px;
+  --width-71: 71px;
+  --width-75: 75px;
+  --width-81: 81px;
+  --width-98: 98px;
+  --width-100: 100px;
+  --width-125: 125px;
+  --width-138: 138px;
+  --width-142: 142px;
+  --width-156: 156px;
+  --width-158: 158px;
+  --width-161: 161px;
+  --width-171: 171px;
+  --width-172: 172px;
+  --width-175: 175px;
+  --width-178: 178px;
+  --width-189: 189px;
+  --width-203: 203px;
+  --width-204: 204px;
+  --width-209: 209px;
+  --width-217: 217px;
+  --width-242: 242px;
+  --width-305: 305px;
+  --width-327: 327px;
+  --width-443: 443px;
+  --width-458: 458px;
+  --width-460: 460px;
+  --width-473: 473px;
+  --width-475: 475px;
+  --width-488: 488px;
+  --width-517: 517px;
+  --width-560: 560px;
+  --width-564: 564px;
+  --width-848: 848px;
+  --width-508_3: 508.3px;
+  --width-511_5: 511.5px;
+
+  /* ── Line Heights ────────────────────────────────────────────────────── */
+  --lh-14: 14px;
+  --lh-16: 16px;
+  --lh-19: 19px;
+  --lh-24: 24px;
+  --lh-26: 26px;
+  --lh-32: 32px;
+  --lh-48: 48px;
+}
+
+/* =========================================================================
+ * SingleCarPage-scoped public-footer override — REMOVED.
+ *
+ * Previously this file applied `margin-top: -110px` to the inner public
+ * footer (`[class*="footer1_footer"]`) only when `body:has(.singleCarRoot)`
+ * was active. The intent was to compensate for SimilarCars' 128 px
+ * padding-bottom + the footer's intrinsic 110 px top padding-equivalent and
+ * land the BIBI logo at the Figma-spec `y = 4785`.
+ *
+ * The hack worked visually for the inner section but BROKE the layout
+ * downstream: the public footer is rendered through `<ScaledChrome>`, whose
+ * outer wrapper computes its height from the inner section's natural height
+ * (via ResizeObserver). The wrapper sits in normal flow at its natural
+ * position; the inner section was pulled up 110 px by the negative margin
+ * but the wrapper's height stayed at 1017 px. The net effect was a 110 px
+ * band of empty black space between the visible "ALL RIGHT RESERVED" row
+ * and the end of the document on every `/cars/:slug` page — the exact
+ * "пустота под футером" the user kept reporting.
+ *
+ * The welcome (`/`) page never had this rule and renders correctly. The
+ * fix is therefore to drop the rule entirely; the natural stack
+ * (SimilarCars padding-bottom = 128 → footer at its native position) now
+ * matches the welcome page behaviour with zero dead space below the legal
+ * bar.
+ * ====================================================================== */

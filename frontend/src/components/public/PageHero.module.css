@@ -1,0 +1,116 @@
+/* =============================================================================
+ * PageHero — shared breadcrumb + page-title block for public pages.
+ *
+ * STRICT desktop spec (Single Car page reference, May 2026 Figma):
+ *
+ *   ┌──────────────────────────────────────────────────────────────┐
+ *   │  padding-left 100              padding-right 100             │
+ *   │  ↓ 52 px from public header bottom                           │
+ *   │  HOME / catalog                  (Mazzard H SemiBold 20)     │
+ *   │  ↕ 76 px                                                     │
+ *   │  CATALOG                         (Mazzard H Bold 80, white)  │
+ *   └──────────────────────────────────────────────────────────────┘
+ *
+ *   Colour rules (breadcrumb):
+ *     • return links      : #5E5E5E (grey)
+ *     • slash separator   : #5E5E5E (grey, inherits)
+ *     • current crumb     : #FEAE00 (orange)
+ *
+ * All measurements scale down fluidly between 769–1280 px, then switch
+ * to the per-page mobile spec at ≤ 768 px (CSS for mobile overrides
+ * lives in each page's own stylesheet — this file deliberately stops
+ * caring about mobile so we don't fight existing per-page mobile work).
+ * ========================================================================== */
+
+.hero {
+  background: #000;
+  width: 100%;
+}
+
+.container {
+  max-width: 1920px;
+  margin: 0 auto;
+  padding: 52px 100px 0;                         /* 52 top — header → breadcrumb */
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  font-family: 'Mazzard H', var(--font-mazzard, system-ui, sans-serif);
+}
+
+/* ── Breadcrumb (H SemiBold 20, grey + orange current) ────────────────── */
+.crumbs {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: inherit;
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 1;
+  text-transform: uppercase;
+  letter-spacing: 0;
+  color: #5E5E5E;
+}
+.crumbLink {
+  color: #5E5E5E;
+  text-decoration: none;
+  transition: color 150ms ease;
+  font: inherit;
+}
+.crumbLink:hover,
+.crumbLink:focus-visible {
+  color: #FEAE00;
+  outline: none;
+}
+.crumbSep {
+  color: #5E5E5E;
+  font: inherit;
+  padding: 0;
+}
+.crumbActive {
+  color: #FEAE00;
+  font: inherit;
+}
+
+/* ── Title row (h1 + optional right slot for inline content) ───────────── */
+.titleRow {
+  margin-top: 76px;                              /* breadcrumb → title — strict */
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 32px;
+  flex-wrap: wrap;
+}
+.title {
+  margin: 0;
+  font-family: inherit;
+  font-size: 80px;                               /* H Bold 80 */
+  font-weight: 700;
+  line-height: 1;
+  text-transform: uppercase;
+  letter-spacing: 0;
+  color: #FFFFFF;
+}
+.rightSlot {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+/* ── Fluid scale between 769–1280 px (laptops / small desktops) ────────── */
+@media (max-width: 1279px) {
+  .container { padding: clamp(40px, 4vw, 52px) clamp(40px, 7.81vw, 100px) 0; }
+  .crumbs    { font-size: clamp(14px, 1.56vw, 20px); }
+  .titleRow  { margin-top: clamp(40px, 5.94vw, 76px); }
+  .title     { font-size: clamp(40px, 6.25vw, 80px); }
+}
+
+/* ── Mobile (≤ 768 px) — defer to page-level styles. We only flatten the
+ * outer geometry here so the pages don't get broken by the new desktop
+ * spec. Each consuming page already provides its own pixel-perfect mobile
+ * spec for breadcrumb and title; we just make sure nothing leaks. ─────── */
+@media (max-width: 768px) {
+  .container { padding: 32px 12px 0; }
+  .crumbs    { font-size: 13px; gap: 6px; }
+  .titleRow  { margin-top: 32px; gap: 16px; }
+  .title     { font-size: 32px; }
+}

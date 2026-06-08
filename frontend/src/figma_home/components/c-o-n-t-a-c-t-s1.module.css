@@ -1,0 +1,20 @@
+.contacts {
+  height: var(--height-24);
+  width: 69px;
+  display: flex;
+  align-items: flex-start;
+  padding: var(--padding-0) var(--padding-0) var(--padding-5) var(--padding-0);
+  box-sizing: border-box;
+  text-align: left;
+  font-size: var(--fs-16);
+  color: var(--color-white);
+  font-family: var(--font-mazzard);
+}
+.contacts2 {
+  height: var(--height-19);
+  width: var(--width-78);
+  position: relative;
+  text-transform: capitalize;
+  display: inline-block;
+  flex-shrink: 0;
+}

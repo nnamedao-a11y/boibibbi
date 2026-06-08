@@ -1,0 +1,225 @@
+/* ──────────────────────────────────────────────────────────────────────────
+ * SingleCarPage / NavigationFooter
+ *   Block 1 — "GO BACK TO CATALOG" link
+ *   Block 2 — "Have a question? Contact us" contact card
+ *
+ * STRICT Figma spec (desktop ≥ 1280 px). Reference viewport: 1920 px.
+ *
+ *   Public-header bottom is the vertical anchor for both blocks.
+ *   ┌─────────────────────────────────────────────────────────────┐
+ *   │  GO BACK TO CATALOG   top: 2962  size: 185 × 90  centered   │
+ *   │   ↕ 73 px                                                   │
+ *   │  Contact card         top: 3125  size: 566 × 333            │
+ *   │                       left 677 / right 677 (centered)       │
+ *   │                       padding: 70 × 153                     │
+ *   │                       heading: Mazzard H Bold 32            │
+ *   │                       phones : Mazzard H Medium 24          │
+ *   │                       heading → phones gap: 32              │
+ *   └─────────────────────────────────────────────────────────────┘
+ *
+ * Mobile / tablet fallbacks below the desktop block use clamp() so the
+ * card never breaks at narrow viewports.
+ * ───────────────────────────────────────────────────────────────────────── */
+
+.navigationContainer,
+.navigationFooter {
+  align-self: stretch;
+  display: flex;
+  align-items: flex-start;
+  max-width: 100%;
+}
+.navigationFooter {
+  justify-content: center;
+  padding: 0 100px 152px;
+  box-sizing: border-box;
+  text-align: left;
+  font-size: 16px;
+  color: var(--color-orange-100);
+  font-family: var(--font-mazzard);
+}
+.navigationContainer {
+  flex-direction: column;
+  gap: 73px;             /* 2962 + 90 + 73 = 3125 → contact card top */
+  width: 100%;
+  align-items: center;   /* horizontal centering of fixed-width children */
+}
+
+/* ── "GO BACK TO CATALOG" link ───────────────────────────────────────── */
+.navigationLinks {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 0;
+}
+.goBackTo {
+  width: 185px;
+  height: 90px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  text-decoration: underline;
+  line-height: 99.9%;
+  text-transform: uppercase;
+  font-size: 16px;
+  font-weight: 500;            /* Mazzard H Medium */
+  font-family: var(--font-mazzard);
+  color: inherit;
+  cursor: pointer;
+  text-align: center;
+}
+.goBackTo:hover { color: var(--color-chocolate-100); }
+
+/* ── "Have a question? Contact us" card ───────────────────────────────── */
+.contactQuestion {
+  width: 566px;
+  height: 333px;
+  box-sizing: border-box;
+  padding: 70px 153px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 32px;                                      /* heading → phones */
+  border-radius: 8px;
+  border: 1px solid var(--color-orange-100);
+  text-align: center;
+  color: var(--color-white);
+  font-family: var(--font-mazzard);
+}
+
+/* Heading block: "Have a question?" + "Contact us" stacked */
+.navigation {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  align-self: stretch;
+  gap: 0;
+}
+.haveAQuestion {
+  margin: 0;
+  align-self: stretch;
+  position: relative;
+  font-size: 32px;             /* Mazzard H Bold 32 */
+  font-weight: 700;
+  line-height: 1.1;
+  font-family: inherit;
+  color: inherit;
+  text-align: center;
+}
+
+/* Phones block */
+.navigation2 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  align-self: stretch;
+  gap: 17px;
+  color: var(--color-orange-100);
+}
+.h3 {
+  margin: 0;
+  align-self: stretch;
+  position: relative;
+  font-size: 24px;             /* Mazzard H Medium 24 */
+  font-weight: 500;
+  line-height: 1.1;
+  font-family: inherit;
+  text-align: center;
+}
+.phoneLink {
+  color: inherit;
+  text-decoration: none;
+}
+.phoneLink:hover { color: var(--color-chocolate-100); }
+
+/* ── Responsive fallbacks ────────────────────────────────────────────── */
+@media screen and (max-width: 1279px) {
+  .navigationContainer { gap: clamp(40px, 5vw, 73px); }
+  .contactQuestion {
+    width: clamp(320px, 50vw, 566px);
+    height: auto;
+    min-height: clamp(260px, 24vw, 333px);
+    padding: clamp(40px, 5vw, 70px) clamp(40px, 12vw, 153px);
+  }
+  .haveAQuestion { font-size: clamp(22px, 2.4vw, 32px); }
+  .h3 { font-size: clamp(18px, 1.8vw, 24px); }
+}
+@media screen and (max-width: 925px) {
+  .navigationFooter { padding-bottom: 99px; box-sizing: border-box; }
+  .navigationContainer { gap: 56px; }
+}
+
+/* ============================================================================
+ * MOBILE PIXEL-PERFECT (≤ 768 px)
+ *
+ *   Vertical spacing chain:
+ *     • End of COST ESTIMATE card  ↓ 128 px  → GO BACK TO CATALOG link
+ *     • GO BACK TO CATALOG          ↓ 128 px  → Have a question? card
+ *
+ *   GO BACK TO CATALOG link:
+ *     • H Medium 16 px, orange, underlined, centered
+ *
+ *   Contact card (336 × Hug, 12 L/R from page edges):
+ *     • 1 px orange ring, sharp corners (radius 0)
+ *     • Inner padding 32 top / 32 bottom, 16 L / 16 R
+ *     • "Have a question?"      → H Bold 24, white, line-height 1.1
+ *     • 12 px gap
+ *     • "Contact us"            → H Bold 24, white
+ *     • 32 px gap
+ *     • Phone #1                → H Medium 16, orange
+ *     • 16 px gap
+ *     • Phone #2                → H Medium 16, orange
+ * ========================================================================= */
+@media screen and (max-width: 768px) {
+  .navigationFooter {
+    padding: 128px 12px 0;            /* 128 above GO BACK; 12 L/R; bottom handled by container */
+    box-sizing: border-box;
+  }
+  .navigationContainer {
+    gap: 128px;                       /* GO BACK → contact card = 128 */
+    align-items: stretch;
+  }
+  .navigationLinks { width: 100%; padding: 0; }
+  .goBackTo {
+    width: auto;
+    height: auto;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 1.1;
+  }
+  .contactQuestion {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    min-height: 0;
+    padding: 32px 16px;               /* 32 top/bottom; 16 L/R */
+    gap: 32px;                        /* heading block → phones = 32 */
+    border: 1px solid var(--color-orange-100);
+    border-radius: 0;                 /* sharp corners per Figma */
+    box-sizing: border-box;
+  }
+  .navigation {
+    gap: 12px;                        /* Have a question? → Contact us = 12 */
+  }
+  .haveAQuestion {
+    font-size: 24px;                  /* H Bold 24 */
+    font-weight: 700;
+    line-height: 1.1;
+  }
+  .navigation2 {
+    gap: 16px;                        /* between phone rows = 16 */
+  }
+  .h3 {
+    font-size: 16px;                  /* H Medium 16 */
+    font-weight: 500;
+    line-height: 1.1;
+  }
+}
+
+@media screen and (max-width: 450px) {
+  /* All mobile-specific rules are owned by the @media (max-width: 768px)
+   * block above per the May 2026 Figma reference. Intentionally empty to
+   * avoid regressions from older overrides. */
+}

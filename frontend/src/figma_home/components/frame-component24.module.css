@@ -1,0 +1,413 @@
+/* ============================================================================
+ * FrameComponent24 — direct port from BIBICARS 5.zip (Figma canonical CSS).
+ *
+ * Only deviations from the zip:
+ *   • `font-weight` adjusted to match the design tokens called out by the
+ *     product owner:
+ *        – `.weHavePerfect`        → 700 (H Bold 60px)
+ *        – `.justAFewContainer`    → 500 (H Medium 24px)
+ *        – `.chooseYourPerfect`    → 700 (H Bold 30px)
+ *        – `.findAVehicle` etc.   → 700 (H Bold 16px)
+ *   The original zip had `font-weight: 400` everywhere because it was
+ *   exported by Figma's "Default" preset.
+ * ========================================================================== */
+
+.weHavePerfectServiceWrapper {
+  align-self: stretch;
+  display: flex;
+  align-items: flex-start;
+  padding: var(--padding-0) var(--padding-0) var(--padding-5);
+  box-sizing: border-box;
+  max-width: 100%;
+  flex-shrink: 0;
+}
+.weHavePerfectService {
+  flex: 1;
+  background-color: var(--color-black);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  padding: 135.8px 191px 329.1px 117px;
+  box-sizing: border-box;
+  gap: 230.6px;
+  max-width: 100%;
+  z-index: 2;
+}
+.serviceContent,
+.weHavePerfectServiceParent {
+  display: flex;
+  align-items: flex-start;
+  max-width: 100%;
+}
+.serviceContent {
+  width: 1530.4px;
+  justify-content: center;
+  text-align: center;
+  font-size: var(--fs-60);
+  color: var(--color-orange-100);
+  font-family: var(--font-mazzard);
+}
+.weHavePerfectServiceParent {
+  width: 820px;
+  flex-direction: column;
+  gap: 97.6px;
+}
+.weHavePerfect {
+  margin: 0;
+  align-self: stretch;
+  position: relative;
+  font-size: inherit;
+  line-height: 100%;
+  text-transform: uppercase;
+  font-weight: 700;
+  font-family: inherit;
+}
+.dreamCar,
+.frameParent {
+  align-self: stretch;
+  display: flex;
+  justify-content: center;
+  max-width: 100%;
+}
+.dreamCar {
+  align-items: center;
+  padding: var(--padding-0) var(--padding-27) var(--padding-0) var(--padding-20);
+  box-sizing: border-box;
+  text-align: left;
+  font-size: var(--fs-24);
+}
+/* Per Figma spec: outer block (incl. brackets) = 430 × 70 px,
+ * inner "Just a few steps to your dream car" text = 274.7 px wide.
+ *
+ * Brackets MUST stretch vertically to match the actual rendered text
+ * height. In EN the text wraps to 2 lines (~52 px tall), in BG it can
+ * grow to 3-4 lines (~80-100 px). Using `align-items: stretch` on the
+ * row makes the bracket wrappers grow with the text, and the SVG
+ * children fill their wrappers via `height: 100%` + the wrapper itself
+ * uses CSS borders (rendered via ::before) so the bracket "[" / "]"
+ * is drawn at the correct dynamic height regardless of language.
+ */
+.frameParent {
+  align-items: stretch;
+  width: 430px;
+  min-height: 70px;
+  column-gap: 32px;
+  row-gap: var(--gap-20);
+  flex-shrink: 0;
+}
+.vectorWrapper,
+.vectorContainer {
+  position: relative;
+  width: 13px;
+  min-height: 70px;
+  align-self: stretch;
+  flex-shrink: 0;
+}
+/* CSS-drawn bracket — auto-stretches to parent height.
+   Strokes match the original Figma Vector.svg (3px, #555452). */
+.vectorWrapper::before,
+.vectorContainer::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border: 3px solid #555452;
+}
+.vectorWrapper::before  { border-right: 0; }
+.vectorContainer::before { border-left:  0; }
+/* Hide the legacy <img> brackets (kept in JSX for compatibility). */
+.vectorIcon,
+.vectorIcon2 {
+  display: none;
+}
+.justAFewContainer {
+  margin: 0;
+  width: 274.7px;
+  position: relative;
+  font-size: inherit;
+  /* Per Figma: two lines with comfortable breathing space between them.
+     Previously a fixed 43.4 px height + line-height:99.9% squashed both
+     lines onto a single 24-px row. Match the Figma spacing instead. */
+  line-height: 1.5;
+  text-transform: uppercase;
+  font-weight: 500;
+  font-family: inherit;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  flex-shrink: 0;
+  color: var(--color-orange-100);
+  padding: 8px 0;
+  box-sizing: border-box;
+}
+.toYourDream {
+  color: var(--color-white);
+}
+.locationService,
+.locationSet {
+  align-self: stretch;
+  display: flex;
+  align-items: flex-start;
+  max-width: 100%;
+}
+.locationSet {
+  flex-direction: column;
+  gap: 55.3px;
+  text-align: center;
+  font-size: var(--fs-30);
+  color: var(--color-white);
+  font-family: var(--font-mazzard);
+}
+.locationService {
+  justify-content: center;
+  padding: var(--padding-0) var(--padding-29) var(--padding-0) var(--padding-20);
+  box-sizing: border-box;
+}
+.locationIcon {
+  width: 1289.5px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  align-content: flex-end;
+  gap: var(--gap-20);
+  max-width: 100%;
+}
+.locationSolo {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-end;
+  padding: var(--padding-0) var(--padding-0) var(--padding-1);
+}
+.weuilocationFilledParent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--gap-9);
+}
+.weuilocationFilledIcon {
+  width: var(--width-44_2);
+  position: relative;
+  max-height: 100%;
+}
+.frameChild {
+  width: 16.37px;
+  height: 16.37px;
+  position: relative;
+  border-radius: var(--br-50);
+  background-color: var(--color-orange-100);
+  flex-shrink: 0;
+}
+.iconPairs {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--gap-12);
+  z-index: 3;
+}
+.locationOverlap {
+  display: flex;
+  align-items: flex-start;
+  position: relative;
+  isolation: isolate;
+}
+.locationOverlapChild {
+  /* Per Figma spec: thickness 2 px, length ≈ 1237 px,
+     color #FEAE00 (brand orange — same as the pins). */
+  height: 2px;
+  width: 1237.1px;
+  position: absolute;
+  margin: 0 !important;
+  bottom: 7.2px;
+  left: -800.8px;
+  background-color: var(--color-orange-100);
+  z-index: 1;
+  flex-shrink: 0;
+}
+.weuilocationFilledGroup {
+  flex-direction: column;
+  gap: var(--gap-12);
+  z-index: 1;
+  flex-shrink: 0;
+}
+.iconPairs2,
+.serviceClaims,
+.weuilocationFilledGroup {
+  display: flex;
+  align-items: center;
+}
+.iconPairs2 {
+  flex-direction: column;
+  gap: var(--gap-10);
+}
+.serviceClaims {
+  align-self: stretch;
+  height: var(--height-60);
+  gap: 51px;
+  max-width: 100%;
+}
+.chooseYourPerfect {
+  margin: 0;
+  width: var(--width-364_5);
+  position: relative;
+  font-size: inherit;
+  line-height: 100%;
+  text-transform: uppercase;
+  font-weight: 700;
+  font-family: inherit;
+  display: inline-block;
+  flex-shrink: 0;
+  max-width: 100%;
+}
+.findAVehicleThatMatchesYoParent,
+.findVehicleProcess {
+  display: flex;
+  align-items: flex-start;
+  box-sizing: border-box;
+  max-width: 100%;
+}
+.findVehicleProcess {
+  align-self: stretch;
+  padding: var(--padding-0) var(--padding-45) var(--padding-0) var(--padding-47);
+  font-size: var(--fs-16);
+}
+.findAVehicleThatMatchesYoParent {
+  flex: 1;
+  justify-content: space-between;
+  padding: var(--padding-0) var(--padding-2) var(--padding-0) var(--padding-0);
+  gap: var(--gap-20);
+}
+.findAVehicle {
+  width: 261.9px;
+  position: relative;
+  line-height: 99.9%;
+  display: inline-block;
+  flex-shrink: 0;
+  font-weight: 700;
+}
+.processStatement {
+  width: 283.1px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: var(--padding-0) var(--padding-21) var(--padding-0) var(--padding-0);
+  box-sizing: border-box;
+  flex-shrink: 0;
+}
+.aSimpleTransparent {
+  position: relative;
+  line-height: 99.9%;
+  font-weight: 700;
+}
+.processStep {
+  width: 261.9px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: var(--padding-1) var(--padding-0) var(--padding-0);
+  box-sizing: border-box;
+  flex-shrink: 0;
+}
+.ourManagerWill {
+  width: 292.8px;
+  position: relative;
+  line-height: 99.9%;
+  display: inline-block;
+  flex-shrink: 0;
+  font-weight: 700;
+}
+@media screen and (max-width: 1850px) {
+  .findAVehicleThatMatchesYoParent,
+  .serviceClaims {
+    flex-wrap: wrap;
+  }
+}
+@media screen and (max-width: 1350px) {
+  .weHavePerfectService {
+    gap: 115px;
+    padding: 88px 95px 214px 58px;
+    box-sizing: border-box;
+  }
+  .findVehicleProcess {
+    padding-left: var(--padding-23);
+    padding-right: var(--padding-22);
+    box-sizing: border-box;
+  }
+}
+@media screen and (max-width: 925px) {
+  .weHavePerfectService {
+    gap: 58px;
+    padding: 57px var(--padding-47) 139px var(--padding-29);
+    box-sizing: border-box;
+  }
+  .weHavePerfectServiceParent {
+    gap: var(--gap-49);
+  }
+  .weHavePerfect {
+    font-size: var(--fs-48);
+    line-height: var(--lh-48);
+  }
+  .frameParent {
+    flex-wrap: wrap;
+  }
+  .locationSet {
+    gap: var(--gap-28);
+  }
+  .serviceClaims {
+    gap: 25px;
+  }
+  .chooseYourPerfect {
+    font-size: var(--fs-24);
+    line-height: var(--lh-24);
+  }
+}
+@media screen and (max-width: 450px) {
+  .weHavePerfectServiceParent {
+    gap: var(--gap-24);
+  }
+  .weHavePerfect {
+    font-size: var(--fs-36);
+    line-height: var(--lh-36);
+  }
+  .justAFewContainer {
+    font-size: var(--fs-19);
+    line-height: var(--lh-19);
+  }
+  .locationIcon {
+    justify-content: center;
+  }
+  .chooseYourPerfect {
+    font-size: var(--fs-18);
+    line-height: var(--lh-18);
+  }
+}
+
+/* ────────── Bulgarian (BG) adaptive overrides ──────────
+   BG titles can be slightly longer (e.g. "имаме перфектно обслужване"
+   vs "we have perfect service"). Tighten letter-spacing and shrink
+   slightly so they fit the same visual block as the English version.
+*/
+:global(html[lang="bg"]) .weHavePerfect {
+  letter-spacing: -0.005em;
+}
+:global(html[lang="bg"]) .justAFewContainer {
+  letter-spacing: -0.005em;
+  /* BG text is longer and wraps to 3-4 lines; give it more room so
+     it does not feel cramped inside the stretched brackets. */
+  width: 320px;
+  line-height: 1.35;
+  font-size: 22px;
+}
+/* Slightly tighter horizontal padding on the bracket-to-text gap so
+   the longer BG label hugs the brackets like the EN version does. */
+:global(html[lang="bg"]) .frameParent {
+  width: 480px;
+  column-gap: 24px;
+}
+:global(html[lang="bg"]) .chooseYourPerfect {
+  letter-spacing: -0.005em;
+}
+@media screen and (max-width: 1350px) {
+  :global(html[lang="bg"]) .weHavePerfect { font-size: 56px; }
+}

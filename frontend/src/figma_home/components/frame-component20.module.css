@@ -1,0 +1,136 @@
+/* ───────────────────────────────────────────────────────────────
+   FrameComponent20 — Top deals filter row.
+   Two segmented controls + proposals counter, all on one line at
+   1920px and gracefully wrapping below 1350 / 925.
+   ─────────────────────────────────────────────────────────── */
+
+.frameWrapper {
+  align-self: stretch;
+  font-family: var(--font-mazzard);
+  color: #fff;
+}
+.frameParent {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 32px;
+  flex-wrap: wrap;
+}
+.frameGroup {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  flex-wrap: wrap;
+  flex: 1 1 auto;
+}
+
+/* ── Segmented control container ─────────────────────────── */
+.segment {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid var(--color-orange-100);
+  border-radius: 8px;
+  padding: 6px;
+  gap: 4px;
+  background: transparent;
+}
+.segmentBtn,
+.tierBtn {
+  border: 0;
+  background: transparent;
+  color: #fff;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background-color 0.15s ease, color 0.15s ease;
+  border-radius: 6px;
+}
+.segmentBtn {
+  width: 64px;
+  height: 48px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+.segmentBtnActive {
+  background: var(--color-orange-100);
+  color: #000;
+}
+/* Vehicle silhouette rendered via CSS mask so the same PNG can be
+ * recoloured: white when inactive, black when on the amber bg. */
+.segmentIcon {
+  width: 28px;
+  height: 28px;
+  display: block;
+  background-color: currentColor;
+  -webkit-mask-repeat: no-repeat;
+          mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+          mask-position: center;
+  -webkit-mask-size: contain;
+          mask-size: contain;
+}
+
+.tierBtn {
+  min-width: 96px;
+  height: 48px;
+  padding: 0 22px;
+  font-size: 16px;
+  font-weight: 700;          /* H Bold */
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  line-height: 1;
+}
+.tierBtnActive {
+  background: var(--color-orange-100);
+  color: #000;
+}
+.segmentBtn:hover:not(.segmentBtnActive),
+.tierBtn:hover:not(.tierBtnActive) {
+  background: rgba(254, 174, 0, 0.12);
+}
+
+/* ── Proposals counter (right side) ──────────────────────── */
+.proposalsBlock {
+  flex: 0 0 auto;
+  font-family: inherit;
+}
+.proposals {
+  /* Per Figma spec — Mazzard H Medium 12px, uppercase, 0.06em tracking.
+     Label stays white, the count value is brand amber so the user can
+     scan how many cars are available at a glance. */
+  display: inline-flex;
+  align-items: baseline;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 500;                          /* H Medium per Figma */
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #fff;
+  white-space: nowrap;
+  line-height: 1;
+}
+.proposalsLabel {
+  color: #fff;
+}
+.proposalsSep {
+  color: #fff;
+  opacity: 0.6;
+}
+.proposalsCount {
+  color: #feae00;
+  font-weight: 500;
+  /* Subtle slide-in when the number changes (e.g., when the live
+     parse finishes after the initial 0 placeholder). Keeps motion
+     consistent with the rest of the site. */
+  transition: color 200ms ease;
+}
+
+@media screen and (max-width: 925px) {
+  .frameParent {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .segment { flex: 0 0 auto; }
+  .tierBtn { min-width: 80px; padding: 0 14px; font-size: 14px; }
+}

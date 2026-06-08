@@ -1,0 +1,618 @@
+/* =========================================================================
+ *  VehicleCardRow — Figma 1:1 (active & sold variants).
+ *
+ *  Verified user spacings (taken from Figma annotations + verbal description):
+ *    Card width            1263 (max)        — height 467 (40 + 387 + 40)
+ *    Card padding          40 v / 24 h
+ *    Image                 518 × 387 landscape (fills card width left)
+ *    Image ↔ info gap      24
+ *    Title  ↔ LOT          16
+ *    LOT    ↔ VIN          12
+ *    VIN    ↔ Mileage      151    (Figma)
+ *    Spec row-gap          16
+ *    Spec → Price gap      100    (horizontal)
+ *    Price label ↔ value   24     (column-gap inside priceBlock)
+ *    Price row-gap         16
+ *    DataRow ↔ CTA         88
+ *    Action icons          32 × 32, gap 16
+ *    Copy icon             16 × 16
+ *    CTA                   327 × 45, radius 4
+ *    Card radius           0
+ * ====================================================================== */
+
+/* ----- CARD shell ---------------------------------------------------- *
+ *  Card height = image height (portrait 518×783 at 1920).  Info column
+ *  stretches vertically to match → topGroup pinned to top, dataRow pinned
+ *  to bottom via justify-content: space-between on `.info`.
+ *  Everything (typography, image width, internal gaps) scales fluidly with
+ *  the viewport via clamp()+cqw, BUT the image↔info gap is fixed at 24 px
+ *  per Figma spec, exactly as the user asked.
+ * --------------------------------------------------------------------- */
+.card {
+  container-type: inline-size;
+  container-name: vcrcard;
+  width: 100%;
+  max-width: 1263px;
+  background: #1A1B19;
+  /* Unified card radius = 8 px (user spec — matches all other cards). */
+  border-radius: 8px;
+  display: flex;
+  align-items: stretch;
+  gap: 24px;                                /* Figma: 24 px — image ↔ info column, FIXED */
+  /* Figma-strict padding: 40 px top + bottom, 24 px left + right.
+   * Previously used clamp() that resolved to 28 px horizontal at the
+   * 1263 px content width — annotated screenshot from the user shows
+   * it must read 24 / 40 exactly. Mobile shrink handled by media
+   * queries at the bottom of this file. */
+  padding: 40px 24px;
+  box-sizing: border-box;
+  font-family: 'Mazzard H', var(--font-mazzard, system-ui, sans-serif);
+  color: #FFFFFF;
+  cursor: pointer;
+  border: 0;
+  outline: 1px solid transparent;
+  transition: outline-color 150ms ease;
+  min-width: 0;
+}
+.card:hover { outline-color: #FEAE00; }
+
+/* ----- IMAGE — Figma aspect-ratio 518 × 387 (landscape) --------------
+ *  Width scales linearly with the card (42.92cqw of content box → 518 @1263).
+ *  Height is locked to the Figma landscape aspect ratio 518/387 (≈ 4:3),
+ *  which matches the natural framing of real auction photos. With
+ *  `object-fit: cover` we fill the box edge-to-edge — no more black bars
+ *  top/bottom that were caused by the previous 518/783 portrait box on
+ *  landscape source images.
+ *
+ *  Total card height target = 387 (image) + 40 + 40 (vertical padding) = 467 px
+ *  at the 1263 px width — exactly the Figma frame size.
+ * --------------------------------------------------------------------- */
+.imageWrap {
+  position: relative;
+  flex: 0 0 auto;
+  width: clamp(260px, 42.92cqw, 518px);    /* 518 @1263 (content-box 1207) */
+  aspect-ratio: 518 / 387;                 /* Figma landscape — fills the card cleanly */
+  align-self: stretch;                     /* image dictates card height */
+  overflow: hidden;
+  background: #0F0F0F;
+  border-radius: 0;                         /* square inner image (user spec) */
+}
+.image { width: 100%; height: 100%; object-fit: cover; display: block; }
+.placeholder {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  color: #2B2B2B;
+  font-family: 'Mazzard H', var(--font-mazzard, system-ui, sans-serif);
+  font-weight: 700; font-size: 22px; letter-spacing: .12em; text-transform: uppercase;
+  background: linear-gradient(135deg, #161616 0%, #1F1F1F 100%);
+}
+
+/* ─── SOLD overlay ─────────────────────────────────────────────────
+ *  Figma annotation:
+ *    • background    : #00000099  (60% black scrim over image)
+ *    • check icon    : 80×80 (centered, white)
+ *    • "SOLD"        : Mazzard H SemiBold (600), 36 px, uppercase, white
+ *    • subtitle      : Mazzard H Medium (500), 14 px, white
+ *    • gap icon→SOLD : ~16 px  (visual)
+ *    • gap SOLD→sub  : 8 px    (Figma)
+ *    • Stack         : vertically centered
+ * --------------------------------------------------------------- */
+.soldOverlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);          /* #00000099 — 60 % black */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  color: #FFFFFF;
+  pointer-events: none;                     /* clicks still hit card; CTA exempted via stopPropagation */
+}
+.soldCheck {
+  width: 80px;
+  height: 80px;
+  margin-bottom: 8px;
+  display: block;
+  user-select: none;
+}
+.soldTitle {
+  font-family: 'Mazzard H', var(--font-mazzard, system-ui, sans-serif);
+  font-weight: 600;                         /* SemiBold per Figma */
+  font-size: 36px;
+  line-height: 1;
+  text-transform: uppercase;
+  letter-spacing: 0;
+  color: #FFFFFF;
+}
+.soldSub {
+  font-family: 'Mazzard H', var(--font-mazzard, system-ui, sans-serif);
+  font-weight: 500;                         /* Medium per Figma */
+  font-size: 14px;
+  line-height: 1.2;
+  text-transform: none;                     /* original-case: "This vehicle has been sold" */
+  color: #FFFFFF;
+  text-align: center;
+}
+
+/* ----- INFO column --------------------------------------------------- *
+ *  The image is portrait 518 × 783 px (Figma).  The info column stretches
+ *  vertically to match the image height via align-items:stretch on the
+ *  card flex row.  justify-content: space-between distributes content:
+ *    • topGroup  (title + LOT + VIN)  — pinned to the TOP
+ *    • dataRow   (specs + price + CTA) — pinned to the BOTTOM
+ *  This eliminates the previous "empty space on the right" problem the
+ *  user reported on screenshot 1: the CTA now sits flush with the bottom
+ *  of the image, and the specs row floats just above it.
+ * --------------------------------------------------------------------- */
+.info {
+  flex: 1 1 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;         /* topGroup top, dataRow bottom */
+  align-self: stretch;                    /* fill card height (= image height) */
+  min-width: 0;
+  gap: clamp(24px, 4cqw, 48px);           /* min gap topGroup ↔ dataRow */
+}
+
+/* TOP GROUP: title + LOT/VIN (pinned to top by natural order) -------- */
+.topGroup {
+  display: flex;
+  flex-direction: column;
+}
+
+/* HEADER: title + action icons --------------------------------------- */
+.topRow {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  min-width: 0;
+}
+.title {
+  flex: 1 1 auto;
+  min-width: 0;
+  margin: 0;
+  font-family: 'Mazzard H', var(--font-mazzard, system-ui, sans-serif);
+  font-weight: 700;
+  font-size: clamp(18px, 1.99cqw, 24px);   /* fluid: 24 @1920 → 18 @1280 */
+  line-height: 1;
+  text-transform: capitalize;
+  color: #FFFFFF;
+  overflow-wrap: normal;
+  word-break: normal;
+  text-wrap: balance;
+}
+
+.actionIcons {
+  display: inline-flex;
+  align-items: center;
+  gap: 16px;
+  flex: 0 0 auto;
+}
+.actionBtn {
+  width: 32px; height: 32px;
+  background: transparent;
+  border: 0; padding: 0;
+  cursor: pointer;
+  display: inline-flex; align-items: center; justify-content: center;
+  border-radius: 50%;
+  transition: opacity 120ms ease, transform 120ms ease;
+}
+.actionBtn:hover { transform: scale(1.06); }
+.actionBtn:disabled { cursor: default; }
+.actionIcon { width: 32px; height: 32px; display: block; }
+.actionBtnActive .actionIcon { filter: drop-shadow(0 0 4px rgba(254,174,0,0.7)); }
+.actionBtnDisabled { opacity: .35; cursor: default; }
+.actionBtnDisabled:hover { transform: none; }
+.actionBtnDisabled .actionIcon { filter: grayscale(1) brightness(.7); }
+
+/* IDENTIFIERS (LOT, VIN) -------------------------------------------- */
+.identifiers {
+  margin-top: clamp(12px, 1.33cqw, 16px);  /* Title → LOT — fluid 16→12 */
+  display: flex;
+  flex-direction: column;
+  gap: clamp(8px, 0.99cqw, 12px);          /* LOT → VIN — fluid 12→8 */
+  font-family: 'Mazzard H', var(--font-mazzard, system-ui, sans-serif);
+  font-weight: 400;
+  font-size: clamp(12px, 1.16cqw, 14px);   /* fluid 14→12 */
+  line-height: 1;
+  color: #B0B0B0;
+}
+.idLine {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+.idLine .copy {
+  background: transparent; border: 0; padding: 0; cursor: pointer;
+  display: inline-flex; align-items: center;
+  flex: 0 0 auto;
+}
+.idLine .copy img { width: 16px; height: 16px; display: block; }
+
+/* DATA ROW: specs (left) + right column (price + CTA) --------------
+ *  Use a CSS grid so the right column has a FIXED start position
+ *  regardless of how wide the spec values are (e.g. "FRONT-WHEEL DRIVE"
+ *  vs "ALL WHEEL DRIVE").  Previously a flex layout with
+ *  `min-width: max-content` on `.specBlock` let the spec column grow
+ *  with the content, which in turn shifted `.rightCol` (and therefore
+ *  the CTA button) several pixels to the right on cards with longer
+ *  strings.  Grid keeps the CTA's right edge nailed to the card edge
+ *  on every row.
+ * ------------------------------------------------------------------ */
+.dataRow {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) clamp(220px, 27.09cqw, 327px);
+  column-gap: clamp(20px, 8.28cqw, 100px);
+  align-items: stretch;
+  min-width: 0;
+}
+
+/* ----- RIGHT COL (price + CTA) ----------------------------------- *
+ *  Ширина = ширина CTA (Figma 327 @1263). Контент выровнен по левому
+ *  краю → Current Rate / Auction Date начинаются под левым краем кнопки.
+ *  justify-content: space-between → priceBlock сверху, CTA снизу,
+ *  низ CTA = низ rightCol = низ specs (= низ картинки).
+ * ----------------------------------------------------------------- */
+.rightCol {
+  display: flex;
+  flex-direction: column;
+  flex: 0 0 auto;
+  width: clamp(220px, 27.09cqw, 327px);
+  align-items: flex-start;                /* contents left-aligned */
+  justify-content: space-between;         /* price top, CTA bottom */
+  min-width: 0;
+}
+
+.specBlock {
+  display: grid;
+  grid-template-columns: max-content max-content;
+  grid-auto-rows: auto;
+  column-gap: clamp(12px, 3.6cqw, 56px);
+  row-gap: clamp(10px, 1.33cqw, 16px);     /* fluid 16→10 */
+  align-items: baseline;
+  /* No min-width: max-content — would force the spec column wider when a
+     value like "FRONT-WHEEL DRIVE" is longer, shifting .rightCol to the
+     right (CTA button shift bug).  The grid track minmax(0, 1fr) above
+     already gives `.specBlock` enough room. */
+  min-width: 0;
+}
+
+.priceBlock {
+  display: grid;
+  grid-template-columns: max-content max-content;
+  grid-auto-rows: auto;
+  column-gap: clamp(16px, 1.99cqw, 24px);  /* fluid 24→16 */
+  row-gap: clamp(10px, 1.33cqw, 16px);
+  align-items: baseline;
+  align-content: start;
+  flex: 0 0 auto;
+}
+
+/* SPEC label / value ------------------------------------------------- */
+.specLabel {
+  font-family: 'Mazzard H', var(--font-mazzard, system-ui, sans-serif);
+  font-weight: 500;
+  font-size: clamp(12px, 1.16cqw, 14px);   /* fluid 14→12 */
+  line-height: 1;
+  text-transform: capitalize; color: #FFFFFF;
+  white-space: nowrap;
+}
+.specValue {
+  font-family: 'Mazzard H', var(--font-mazzard, system-ui, sans-serif);
+  font-weight: 700;
+  font-size: clamp(12px, 1.16cqw, 14px);   /* fluid 14→12 */
+  line-height: 1;
+  text-transform: uppercase;
+  color: #FEAE00;
+  white-space: nowrap;
+}
+
+/* PRICE label / value ----------------------------------------------- */
+.priceLabel {
+  font-family: 'Mazzard H', var(--font-mazzard, system-ui, sans-serif);
+  font-weight: 500;
+  font-size: clamp(12px, 1.16cqw, 14px);
+  line-height: 1;
+  text-transform: capitalize; color: #FFFFFF;
+  white-space: nowrap;
+}
+.priceValue {
+  font-family: 'Mazzard H', var(--font-mazzard, system-ui, sans-serif);
+  font-weight: 700;
+  font-size: clamp(16px, 1.66cqw, 20px);   /* price stays slightly larger: 20→16 */
+  line-height: 1;
+  color: #FEAE00;
+  white-space: nowrap;
+}
+.priceMuted { color: #514F4C; }
+
+/* SOLD-state muting for the LEFT spec block (Mileage / Engine / Drive /
+ * Damage / Condition / Auction). When the vehicle is marked as sold, the
+ * card's specs are no longer "live" data the buyer can act on, so we drop
+ * both the label and value into the same muted grey (#514F4C) used by the
+ * sold-price / sold-date pair on the right. The CTA button ("Find similar
+ * vehicles") stays at full brightness — that's the only actionable element
+ * for sold listings. */
+.specBlockMuted .specLabel,
+.specBlockMuted .specValue {
+  color: #514F4C;
+}
+.dateValue {
+  font-family: 'Mazzard H', var(--font-mazzard, system-ui, sans-serif);
+  font-weight: 700;
+  font-size: clamp(12px, 1.16cqw, 14px);
+  color: #FEAE00; line-height: 1; text-transform: uppercase;
+  white-space: nowrap;
+}
+.dateMuted {
+  color: #514F4C;
+  text-transform: none;
+}
+
+/* CTA — fluid height & padding follow card scaling. */
+.cta {
+  width: 100%;
+  height: clamp(36px, 3.73cqw, 45px);      /* fluid 45→36 */
+  border: 0;
+  border-radius: 4px;
+  cursor: pointer;
+  font-family: 'Mazzard H', var(--font-mazzard, system-ui, sans-serif);
+  font-weight: 500;
+  font-size: clamp(12px, 1.16cqw, 14px);
+  text-transform: uppercase;
+  background: #FEAE00;
+  color: #18181B;
+  display: inline-flex;
+  align-items: center; justify-content: center;
+  padding: 10px clamp(12px, 1.66cqw, 20px);
+  letter-spacing: .02em;
+  box-sizing: border-box;
+  transition: background-color 120ms ease;
+  white-space: nowrap;
+}
+.cta:hover { background: #FFC83F; }
+
+/* `.specItem` is a transparent wrapper on desktop: each (label + value)
+ * pair flows directly into the parent grid (`.specBlock` / `.priceBlock`),
+ * preserving the original Figma 2-column label/value layout.  On mobile
+ * the wrapper turns into a flex column so each cell becomes a label-on-top
+ * / value-below tile inside a 2-col mobile grid. */
+.specItem { display: contents; }
+.priceItem { /* mobile-only override */ min-width: 0; }
+.dateItem  { /* mobile-only override */ min-width: 0; }
+.mobileSeparator { display: none; }
+
+/* ----- AUCTION COUNTDOWN CHIP ---------------------------------------
+ *  Figma "Vehicle Card (Mobile)":
+ *    • position: absolute, 12 px from top + left of the image
+ *    • background #FEAE00, text #000, H Medium 12
+ *    • padding 5 v / 8 h, gap 4, border-radius 4
+ *    • hugs content (≈100 × 24 for "1d: 4h: 35m")
+ * ------------------------------------------------------------------ */
+.timerChip {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  z-index: 2;
+  width: 138px;                         /* Figma spec — fixed 138 × 32 */
+  height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 0 12px;
+  background: #FEAE00CC;                /* #FEAE00 @ 80 % opacity (Figma) */
+  color: #000000;
+  border-radius: 0;                     /* square corners (user spec) */
+  font-family: 'Mazzard H', var(--font-mazzard, system-ui, sans-serif);
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 1;
+  white-space: nowrap;
+  user-select: none;
+  pointer-events: none;
+  box-sizing: border-box;
+}
+.timerChip svg,
+.timerChip img { flex: 0 0 auto; width: 18px; height: 18px; display: block; }
+
+
+/* =========================================================================
+ *  Adaptive scaling — narrow card containers (MacBook 13"/14")
+ *  -----------------------------------------------------------------------
+ *  Fluid typography above already handles 1280–1920 nicely.  We keep two
+ *  light @container fall-backs ONLY for the row gap and right-column width
+ *  to guarantee no overflow when specs + price column compete for space.
+ *  Image width and aspect-ratio are NOT touched — image keeps its Figma
+ *  shape on all desktops.  Mobile (<1024 px) is intentionally out of scope.
+ * ===================================================================== */
+@container vcrcard (max-width: 1000px) {
+  .dataRow  { gap: clamp(16px, 4cqw, 100px); }
+  .rightCol { width: clamp(200px, 27.09cqw, 327px); }
+}
+
+@container vcrcard (max-width: 820px) {
+  .dataRow  { gap: clamp(12px, 2.5cqw, 100px); }
+  .rightCol { width: clamp(180px, 27.09cqw, 327px); }
+}
+
+/* =========================================================================
+ *  BG (Bulgarian) adaptive overrides — labels in cyrillic ("Пробег",
+ *  "Двигател", "Задвижване") are 30–50% wider than the English ones, so
+ *  the specBlock grid + the dataRow gap need to shrink. EN baseline is
+ *  preserved verbatim.
+ * ======================================================================= */
+:global(html[lang="bg"]) .dataRow {
+  gap: clamp(12px, 2cqw, 48px);
+}
+:global(html[lang="bg"]) .specBlock {
+  column-gap: clamp(8px, 2cqw, 32px);
+  row-gap: clamp(8px, 1.16cqw, 14px);
+}
+:global(html[lang="bg"]) .priceBlock {
+  column-gap: clamp(10px, 1.16cqw, 18px);
+}
+:global(html[lang="bg"]) .specLabel,
+:global(html[lang="bg"]) .specValue,
+:global(html[lang="bg"]) .priceLabel {
+  font-size: clamp(11px, 1.04cqw, 13px);
+}
+
+/* =========================================================================
+ *  MOBILE LAYOUT (≤ 640 px viewport) — Figma "Catalog Mobile" reference.
+ *  -----------------------------------------------------------------------
+ *  Card 336 × 684 (image 336 × 240, fills card width).
+ *  Action icons (compare, favourite) overlay the image at top-right
+ *  (24 × 24, gap 12).  Share icon hidden on mobile per Figma.
+ *  Title H SemiBold 20.  LOT/VIN H Regular 12, copy icon 14 × 14.
+ *  Gray separator (#3A3A3A) between identifiers and specs.
+ *  Specs: 2-col × 4-row grid (Mileage|Engine, Drive|Damage, Condition|Auction,
+ *  Auction Date|Current Rate).  Each cell = label (H Regular 14, gray) on top
+ *  + value (H Medium 14 yellow) below, gap 6 px.  Current Rate is H Medium 24.
+ *  CTA full-width below, H Medium 14, height ~45.
+ * ===================================================================== */
+@media (max-width: 640px) {
+  .card {
+    position: relative;
+    flex-direction: column;
+    gap: 0;
+    padding: 0;
+    background: #1A1B19;
+    border-radius: 8px;
+    overflow: hidden;
+    align-items: stretch;
+  }
+  .card:hover { outline-color: transparent; }
+
+  /* IMAGE — full card width, aspect 336:240 (≈ 1.4) */
+  .imageWrap {
+    width: 100%;
+    aspect-ratio: 336 / 240;
+    align-self: auto;
+    border-radius: 0;                       /* square inner image (user spec) */
+  }
+  .image { object-fit: cover; }
+
+  /* ACTION ICONS — overlay top-right of the image, 24×24 each, gap 12.
+   *  We re-parent visually via absolute positioning so the JSX order stays
+   *  desktop-compatible.  Share is hidden on mobile (Figma shows only the
+   *  compare + favourite glyphs). */
+  .actionIcons {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    gap: 12px;
+    z-index: 2;
+  }
+  .actionBtn { width: 24px; height: 24px; background: rgba(0, 0, 0, 0.0); }
+  .actionIcon { width: 24px; height: 24px; }
+  /* SHARE button is now ALWAYS visible on mobile catalog cards too —
+   *  user spec session 36: share must appear alongside compare + favourite
+   *  on every card variant (Welcome top-deals, Catalog, SingleCarPage). */
+
+  /* INFO column — full width, padding 12 horizontal as per spec.
+   *  Stretching off; we use natural content flow now. */
+  .info {
+    align-self: auto;
+    padding: 16px 12px 16px 12px;
+    gap: 16px;
+  }
+
+  /* TITLE — Mazzard H SemiBold 20 */
+  .topRow { gap: 0; }
+  .title {
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 1.15;
+    text-transform: capitalize;
+  }
+
+  /* IDENTIFIERS (LOT, VIN) — H Regular 12, copy 14×14 */
+  .identifiers {
+    margin-top: 16px;
+    gap: 6px;
+    font-size: 12px;
+    font-weight: 400;
+    color: #B0B0B0;
+  }
+  .idLine .copy img { width: 14px; height: 14px; }
+
+  /* Gray separator under identifiers, 16 px above & below */
+  .topGroup {
+    padding-bottom: 16px;
+    border-bottom: 1px solid #3A3A3A;
+  }
+
+  /* DATA ROW — single 2-col grid, .specItem becomes a flex column.
+   *  `.specBlock` & `.rightCol` & `.priceBlock` all become `display:contents`
+   *  so their `.specItem` children flow directly into the grid. */
+  .dataRow {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 12px;
+    row-gap: 16px;
+    align-items: start;
+    padding-top: 0;
+  }
+  .specBlock,
+  .rightCol,
+  .priceBlock { display: contents; }
+
+  .specItem {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 0;
+  }
+  /* Swap the price/date columns to match Figma:
+   *   Row 4:  Auction Date  |  Current Rate
+   * (JSX order keeps Current Rate first to preserve desktop layout.)
+   * Use explicit grid-column placement instead of `order` — works
+   * reliably regardless of CSS-modules class-name flushing. */
+  .priceItem { grid-column: 2; }
+  .dateItem  { grid-column: 1; grid-row: 4; }
+
+  /* Labels & values — H Regular 14 grey / H Medium 14 yellow */
+  .specLabel,
+  .priceLabel {
+    font-size: 14px;
+    font-weight: 400;
+    color: #B0B0B0;
+    text-transform: capitalize;
+    white-space: nowrap;
+  }
+  .specValue {
+    font-size: 14px;
+    font-weight: 500;
+    color: #FEAE00;
+    text-transform: uppercase;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .dateValue {
+    font-size: 14px;
+    font-weight: 500;
+    text-transform: uppercase;
+  }
+  /* Current Rate / Sold Price — H Medium 24, yellow */
+  .priceValue {
+    font-size: 24px;
+    font-weight: 500;
+    line-height: 1;
+  }
+
+  /* CTA — full card width (= image width - inner padding ≈ 312 px); below
+   *  the spec grid; height 45, H Medium 14, yellow.  Spans both grid columns. */
+  .cta {
+    grid-column: 1 / -1;
+    width: 100%;
+    height: 45px;
+    margin-top: 16px;
+    font-size: 14px;
+    font-weight: 500;
+  }
+}

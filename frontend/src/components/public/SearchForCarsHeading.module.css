@@ -1,0 +1,98 @@
+/* SearchForCarsHeading — per-character mask + slider animation
+   matching the hero "FROM AUCTION TO KEYS" reveal exactly. Each
+   character inside a .charMask overflow:hidden box and slides up
+   from translateY(100%) → 0, opacity 0 → 1. Stagger per character
+   gives the diagonal left-to-right wave. */
+
+.heading {
+  align-self: stretch;
+  display: flex;
+  justify-content: center;
+  padding: 0 20px 120.5px;
+  box-sizing: border-box;
+  text-align: center;
+  font-family: Mazzard, "Mazzard H", system-ui, sans-serif;
+  background-color: #000;
+}
+
+.headingInner {
+  width: 694px;
+  max-width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 13px;
+}
+
+.lineOrange,
+.lineWhite {
+  margin: 0;
+  font-family: inherit;
+  font-weight: 400;
+  line-height: 100%;
+  text-transform: uppercase;
+  white-space: nowrap;
+  display: block;
+}
+
+.lineOrange {
+  font-size: 60px;
+  color: #FEAE00;
+}
+
+.lineWhite {
+  font-size: 50px;
+  color: #FFFFFF;
+}
+
+/* ── Per-character mask + slider (same physics as hero headline) ── */
+.charMask {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: top;
+  line-height: 1;
+}
+
+.charInner {
+  display: block;
+  line-height: 1;
+  transform: translate3d(0, 100%, 0);
+  opacity: 0;
+  will-change: transform, opacity;
+}
+
+/* Animation only starts once the section enters the viewport
+   (parent gets `.is-visible`). Honour reduced motion below.
+   `.is-visible` is a GLOBAL class flipped by useInView, so we use
+   :global() inside the CSS module selector. */
+.heading:global(.is-visible) .charInner {
+  animation-name: searchCharSlideUp;
+  animation-duration: 900ms;
+  animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  animation-fill-mode: both;
+}
+
+@keyframes searchCharSlideUp {
+  0%   { transform: translate3d(0, 100%, 0); opacity: 0; }
+  40%  { opacity: 1; }
+  100% { transform: translate3d(0, 0, 0); opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .charInner {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
+/* Responsive — copied from original component */
+@media (max-width: 925px) {
+  .headingInner { padding: 0 33px; box-sizing: border-box; }
+  .lineOrange { font-size: 48px !important; }
+  .lineWhite  { font-size: 40px !important; }
+}
+@media (max-width: 450px) {
+  .lineOrange { font-size: 36px !important; }
+  .lineWhite  { font-size: 30px !important; }
+}

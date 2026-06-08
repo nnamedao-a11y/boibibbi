@@ -1,0 +1,60 @@
+.frameParent,
+.orderDateParent {
+  display: flex;
+  align-items: flex-start;
+}
+.frameParent {
+  height: var(--height-80_5);
+  width: 218.2px;
+  justify-content: space-between;
+  padding: var(--padding-0) var(--padding-30) var(--padding-0) var(--padding-0);
+  box-sizing: border-box;
+  gap: var(--gap-20);
+  z-index: 2;
+  text-align: left;
+  font-size: var(--fs-16);
+  color: var(--color-white);
+  font-family: var(--font-mazzard);
+}
+.orderDateParent {
+  flex-direction: column;
+  gap: var(--gap-18);
+  flex-shrink: 0;
+}
+.h3,
+.orderDate {
+  position: relative;
+  display: inline-block;
+}
+.orderDate {
+  width: var(--width-86);
+}
+.h3 {
+  margin: 0;
+  font-size: var(--fs-20);
+  line-height: 99.9%;
+  text-transform: uppercase;
+  font-weight: 400;
+  font-family: inherit;
+  min-width: var(--min-w-99);
+}
+.dateBackgroundWrapper {
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: var(--padding-4_1) var(--padding-0) var(--padding-0);
+}
+.dateBackground {
+  width: var(--width-0_6);
+  flex: 1;
+  position: relative;
+  background-color: var(--color-gainsboro-200);
+  flex-shrink: 0;
+}
+@media screen and (max-width: 450px) {
+  .h3 {
+    font-size: var(--fs-16);
+    line-height: var(--lh-16);
+  }
+}

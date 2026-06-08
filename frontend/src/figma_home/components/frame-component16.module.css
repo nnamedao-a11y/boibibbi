@@ -1,0 +1,273 @@
+.bmvDetails,
+.bmvDetailsParent {
+  background-color: var(--color-gray-200);
+}
+.bmvDetailsParent {
+  align-self: stretch;
+  height: var(--height-727);
+  position: relative;
+  max-width: 100%;
+  z-index: 0;
+  text-align: left;
+  font-size: var(--fs-32);
+  color: var(--color-white);
+  font-family: var(--font-mazzard);
+}
+.bmvDetails {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+.bmvElements {
+  position: absolute;
+  top: 500.9px;
+  left: 22px;
+  display: flex;
+  align-items: flex-start;
+  padding: var(--padding-0) var(--padding-0) var(--padding-0) var(--padding-7);
+}
+.bmv328 {
+  margin: 0;
+  position: relative;
+  font-size: inherit;
+  line-height: 99.9%;
+  text-transform: uppercase;
+  font-weight: 400;
+  font-family: inherit;
+}
+.rectangleParent {
+  position: absolute;
+  top: 24px;
+  left: calc(50% - 406px);
+  width: var(--width-812);
+  height: var(--height-40);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--gap--402);
+}
+.frameChild {
+  height: var(--height-370_4);
+  width: var(--width-402);
+  position: relative;
+  background-color: var(--color-gray-100);
+  display: none;
+  flex-shrink: 0;
+}
+.componentChild,
+.componentInner,
+.componentItem {
+  position: absolute;
+  top: 505px;
+  border-radius: var(--br-8);
+  background-color: var(--color-black);
+  height: var(--height-118_3);
+  display: none;
+}
+.componentChild {
+  left: 26px;
+  width: var(--width-223);
+}
+.componentInner,
+.componentItem {
+  width: var(--width-255_2);
+}
+.componentItem {
+  left: calc(50% - 127.6px);
+}
+.componentInner {
+  left: 582.8px;
+}
+.dataLayoutWrapper {
+  position: absolute;
+  top: 582.2px;
+  left: 22px;
+  width: var(--width-795_4);
+  padding: var(--padding-0) var(--padding-0) var(--padding-0) var(--padding-7);
+  box-sizing: border-box;
+  max-width: 100%;
+  font-size: var(--fs-16);
+}
+.dataLayout,
+.dataLayoutWrapper,
+.orderDateParent {
+  display: flex;
+  align-items: flex-start;
+}
+.dataLayout {
+  flex: 1;
+  justify-content: space-between;
+  gap: var(--gap-20);
+  max-width: 100%;
+}
+.orderDateParent {
+  width: 136.2px;
+  flex-direction: column;
+  padding: var(--padding-0) var(--padding-20) var(--padding-0) var(--padding-0);
+  box-sizing: border-box;
+  gap: var(--gap-18);
+}
+.labelContainer,
+.orderDate {
+  position: relative;
+  display: inline-block;
+}
+.orderDate {
+  width: var(--width-86);
+}
+.labelContainer {
+  margin: 0;
+  font-size: var(--fs-20);
+  line-height: 99.9%;
+  text-transform: uppercase;
+  font-weight: 400;
+  font-family: inherit;
+  min-width: var(--min-w-99);
+}
+.dataDisplay {
+  height: 80.7px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 4.3px var(--padding-33) var(--padding-0) var(--padding-0);
+  box-sizing: border-box;
+  z-index: 4;
+}
+.dataDisplayChild {
+  width: var(--width-0_6);
+  flex: 1;
+  position: relative;
+  background-color: var(--color-gainsboro-200);
+}
+.theDateOfTheFinishedCarParent {
+  width: 219.7px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: var(--padding-0) var(--padding-2) var(--padding-0) var(--padding-0);
+  box-sizing: border-box;
+  gap: var(--gap-18);
+  z-index: 2;
+}
+.h3,
+.theDateOf {
+  position: relative;
+}
+.theDateOf {
+  align-self: stretch;
+  z-index: 2;
+}
+.h3 {
+  margin: 0;
+  width: var(--width-103);
+  font-size: var(--fs-20);
+  line-height: 99.9%;
+  text-transform: uppercase;
+  font-weight: 400;
+  font-family: inherit;
+  display: inline-block;
+  z-index: 1;
+}
+.dataLayoutChild {
+  height: var(--height-76_4);
+  width: var(--width-0_6);
+  position: relative;
+  background-color: var(--color-gainsboro-200);
+  z-index: 5;
+}
+.turnkeyPriceInBulgariaParent {
+  width: var(--width-193);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--gap-19);
+  z-index: 3;
+}
+.turnkeyPriceIn {
+  align-self: stretch;
+  position: relative;
+}
+.euro {
+  margin: 0;
+  position: relative;
+  font-size: var(--fs-20);
+  line-height: 99.9%;
+  text-transform: uppercase;
+  font-weight: 400;
+  font-family: inherit;
+  display: inline-block;
+  min-width: var(--min-w-114);
+}
+.dtKlausenLs1351Parent,
+.frameParent {
+  display: flex;
+  align-items: flex-start;
+  max-width: 100%;
+}
+.frameParent {
+  position: absolute;
+  top: 77px;
+  left: 22px;
+  width: var(--width-812);
+  flex-wrap: wrap;
+  align-content: flex-start;
+  gap: var(--gap-8);
+}
+.dtKlausenLs1351Parent {
+  width: var(--width-402);
+  row-gap: var(--gap-20);
+  z-index: 2;
+}
+.dtKlausenLs1351Icon,
+.dtKlausenLs1352Icon {
+  position: relative;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+.dtKlausenLs1351Icon {
+  width: var(--width-402);
+  flex-shrink: 0;
+}
+.dtKlausenLs1352Icon {
+  flex: 1;
+  overflow: hidden;
+  min-width: var(--min-w-261);
+  z-index: 1;
+}
+@media screen and (max-width: 925px) {
+  .bmvDetailsParent {
+    height: auto;
+    min-height: var(--min-h-727);
+  }
+  .bmv328 {
+    font-size: var(--fs-26);
+    line-height: var(--lh-26);
+  }
+  .dataLayout {
+    flex-wrap: wrap;
+  }
+  .dataLayoutChild {
+    width: 100%;
+    height: var(--height-0_6);
+  }
+  .dtKlausenLs1351Parent {
+    flex-wrap: wrap;
+  }
+}
+@media screen and (max-width: 450px) {
+  .bmv328 {
+    font-size: var(--fs-19);
+    line-height: var(--lh-19);
+  }
+  .euro,
+  .h3,
+  .labelContainer {
+    font-size: var(--fs-16);
+    line-height: var(--lh-16);
+  }
+}

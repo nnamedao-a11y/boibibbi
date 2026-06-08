@@ -1,0 +1,284 @@
+/* =============================================================================
+ * BIBI Cars — "Calculate a car yourself with a price guarantee" block
+ *
+ * Pixel-perfect Figma frame: 1922 × 1286 px (homepage scaled to 1920 design)
+ *
+ *   Outer yellow ring : #FEAE00       — 96 px on every side
+ *   Inner card        : #000000       — 1640 px wide (max), 1094 px tall
+ *   Title             : Mazzard H Bold, 96 px / 100 % line-height
+ *                         line 1 → #FEAE00  ("Calculate a car yourself")
+ *                         line 2 → #FFFFFF  ("with a price guarantee")
+ *                       text-align: center, gap between lines: 8 px
+ *   Body grid         : two columns, square truck photo on the left,
+ *                         form on the right, vertically centered
+ *   Subtitle          : "From the USA and Korea"
+ *                         Mazzard H Medium, 28 px, white
+ *   Search input      : 1 px solid #FEAE00, transparent fill, 64 px tall,
+ *                         "Search by VIN or lot number" -
+ *                         Helvetica Now Display Regular (Mazzard 400 alias)
+ *   CALCULATE button  : #FEAE00 fill, 80 px tall, Mazzard H Medium uppercase
+ *   "all catalog +"   : Mazzard H Medium uppercase, #FEAE00, underlined
+ * ========================================================================== */
+
+.rectangleParent {
+  align-self: stretch;
+  background-color: var(--color-orange-100);
+  display: flex;
+  justify-content: center;
+  /* Figma:  outer yellow rim ≈ 96 px on every side, EQUAL on all 4 sides.
+   * The inner card is allowed to fill the full available width so that the
+   * visible yellow border stays exactly 96 px on top, right, bottom, left.
+   * Without this, max-width on inner caused horizontal margins (auto) to
+   * stack on top of the 96 px padding → asymmetric rim (96 vs 140 px).  */
+  padding: 96px;
+  box-sizing: border-box;
+  font-family: var(--font-mazzard);
+}
+
+.calculate {
+  width: 100%;
+  /* Inner card fills 100 % of remaining width so the yellow rim stays
+   * symmetric (96 px on all sides). No max-width clamp here. */
+  background-color: var(--color-black);
+  display: flex;
+  flex-direction: column;
+  /* Figma: inner padding ≈ 80px top / 80px sides / 80px bottom  */
+  padding: 80px;
+  gap: 64px;
+  box-sizing: border-box;
+}
+
+/* ── Title ───────────────────────────────────────────────────────────── */
+
+.calculateACar {
+  margin: 0;
+  font-family: var(--font-mazzard);
+  /* Mazzard H Bold = 700 */
+  font-weight: 700;
+  font-size: 96px;
+  line-height: 100%;
+  letter-spacing: -0.005em;
+  color: var(--color-orange-100);
+  text-align: center;
+  text-transform: none;
+}
+
+.withAPrice {
+  display: inline-block;
+  color: var(--color-white);
+  font-weight: 700;
+}
+
+/* ── Body grid ───────────────────────────────────────────────────────── */
+
+.calcGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  align-items: center;
+}
+
+.imageBox {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  background-color: #0a0a0a;
+  display: block;
+}
+
+.image93Icon {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+
+/* ── Right column ────────────────────────────────────────────────────── */
+
+.calcRight {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  /* Per Figma spacing spec:
+   *   • "From the USA and Korea" → search input   = 90 px
+   *   • search input             → CALCULATE btn  = 60 px
+   *   • CALCULATE btn            → "all catalog +" = 60 px
+   * The flex `gap` is zeroed-out and each child carries an explicit
+   * `margin-top` so the spec stays self-documenting and resilient to
+   * future reorders. */
+  gap: 0;
+  color: var(--color-white);
+}
+
+.fromTheUsaContainer {
+  margin: 0;
+  /* Mazzard H Medium = 500 */
+  font-family: var(--font-mazzard);
+  font-weight: 500;
+  font-size: 28px;
+  line-height: 100%;
+  color: var(--color-white);
+}
+
+.searchForm {
+  display: flex;
+  flex-direction: column;
+  /* Figma: search input → CALCULATE button = 60 px */
+  gap: 60px;
+  width: 100%;
+  /* Figma: "From the USA and Korea" → search input = 90 px */
+  margin-top: 90px;
+}
+
+.inputWrapper {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  height: 64px;
+  background: transparent;
+  border: 1px solid var(--color-orange-100);
+  border-radius: 8px;
+  padding: 0 22px;
+  box-sizing: border-box;
+  transition: box-shadow 0.18s ease;
+}
+
+.inputWrapper:focus-within {
+  box-shadow: 0 0 0 2px rgba(254, 174, 0, 0.25);
+}
+
+.boxiconssearch {
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+  filter: brightness(0) saturate(100%) invert(74%) sepia(58%) saturate(2856%)
+    hue-rotate(2deg) brightness(105%) contrast(101%);
+}
+
+.searchByVin {
+  flex: 1;
+  min-width: 0;
+  background: transparent;
+  border: 0;
+  outline: 0;
+  height: 100%;
+  /* Helvetica Now Display Regular  →  aliased to Mazzard 400 in this build  */
+  font-family: 'Mazzard', 'Mazzard H', 'Helvetica Now Display', system-ui, sans-serif;
+  font-weight: 400;
+  font-size: 18px;
+  letter-spacing: 0.01em;
+  color: var(--color-white);
+}
+
+.searchByVin::placeholder {
+  color: rgba(255, 255, 255, 0.55);
+  font-weight: 400;
+}
+
+.calcCta {
+  width: 100%;
+  height: 80px;
+  border: 0;
+  border-radius: 8px;
+  background-color: var(--color-orange-100);
+  color: var(--color-black);
+  /* Mazzard H Medium = 500 */
+  font-family: var(--font-mazzard);
+  font-weight: 500;
+  font-size: 20px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: filter 0.18s ease, transform 0.05s ease;
+}
+
+.calcCta:hover  { filter: brightness(1.06); }
+.calcCta:active { transform: translateY(1px); }
+.calcCta:focus-visible {
+  outline: 2px solid var(--color-white);
+  outline-offset: 2px;
+}
+
+.allCatalog {
+  align-self: center;
+  display: inline-block;
+  /* Figma: CALCULATE button → "all catalog +" link = 60 px */
+  margin-top: 60px;
+  /* Mazzard H Medium = 500 */
+  font-family: var(--font-mazzard);
+  font-weight: 500;
+  font-size: 18px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--color-orange-100);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  text-decoration-thickness: 1px;
+  cursor: pointer;
+  transition: filter 0.15s ease;
+}
+
+.allCatalog:hover { filter: brightness(1.15); }
+
+/* ── Tablet / mobile ─────────────────────────────────────────────────── */
+
+@media screen and (max-width: 1280px) {
+  .rectangleParent { padding: 64px; }
+  .calculate { padding: 56px; gap: 48px; }
+  .calculateACar { font-size: 72px; }
+  .calcGrid { gap: 40px; }
+  .calcCta { height: 70px; font-size: 18px; }
+  /* Scale spec proportionally on tablet: 90/60/60 → 60/40/40 */
+  .searchForm { margin-top: 60px; gap: 40px; }
+  .allCatalog { margin-top: 40px; }
+}
+
+@media screen and (max-width: 925px) {
+  .rectangleParent { padding: 32px 18px; }
+  .calculate { padding: 32px 22px; gap: 28px; }
+  .calculateACar { font-size: 40px; line-height: 1.05; }
+  .calcGrid { grid-template-columns: 1fr; gap: 24px; }
+  .imageBox { max-width: 560px; margin: 0 auto; }
+  .fromTheUsaContainer { font-size: 20px; }
+  .inputWrapper { height: 56px; padding: 0 16px; }
+  .searchByVin { font-size: 16px; }
+  .calcCta { height: 60px; font-size: 16px; letter-spacing: 0.12em; }
+  .allCatalog { font-size: 14px; letter-spacing: 0.12em; }
+  /* Mobile: keep the rhythm but more compact (40 / 28 / 28). */
+  .searchForm { margin-top: 40px; gap: 28px; }
+  .allCatalog { margin-top: 28px; }
+}
+
+/* ────────── Bulgarian (BG) adaptive overrides ──────────
+   BG title "Изчислете автомобила сами" (24 chars) is longer than
+   the EN "Calculate a car yourself" (24 chars — actually same length
+   but wider average char-width in Cyrillic). Shrink font-size to fit
+   the SAME visual box (same height, same alignment).
+*/
+:global(html[lang="bg"]) .calculateACar {
+  font-size: 80px;
+  letter-spacing: -0.015em;
+}
+:global(html[lang="bg"]) .fromTheUsaContainer {
+  font-size: 26px;
+  letter-spacing: -0.005em;
+}
+:global(html[lang="bg"]) .calcCta {
+  font-size: 18px;
+  letter-spacing: 0.08em;
+}
+:global(html[lang="bg"]) .allCatalog {
+  font-size: 16px;
+  letter-spacing: 0.10em;
+}
+@media screen and (max-width: 1280px) {
+  :global(html[lang="bg"]) .calculateACar { font-size: 60px; }
+}
+@media screen and (max-width: 925px) {
+  :global(html[lang="bg"]) .calculateACar { font-size: 34px; line-height: 1.06; }
+  :global(html[lang="bg"]) .fromTheUsaContainer { font-size: 18px; }
+  :global(html[lang="bg"]) .calcCta { font-size: 14px; letter-spacing: 0.06em; }
+  :global(html[lang="bg"]) .allCatalog { font-size: 13px; letter-spacing: 0.08em; }
+}

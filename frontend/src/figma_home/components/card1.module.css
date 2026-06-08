@@ -1,0 +1,299 @@
+/* ──────────────────────────────────────────────────────────────
+   Card1 — "Top vehicles deals of the week" card.
+   All status / action chips are overlaid on the photo, exactly
+   like the Figma reference (Homepage v5).
+   ────────────────────────────────────────────────────────────── */
+
+.card {
+  width: 100%;
+  max-width: 560px;
+  background: #1d1d1b;
+  /* Unified card radius across the site = 8 px (user spec, May 2026):
+   * matches catalog, similar cars, blog, have-a-question, cost calculator. */
+  border-radius: 8px;
+  /* Figma spec: 20px on top/left/right, 40px on bottom so the
+     "More details" CTA + final-cost row don't hug the card edge. */
+  padding: 20px 20px 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  font-family: var(--font-mazzard);
+  color: #fff;
+  box-sizing: border-box;
+}
+
+/* ── Photo block (with overlays) — square corners (no inner rounding) ─ */
+.imageBox {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 517 / 388;
+  border-radius: 0;
+  overflow: hidden;
+  background: #0e0e0e;
+}
+.image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* TOP-LEFT — trading-date pill (Figma spec: white 70 %, square corners) */
+.tradingDate {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  padding: 8px 16px;
+  background: rgba(255, 255, 255, 0.7);     /* #FFFFFF @ 70 % per Figma */
+  color: #1c1c1c;
+  font-size: 13px;
+  font-weight: 500;                          /* Mazzard H Medium */
+  line-height: 1;
+  border-radius: 0;                          /* SQUARE corners per Figma */
+  white-space: nowrap;
+  letter-spacing: 0.005em;
+}
+
+/* BOTTOM-LEFT — amber timer chip (Figma: 138 × 32, #FEAE00 @ 80 %, square) */
+.timerChip {
+  position: absolute;
+  bottom: 14px;
+  left: 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 0 12px;
+  width: 138px;                              /* Figma spec — FIXED 138 × 32 */
+  height: 32px;
+  box-sizing: border-box;
+  background: #FEAE00CC;                     /* #FEAE00 @ 80 % per Figma */
+  color: #000;
+  border-radius: 0;                          /* SQUARE corners per Figma */
+  font-size: 14px;
+  font-weight: 500;                          /* Mazzard H Medium */
+  line-height: 1;
+  letter-spacing: 0.01em;
+}
+.clockIcon {
+  width: 18px;
+  height: 18px;
+  display: block;
+}
+.timerText {
+  white-space: nowrap;
+}
+
+/* BOTTOM-RIGHT — original Figma compare / heart SVG icons */
+.actions {
+  position: absolute;
+  bottom: 14px;
+  right: 14px;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+}
+.iconBtn {
+  width: 32px;
+  height: 32px;
+  border-radius: 999px;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.15s ease, transform 0.18s cubic-bezier(0.34, 1.56, 0.64, 1),
+              filter 0.2s ease;
+  /* soft shadow so the amber pops on busy photos */
+  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.35));
+}
+.iconBtn img {
+  width: 32px;
+  height: 32px;
+  display: block;
+  pointer-events: none;
+  transition: opacity 0.18s ease;
+}
+.iconBtn:hover {
+  transform: scale(1.08);
+}
+.iconBtn:active {
+  transform: scale(0.94);
+}
+
+/* ── Active (selected) state ──────────────────────────────────
+   Solid amber glow + soft shadow so the user gets clear "added"
+   feedback. The pop animation is INTENTIONALLY NOT applied to the
+   persistent `.iconBtnActive` state — it only runs once, scoped to
+   the transient `.iconJustPopped` class added in the click handler.
+   This prevents the icons from "twitching" on initial render when
+   the favorites/compare sets arrive async from the API and switch
+   the icon to its active state. */
+.iconBtnActive {
+  filter: drop-shadow(0 0 8px rgba(254, 174, 0, 0.55))
+          drop-shadow(0 2px 6px rgba(0, 0, 0, 0.35));
+}
+.iconJustPopped {
+  animation: iconPop 0.28s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+@keyframes iconPop {
+  0%   { transform: scale(0.85); }
+  60%  { transform: scale(1.15); }
+  100% { transform: scale(1); }
+}
+
+/* ── Title ────────────────────────────────────────────────── */
+.title {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 700;                           /* Mazzard H Bold */
+  line-height: 1.15;
+  letter-spacing: -0.005em;
+  color: #fff;
+}
+
+/* ── Specs : Purchase-price box + tech rows ──────────────── */
+.specs {
+  display: grid;
+  grid-template-columns: minmax(0, 240px) 1fr;
+  gap: 24px;
+  align-items: start;
+}
+.priceBox {
+  background: #000;
+  border-radius: 8px;
+  padding: 16px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-height: 88px;
+  justify-content: center;
+}
+.priceLabel {
+  font-size: 14px;
+  font-weight: 500;                           /* Mazzard H Medium */
+  color: #fff;
+  line-height: 1.1;
+}
+.priceValue {
+  font-size: 20px;
+  font-weight: 700;                           /* Mazzard H Bold */
+  color: var(--color-orange-100);
+  line-height: 1.05;
+  letter-spacing: 0.005em;
+  text-transform: uppercase;
+}
+
+.techList {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-self: center;
+}
+.techRow {
+  display: grid;
+  grid-template-columns: 84px 1fr;
+  gap: 18px;
+  align-items: baseline;
+}
+.techLabel {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 500;                           /* Mazzard H Medium */
+  color: #fff;
+  text-transform: capitalize;
+  line-height: 1.1;
+}
+.techValue {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 700;                           /* Mazzard H Bold */
+  color: var(--color-orange-100);
+  text-transform: uppercase;
+  line-height: 1.1;
+  letter-spacing: 0.01em;
+}
+
+/* ── Footer : final cost + CTA ──────────────────────────── */
+.footer {
+  margin-top: auto;
+  display: flex;
+  align-items: flex-start;                    /* button top aligns with label top (Figma) */
+  justify-content: space-between;
+  gap: 18px;
+  padding-top: 4px;
+}
+.finalCostBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+.finalCostLabel {
+  font-size: 14px;                            /* Mazzard H Medium 14 (Figma) */
+  font-weight: 500;
+  color: #FFFFFF;                             /* white per Figma */
+  line-height: 1.15;
+}
+.finalCostValue {
+  font-size: 16px;                            /* Mazzard H Bold 16 (Figma) */
+  font-weight: 700;
+  color: var(--color-orange-100);
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
+  line-height: 1.1;
+}
+.ctaBtn {
+  flex-shrink: 0;
+  margin-left: auto;                          /* always pin to right of footer */
+  height: 44px;
+  padding: 0 22px;
+  background: var(--color-orange-100);
+  color: #000;
+  border: 0;
+  border-radius: 6px;                         /* Figma: More details = 6 (was 8) */
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+  white-space: nowrap;
+}
+.ctaBtn:hover {
+  background: #ffbf2d;
+}
+
+/* ── Responsive ─────────────────────────────────────────── */
+@media screen and (max-width: 1100px) {
+  .specs {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  .techList {
+    align-self: stretch;
+  }
+}
+@media screen and (max-width: 600px) {
+  .card {
+    padding: 16px 16px 32px;
+    gap: 18px;
+  }
+  .footer {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 14px;
+  }
+  .ctaBtn {
+    width: 100%;
+  }
+  .tradingDate { font-size: 12px; padding: 6px 12px; top: 10px; left: 10px; }
+  .timerChip   { font-size: 13px; padding: 0 12px; bottom: 10px; left: 10px; width: 138px; }
+  .actions     { bottom: 10px; right: 10px; gap: 8px; }
+  .iconBtn     { width: 28px; height: 28px; }
+  .iconBtn img { width: 28px; height: 28px; }
+}

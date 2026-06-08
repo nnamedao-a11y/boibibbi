@@ -1,0 +1,694 @@
+/* =========================================================================
+ *  CatalogPage — Figma "BIBI Cars / CATALOG" (May 2026).
+ *
+ *  FLUID RESPONSIVE strategy:
+ *  — The design coordinate system is 1920 px (Figma).
+ *  — At 1920 px viewport the geometry below matches the Figma 1:1.
+ *  — Below 1920 px every spacing/font value scales LINEARLY via clamp(): the
+ *    upper bound is the exact Figma px, the lower bound keeps the page usable
+ *    around ~1100 px (MacBook Pro 13 native = 1280, MacBook Pro 13 scaled = 1024).
+ *  — Above 1920 px the page stays centered with a 1920 px max-width.
+ *  — NO mobile breakpoints. The user explicitly asked us NOT to write mobile rules.
+ *
+ *  GEOMETRY AT 1920 px (unchanged):
+ *    Outer L/R padding ...... 100 px
+ *    Header → breadcrumb ....  52 px
+ *    Header → "CATALOG" .... 148 px
+ *    Header → filter top .... 352 px
+ *    Header → SORT+ ......... 362 px (level with filters)
+ *    Header → first card .... 418 px
+ *    Filter width ........... 427 px
+ *    Vehicle card ........... 1263 × 467 px (max)
+ *    Image in card .......... 518 × 387 px (max)
+ *    Gap filter ↔ cards ....  30 px
+ *
+ *  TYPOGRAPHY: Mazzard H, never overridden by mobile rules.
+ * ====================================================================== */
+
+/* ---- Linear scaling math ---------------------------------------------------
+   For a value V whose “design” is V_px at 1920px and which should reach V_min
+   at 1100px we use:
+        clamp( V_min, V_min + (V_px - V_min) * ((100vw - 1100px) / 820px), V_px )
+   The 820 = 1920 - 1100. We collapse this into vw arithmetic where possible.
+   --------------------------------------------------------------------------*/
+
+.catalogPage {
+  background: #000;
+  color: #FFFFFF;
+  font-family: 'Mazzard H', var(--font-mazzard, system-ui, sans-serif);
+  width: 100%;
+  /* No bottom padding here — the CatalogConsultationBlock handles the
+   * vertical rhythm between the last card and the footer (569 / 161 px). */
+  padding-bottom: 0;
+  min-width: 0;
+}
+
+/* ---------- 100 px gutter at 1920, fluid down to 24 px at 1024 ---------- */
+.container {
+  max-width: 1920px;
+  margin: 0 auto;
+  /* 24 → 100 between 1024 and 1920 viewports */
+  padding: 0 clamp(24px, 5.21vw, 100px);
+  box-sizing: border-box;
+}
+
+/* ---------- Breadcrumb (52 → 24 px top) -------------------------------- */
+.breadcrumb {
+  padding-top: clamp(24px, 2.71vw, 52px);
+  font-family: 'Mazzard H', var(--font-mazzard, system-ui, sans-serif);
+  font-weight: 600;
+  font-size: clamp(14px, 1.04vw, 20px);
+  line-height: 99.9%;
+  text-transform: uppercase;
+  color: #FFFFFF;
+}
+.breadcrumb a, .breadcrumb a:visited { color: #FFFFFF; text-decoration: none; }
+.breadcrumb .accent { color: #FEAE00; }
+.breadcrumb .sep { padding: 0 4px; color: #FEAE00; }
+
+/* ---------- Page title row: heading + Figma search bar (right) ---------- */
+.titleRow {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 32px;
+  flex-wrap: wrap;
+  padding-top: clamp(40px, 5vw, 96px);
+}
+.title {
+  margin: 0;
+  padding-top: 0;                       /* moved to .titleRow */
+  font-family: 'Mazzard H', var(--font-mazzard, system-ui, sans-serif);
+  font-weight: 700;
+  font-size: clamp(36px, 3.33vw, 64px);
+  line-height: 99.9%;
+  text-transform: uppercase;
+  color: #FFFFFF;
+}
+
+/* ---------- Two-column grid: filter (427 @1920 → 380 @1280) | cards | gap 30 ----
+ *  Sidebar шкалируется ЛИНЕЙНО, отдавая горизонтальное место карточкам
+ *  на узких экранах (MacBook 13"). Никаких mobile-брейкпойнтов.
+ *  МИНИМУМ ширины фильтра — 380 px, чтобы 5 vehicle-type карточек
+ *  (5 × 72.6 + 64 padding = 427) могли стоять без визуального
+ *  сплющивания: на 1440-px viewport (MacBook Pro 13") filter = 380 px,
+ *  а карточки автоматически дотягиваются до ~63 px (с 32 px иконкой
+ *  по центру даёт ~15 px воздуха слева/справа от иконки).
+ *  Max = 427 (Figma 1:1 @ 1920).
+ * --------------------------------------------------------------------- */
+.grid {
+  padding-top: clamp(60px, 7.3vw, 140px);
+  display: grid;
+  grid-template-columns: clamp(380px, calc(29.22vw - 134px), 427px) minmax(0, 1fr);
+  column-gap: clamp(16px, 1.56vw, 30px);
+  align-items: start;
+}
+
+/* ---------- Right column: results header + cards ----------------------- */
+.resultsCol {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(16px, 1.67vw, 32px);
+  min-width: 0;            /* allow children to shrink within the grid track */
+}
+
+.resultsHeader {
+  margin-top: clamp(0px, 0.52vw, 10px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+.resultsCount {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-family: 'Mazzard H', var(--font-mazzard, system-ui, sans-serif);
+  font-weight: 500;                     /* Medium */
+  font-size: 12px;                      /* Figma: 12 */
+  line-height: 99.9%;
+  text-transform: uppercase;
+  color: #949494;                       /* Figma: grey */
+}
+.resultsCount .num { color: #FEAE00; font-weight: 600; }
+
+.chipRow {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 12px;
+  border-radius: 16px;                  /* Figma: 16 */
+  border: 1px solid #555452;            /* Figma: grey #555452 */
+  font-family: 'Mazzard H', var(--font-mazzard, system-ui, sans-serif);
+  font-weight: 500;                     /* Medium */
+  font-size: 12px;                      /* Figma: 12 */
+  line-height: 99.9%;
+  text-transform: capitalize;
+  color: #FFFFFF;                       /* Figma: white */
+  background: transparent;
+  cursor: pointer;
+  transition: background-color 120ms ease, border-color 120ms ease;
+}
+.chip:hover { background: rgba(255,255,255,0.04); border-color: #7a7a78; }
+.chip .x {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 14px; height: 14px;            /* Figma: 14×14 */
+  font-size: 16px;                      /* heavier glyph than 12px text */
+  line-height: 1;
+  font-weight: 400;
+  opacity: .95;
+}
+
+.resetAll {
+  font-family: 'Mazzard H', var(--font-mazzard, system-ui, sans-serif);
+  font-weight: 500; font-size: 12px; line-height: 99.9%; text-transform: uppercase;
+  color: #5E5E5E;                       /* Figma: grey */
+  text-decoration: underline;
+  background: none; border: 0; cursor: pointer; padding: 0;
+}
+.sortBtn {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 51px;
+  height: 17px;
+  font-family: 'Mazzard H', var(--font-mazzard, system-ui, sans-serif);
+  font-weight: 500; font-size: 14px; line-height: 99.9%; text-transform: uppercase;
+  color: #FEAE00;
+  background: transparent; border: 0; cursor: pointer; padding: 0; margin-left: auto;
+}
+.sortBtn:hover { opacity: 0.85; }
+
+.cards { display: flex; flex-direction: column; gap: clamp(16px, 1.25vw, 24px); }
+
+/* SHOW MORE — Figma 1:1 @ 1920 px:
+ *   • left  margin (page edge → button left):  1130 px
+ *   • right margin (button right → page edge):  673 px
+ *   • button width auto = 117 px (= 1920 − 1130 − 673)
+ *   • top  spacing from last vehicle card:    104 px
+ *
+ *  Because the cards column spans x = 557 → 1820 (1263 px wide), the
+ *  button at x = 1130 → 1247 sits EXACTLY at the column's horizontal
+ *  centre. So we use `justify-content: center` and the natural text
+ *  width of "SHOW MORE" (≈ 117 px in Mazzard H Medium 16 px) lines up
+ *  pixel-perfect.
+ *
+ *  Font: H Medium 16, line-height 100%, uppercase, color #FEAE00,
+ *  underline. */
+.showMoreWrap {
+  display: flex;
+  justify-content: center;
+  /* Visual gap from the last card MUST equal exactly 104 px.
+   * The parent `.resultsCol` already contributes a `gap: clamp(16px, 1.67vw, 32px)`
+   * between the cards section and this wrapper, so we subtract it from
+   * the padding to keep the total at 104 across every viewport.       */
+  padding-top: calc(104px - clamp(16px, 1.67vw, 32px));
+}
+.showMore {
+  font-family: 'Mazzard H', var(--font-mazzard, system-ui, sans-serif);
+  font-weight: 500;      /* H Medium */
+  font-size: 16px;       /* fixed per Figma — никакого clamp */
+  line-height: 100%;
+  text-transform: uppercase;
+  color: #FEAE00;
+  background: transparent;
+  border: 0;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+  padding: 0;
+  transition: color 120ms ease;
+}
+.showMore:hover         { color: #FFC23A; }
+.showMore:focus-visible { outline: none; color: #FFC23A; }
+.showMore:disabled      { opacity: 0.5; cursor: not-allowed; }
+
+.statePanel {
+  width: 100%;
+  min-height: clamp(240px, 24.3vw, 467px);
+  background: #1A1B19;
+  display: flex; align-items: center; justify-content: center;
+  flex-direction: column; gap: 14px;
+  font-family: 'Mazzard H', var(--font-mazzard, system-ui, sans-serif);
+  font-weight: 500; font-size: 16px; color: #B0B0B0;
+  text-align: center; padding: 24px; box-sizing: border-box;
+}
+
+/* =========================================================================
+ *  PRICE-FILTER HONESTY BANNER (Phase B2.1)
+ *  -----------------------------------------------------------------------
+ *  Surfaces backend `meta.hidden_by_price_filter` so users understand
+ *  why a price filter narrowed (or emptied) the result set — instead of
+ *  silently misleading them. Honest, opt-out, never gaslighting.
+ * ===================================================================== */
+.priceHintBanner {
+  display: flex; align-items: center; gap: 12px;
+  width: 100%;
+  padding: 14px 18px;
+  background: #1F1D14;             /* solid (no transparency, per design rules) */
+  border: 1px solid #FEAE00;
+  border-radius: 10px;
+  font-family: 'Mazzard H', var(--font-mazzard, system-ui, sans-serif);
+  font-size: 14px;
+  color: #F2E7C9;
+  line-height: 1.4;
+  margin-bottom: 4px;
+}
+.priceHintDot {
+  flex: 0 0 8px;
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: #FEAE00;
+  box-shadow: 0 0 0 3px rgba(254,174,0,0.18);
+}
+.priceHintLink {
+  margin-left: auto;
+  background: transparent;
+  border: none;
+  padding: 6px 0;
+  color: #FEAE00;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.priceHintLink:hover { color: #FFC23A; }
+.priceHintAction {
+  background: transparent;
+  border: 1px solid #FEAE00;
+  color: #FEAE00;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 8px;
+}
+.priceHintAction:hover { background: rgba(254,174,0,0.1); color: #FFC23A; }
+@media (max-width: 768px) {
+  .priceHintBanner { flex-wrap: wrap; }
+  .priceHintLink   { margin-left: 0; }
+}
+
+/* =========================================================================
+ *  Mobile-only UI elements — hidden on desktop, shown ≤ 768 px.
+ *  Built from the Figma "Catalog Mobile" reference:
+ *    – Filter / Sort icon buttons (24×24, yellow stroke)
+ *    – Filter drawer (slide-in from the right, fills viewport)
+ *    – Backdrop scrim for the drawer
+ * ===================================================================== */
+.mobileTools     { display: none; }
+.mobileBackdrop  { display: none; }
+.mobileDrawer    { display: none; }
+.sortDropdownDesktop { display: contents; }
+.mobileSortMenu  { display: none; }
+
+/* =========================================================================
+ *  MOBILE BREAKPOINT (≤ 768 px) — Figma "Catalog Mobile".
+ *  -----------------------------------------------------------------------
+ *  Spacings (per spec):
+ *    • 12 px L/R page padding
+ *    • Breadcrumb top   = 104 px from page top (sits right under header)
+ *    • Breadcrumb font  = H Bold 12 (CATALOG accent yellow)
+ *    • Heading "CATALOG"= H Bold 24, top gap 24
+ *    • Search bar       = full-width × 36, font H Regular 14, icon 20×20
+ *    • Found-row        = H Medium 12, sort/filter icons 24×24 on the right
+ *    • Chip row         = horizontally scrollable, chips H Regular 12, h=34
+ *    • Card             = 336 × 684 (incl. CTA), gap 24 between cards
+ * ===================================================================== */
+@media (max-width: 768px) {
+  .container { padding: 0 12px; }
+
+  /* Breadcrumb under header (header height = 80; 104 - 80 = 24 padding) */
+  .breadcrumb {
+    padding-top: 24px;
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 1;
+  }
+
+  /* Title row collapses to single column */
+  .titleRow {
+    padding-top: 24px;
+    gap: 24px;
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .title {
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 1;
+  }
+
+  /* Single-column layout: filter sidebar hidden, results take full width */
+  .grid {
+    padding-top: 24px;
+    grid-template-columns: 1fr;
+    column-gap: 0;
+    row-gap: 24px;
+  }
+  /* The first grid child is the desktop CatalogFilter — hide it entirely */
+  .grid > :first-child { display: none; }
+
+  .resultsCol { gap: 16px; }
+
+  /* Results header: "FOUND X RESULTS" + sort/filter icons on one row,
+   *  chips overflow into their own scrollable row below (order: 99). */
+  .resultsHeader {
+    margin-top: 0;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .resultsCount {
+    font-size: 12px;
+    font-weight: 500;
+    flex: 1 1 auto;
+  }
+
+  /* Hide the desktop SortDropdown wrapper on mobile — its menu doesn't
+   *  match the Figma mobile spec.  Mobile uses our own sort/filter icons. */
+  .sortDropdownDesktop { display: none; }
+
+  /* Mobile tools row — sort + filter icon buttons */
+  .mobileTools {
+    display: inline-flex;
+    align-items: center;
+    gap: 16px;
+    flex: 0 0 auto;
+    margin-left: auto;
+  }
+  .mobileTools button {
+    width: 24px; height: 24px;
+    background: transparent;
+    border: 0; padding: 0;
+    cursor: pointer;
+    display: inline-flex; align-items: center; justify-content: center;
+  }
+  .mobileTools img { width: 24px; height: 24px; display: block; }
+  .mobileTools button[aria-pressed="true"] img { filter: drop-shadow(0 0 4px rgba(254,174,0,0.6)); }
+
+  /* Chip row — horizontally scrollable, chips h=34, font 12 */
+  .chipRow {
+    order: 99;                    /* push to its own row below the header */
+    flex: 0 0 100%;
+    gap: 8px;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 4px;
+  }
+  .chipRow::-webkit-scrollbar { display: none; }
+  .chip {
+    flex: 0 0 auto;
+    height: 34px;
+    padding: 0 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 400;
+  }
+  .chip .x {
+    width: 14px; height: 14px;
+    font-size: 14px;
+  }
+  .resetAll { flex: 0 0 auto; align-self: center; }
+
+  /* Cards gap */
+  .cards { gap: 24px; }
+
+  /* Show more — keep centred, smaller gap */
+  .showMoreWrap { padding-top: 24px; }
+  .showMore { font-size: 14px; }
+
+  /* ---------- Backdrop scrim (used by sort bottom-sheet) ------------ */
+  .mobileBackdrop {
+    display: block;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 1099;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 200ms ease;
+  }
+  .mobileBackdropOpen { opacity: 1; pointer-events: auto; }
+
+  /* ---------- Mobile filter sheet — slides UP from the bottom (rounded
+   *  bottom-sheet with a drag handle, NOT fullscreen).
+   *  Per Figma:
+   *    • container takes ~85 vh from the bottom edge
+   *    • border-radius 16 on top-left + top-right ONLY
+   *    • 60 × 4 grey drag-handle pill at the very top, centered
+   *    • header  "FILTERS" + ×
+   *    • content scrolls vertically (CatalogFilter from web)
+   *    • footer bar pinned to bottom: "RESET ALL" (text) + "APPLY FILTERS" (yellow)
+   * ----------------------------------------------------------------- */
+  .mobileDrawer {
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    left: 0; right: 0; bottom: 0;
+    width: 100%;
+    max-width: 100vw;
+    max-height: 85vh;
+    background: #1A1B19;                       /* unified gray (matches Figma) */
+    z-index: 1100;
+    border-top-left-radius: 16px;
+    border-top-right-radius: 16px;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    transform: translateY(100%);
+    transition: transform 280ms cubic-bezier(.2,.7,.2,1);
+    overflow: hidden;
+    overscroll-behavior: contain;
+    box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.6);
+  }
+  .mobileDrawerOpen { transform: translateY(0); }
+
+  /* Drag handle — 60 × 4 grey pill (#555452), 14 px from top, centered.
+   *  Sits on the same gray sheet background, no white halo. */
+  .mobileDrawer::before {
+    content: '';
+    display: block;
+    width: 60px;
+    height: 4px;
+    background: #555452;
+    border-radius: 2px;
+    margin: 14px auto 0 auto;
+    flex: 0 0 auto;
+  }
+
+  .mobileDrawerHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px 12px 16px;
+    border-bottom: 1px solid #2A2A2A;          /* single-pixel separator */
+    background: #1A1B19;                       /* same as sheet */
+    flex: 0 0 auto;
+  }
+  .mobileDrawerTitle {
+    font-family: 'Mazzard H', var(--font-mazzard, system-ui, sans-serif);
+    font-weight: 700;
+    font-size: 16px;
+    text-transform: uppercase;
+    color: #FFFFFF;
+    margin: 0;
+  }
+  .mobileDrawerClose {
+    width: 32px; height: 32px;
+    background: transparent;
+    border: 0;
+    color: #FFFFFF;
+    font-size: 28px;
+    line-height: 1;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Scrollable content area (CatalogFilter goes here) */
+  .mobileDrawerBody {
+    flex: 1 1 auto;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+    background: #1A1B19;                       /* same unified gray */
+  }
+
+  /* Bottom action bar — pinned, two buttons.
+   *  Layout: grid 1fr 197px → RESET ALL centered in left column,
+   *  APPLY FILTERS fixed 197px on the right.
+   *  RESET ALL  — H Medium 14, color #5E5E5E, underline.
+   *  APPLY FILTERS — yellow 197 × 45, text H Medium 14, color #010101. */
+  .mobileDrawerFooter {
+    display: grid;
+    grid-template-columns: 1fr 197px;
+    align-items: center;
+    column-gap: 16px;
+    padding: 12px 16px;
+    border-top: 1px solid #2A2A2A;
+    background: #1A1B19;
+    flex: 0 0 auto;
+  }
+  .mobileDrawerReset {
+    justify-self: center;                      /* centered inside its 1fr column */
+    background: transparent;
+    border: 0;
+    padding: 8px 4px;
+    color: #5E5E5E;                            /* Figma grey */
+    font-family: 'Mazzard H', var(--font-mazzard, system-ui, sans-serif);
+    font-weight: 500;                          /* Medium */
+    font-size: 14px;
+    text-transform: uppercase;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  .mobileDrawerApply {
+    width: 197px;                              /* Figma */
+    height: 45px;
+    border: 0;
+    border-radius: 4px;
+    background: #FEAE00;
+    color: #010101;                            /* pure black */
+    font-family: 'Mazzard H', var(--font-mazzard, system-ui, sans-serif);
+    font-weight: 500;                          /* H Medium */
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: .02em;
+    cursor: pointer;
+    transition: background-color 120ms ease;
+  }
+  .mobileDrawerApply:hover { background: #FFC83F; }
+  /* The drawer hosts the existing CatalogFilter — re-show it inside the
+   *  drawer (parent `.grid > :first-child { display: none }` would not
+   *  apply since the drawer is rendered outside the grid). */
+  .mobileDrawer > :nth-child(2) { padding: 0; }
+
+  /* ---------- Mobile sort sheet — slides UP from the bottom -----------
+   *  Same visual language as the filter sheet:
+   *    • gray background #1A1B19
+   *    • 16 px top radius (bottom-anchored, so no bottom radius)
+   *    • drag handle 60 × 4 (#555452), 14 px from top
+   *    • header "SORT" + ×, single separator line below
+   *    • options Mazzard H Regular 14, dividers between Figma groups
+   *    • selected option has a yellow check-mark on the left
+   * ----------------------------------------------------------------- */
+  .mobileSortMenu {
+    display: none;
+    position: fixed;
+    left: 0; right: 0; bottom: 0;
+    background: #1A1B19;
+    border-top-left-radius: 16px;
+    border-top-right-radius: 16px;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    z-index: 1100;
+    padding: 0;
+    transform: translateY(100%);
+    transition: transform 240ms cubic-bezier(.2,.7,.2,1);
+    box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.6);
+  }
+  .mobileSortMenuOpen {
+    display: block;
+    transform: translateY(0);
+  }
+  /* Drag handle 60×4, identical to filter sheet */
+  .mobileSortMenu::before {
+    content: '';
+    display: block;
+    width: 60px;
+    height: 4px;
+    background: #555452;
+    border-radius: 2px;
+    margin: 14px auto 0 auto;
+  }
+  .mobileSortHeader {
+    display: flex;
+    align-items: center;                /* X centered with SORT text */
+    justify-content: space-between;
+    padding: 16px 16px;                 /* gives ≈ 73 px total header w/ handle */
+    font-family: 'Mazzard H', var(--font-mazzard, system-ui, sans-serif);
+    font-weight: 600;                   /* Figma: SemiBold */
+    font-size: 18px;                    /* Figma: 18 */
+    line-height: 21px;                  /* Figma row: 360 × 21 hug */
+    text-transform: uppercase;
+    color: #FFFFFF;
+    border-bottom: 1px solid #2A2A2A;
+    background: #1A1B19;
+  }
+  .mobileSortHeader > span { line-height: 21px; display: inline-flex; align-items: center; }
+  .mobileSortHeader button {
+    background: transparent;
+    border: 0;
+    color: #FFFFFF;
+    cursor: pointer;
+    width: 16px;
+    height: 16px;
+    padding: 0;
+    margin: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  /* List wrapper — Figma "Sort mobile" frame is 328 × 336 with 16 px L/R
+   *  padding, so the inner column is 296 wide.  We use the full width
+   *  and let row padding do the spacing. */
+  .mobileSortList {
+    padding: 8px 16px 16px 16px;
+    display: flex;
+    flex-direction: column;
+  }
+  .mobileSortOption {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    padding: 14px 0;
+    background: transparent;
+    border: 0;
+    color: #C8C8C8;
+    font-family: 'Mazzard H', var(--font-mazzard, system-ui, sans-serif);
+    font-weight: 400;                   /* Figma: Regular */
+    font-size: 14px;
+    line-height: 1;
+    text-align: left;
+    cursor: pointer;
+    text-transform: capitalize;
+  }
+  .mobileSortOption[data-active="true"] { color: #FFFFFF; }
+  .mobileSortOption:hover { background: rgba(255,255,255,0.04); }
+  .mobileSortCheck {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 12px;
+    height: 12px;
+    color: #FEAE00;
+    flex-shrink: 0;
+  }
+  .mobileSortCheckHidden { visibility: hidden; }
+  .mobileSortDivider {
+    height: 1px;
+    background: #555452;          /* Figma grey line */
+    border: 0;
+    margin: 8px 0;
+  }
+
+  /* Per Figma "Catalog Mobile": 128 px gap from "Show More" button to
+   * the top edge of the consultation section's gray background. */
+  [data-testid="catalog-consultation-spacer"] { height: 128px !important; }
+}

@@ -1,0 +1,173 @@
+/* =============================================================================
+ * NavigationHeader \u2014 pixel spec (May 2026)
+ *
+ *   \u2022 padding-top    : 52  (gap from header bottom \u2192 breadcrumb top)
+ *   \u2022 padding-left   : 100
+ *   \u2022 padding-right  : 100
+ *   \u2022 padding-bottom : 150 (icon row bottom \u2192 next image-grid block top)
+ *   \u2022 breadcrumb \u2192 title gap : 72
+ *   \u2022 title font     : 80px Mazzard
+ *   \u2022 right-side icons : 24\u00d724, gap 24, right anchor = padding-right (100)
+ * ====================================================================== */
+/*
+ * STRICT pixel spec (May 2026 Figma reference) at desktop (≥ 1280 px):
+ *
+ *   Vertical (measured from main public header bottom):
+ *     • header_bottom → breadcrumb_top     : 52 px   (padding-top)
+ *     • breadcrumb height (20px font, 99.9% line-height) ≈ 20 px
+ *     • breadcrumb_bottom → title_top      : 76 px   (gap)
+ *           → header_bottom → title_top    : 148 px  ✔ (52 + 20 + 76)
+ *     • title height (80px font, 99.9% line-height) ≈ 80 px
+ *     • title_bottom → ImageGrid_top       : 142 px  (padding-bottom)
+ *           → header_bottom → ImageGrid_top: 370 px  ✔ (148 + 80 + 142)
+ *
+ *   Horizontal:
+ *     • padding-left  : 100 px
+ *     • padding-right : 100 px
+ *
+ *   Typography (Mazzard H family):
+ *     • Breadcrumb (HOME / CATALOG / Car name) : 20 px H SemiBold (600)
+ *     • Page title (H1)                        : 80 px H Bold     (700)
+ *
+ *   Icons (top-right of title row, compare + favorite):
+ *     • 40 × 40 px each, 24 px gap between them.
+ */
+.navigationHeader {
+  align-self: stretch;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: 52px 100px 142px;        /* top | sides | bottom — strict px */
+  box-sizing: border-box;
+  text-align: left;
+  font-family: var(--font-mazzard);
+  color: var(--color-dimgray-100);
+}
+.headerInner {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 76px;                         /* breadcrumb → title — strict */
+  width: 100%;
+}
+
+/* breadcrumb — H SemiBold 20 px (per spec) */
+.breadcrumb {
+  margin: 0;
+  font-size: 20px;
+  line-height: 99.9%;
+  text-transform: uppercase;
+  font-weight: 600;                  /* Mazzard H SemiBold */
+  font-family: inherit;
+  color: var(--color-dimgray-100);   /* #5E5E5E — HOME / CATALOG */
+}
+.span { color: var(--color-black); }
+.lucidMotorsAir { color: var(--color-orange-100); }   /* #FEAE00 — car name */
+
+/* Breadcrumb links — HOME / CATALOG are now react-router <Link>.
+ * Strip the default <a> chrome (blue + underline) and inherit
+ * the breadcrumb typography. Add a subtle hover/focus affordance. */
+.crumbLink {
+  color: inherit;
+  text-decoration: none;
+  cursor: pointer;
+  transition: color 150ms ease;
+}
+.crumbLink:hover,
+.crumbLink:focus-visible {
+  color: var(--color-orange-100);   /* #FEAE00 on hover */
+  outline: none;
+}
+.crumbLink:focus-visible {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+.crumbSep {
+  color: inherit;                   /* same #5E5E5E as breadcrumb */
+  user-select: none;
+}
+
+/* title row — H1 + right-side action icons */
+.titleRow {
+  align-self: stretch;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 32px;
+  flex-wrap: nowrap;
+}
+.title {
+  margin: 0;
+  font-size: 80px;
+  line-height: 99.9%;
+  font-weight: 700;                  /* Mazzard H Bold */
+  font-family: var(--font-mazzard);
+  color: var(--color-white);
+  display: inline-block;
+  flex: 0 1 auto;
+}
+
+/* icons — strict 40×40, gap 24 */
+.iconRow {
+  display: inline-flex;
+  align-items: center;
+  gap: 24px;
+  flex-shrink: 0;
+}
+.iconBtn {
+  cursor: pointer;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  position: relative;
+  border-radius: 50%;
+  transition: background-color 0.15s ease, opacity 0.15s ease;
+}
+.iconBtn:hover { opacity: 0.85; }
+.iconBtn:disabled { opacity: 0.55; cursor: default; }
+/* Active state — when a car is in the user's Favorites or Compare list,
+ * the corresponding header button gets a subtle orange-tinted background
+ * inside the existing 40 × 40 frame so it reads as "ON" without changing
+ * the SVG itself (the icons are visual-design owned). */
+.iconBtnActive {
+  background-color: rgba(254, 174, 0, 0.18);
+}
+.iconBtnActive:hover { background-color: rgba(254, 174, 0, 0.26); opacity: 1; }
+.iconImg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* ── Responsive fallback ──────────────────────────────────────────────
+ * Single breakpoint for tablets & smaller (< 1280 px). Proportional
+ * scaling via clamp so spacing/typography degrades gracefully but the
+ * desktop layout stays strictly pixel-precise above 1280 px.
+ */
+@media screen and (max-width: 1279px) {
+  .navigationHeader {
+    padding:
+      clamp(24px, 4.06vw, 52px)
+      clamp(16px, 7.81vw, 100px)
+      clamp(48px, 11.09vw, 142px);
+  }
+  .headerInner   { gap: clamp(24px, 5.93vw, 76px); }
+  .breadcrumb    { font-size: clamp(14px, 1.56vw, 20px); }
+  .title         { font-size: clamp(32px, 6.25vw, 80px); }
+  .iconRow       { gap: clamp(12px, 1.87vw, 24px); }
+  .iconBtn       { width: clamp(24px, 3.13vw, 40px); height: clamp(24px, 3.13vw, 40px); }
+}
+@media screen and (max-width: 450px) {
+  /* Mobile portrait — only override title to single small size. */
+  .navigationHeader { padding: 16px 16px 48px; }
+  .headerInner { gap: 18px; }
+  .title { font-size: 24px; }
+  .breadcrumb { font-size: 12px; }
+  .iconBtn { width: 24px; height: 24px; }
+  .iconRow { gap: 12px; }
+}

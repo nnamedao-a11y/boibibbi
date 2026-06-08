@@ -1,0 +1,1003 @@
+/* =========================================================================
+ *  BlogPage — "THE IMPORT INSIDER" (Figma May 2026, 1920 reference)
+ *
+ *  Strict pixel spec (user-provided session 24+25, 1920):
+ *    Outer L/R padding ......... 100 px
+ *    Header → HOME/BLOG breadcrumb       =  52 px
+ *    Header → "THE IMPORT / INSIDER"     = 148 px
+ *    Header → description text (right)   = 314 px
+ *    Brackets [ ] ........................ #555452, 15 × 82, right gap 100
+ *    HOME / BLOG breadcrumb ............. H7 Bold 20  (HOME white, BLOG #FEAE00)
+ *    THE / INSIDER ...................... H Bold 64 white
+ *    IMPORT ............................. H Bold 64 #FEAE00
+ *    Description first sentence (NO WRAP) H Medium 24 #FEAE00
+ *    Description tail ................... H Medium 24 #FFFFFF
+ *    Filter pills ....................... padding 12 v / 24 h, radius 24
+ *                                          H SemiBold 16, color #555452 (gray)
+ *                                          active = bg #FEAE00 / text #18181B
+ *    "FEATURED THIS WEEK" / "LATEST ARTICLES"
+ *                                          H Regular 14 #555452 (gray)
+ *    Tag pill ........................... H Regular 12 #FEAE00
+ *    Card big title ..................... H Bold 40 white
+ *    Card excerpt ....................... H Regular 14 #949494
+ *    Date "May 08" ...................... H Regular 20 #949494
+ *    READ ARTICLE ....................... H Medium 14 #FEAE00 + arrow 24×24
+ *    Featured card image ................ 513 × 424
+ *    Featured ↔ side-stack gap .......... 44 px
+ *    Card padding ....................... 24 all
+ *    Hover .............................. yellow accent
+ *
+ *  PublicLayout already supplies the shared header + footer.  This file
+ *  intentionally renders ONLY the inner page content.
+ * ====================================================================== */
+
+.page {
+  background: #000;
+  color: #FFFFFF;
+  font-family: 'Mazzard H', var(--font-mazzard, system-ui, sans-serif);
+  width: 100%;
+  min-width: 0;
+}
+
+.container {
+  max-width: 1920px;
+  margin: 0 auto;
+  padding: 0 clamp(24px, 5.21vw, 100px);   /* 100 @1920, fluid below */
+  box-sizing: border-box;
+}
+
+/* ------------------------ Breadcrumb — 52 px from page top ----------- */
+.breadcrumb {
+  padding-top: 52px;                       /* header → breadcrumb top = 52 px (user spec) */
+  font-family: 'Mazzard H', var(--font-mazzard, system-ui, sans-serif);
+  font-weight: 700;
+  font-size: 20px;                         /* H7 Bold 20 */
+  line-height: 99.9%;
+  text-transform: uppercase;
+  color: #FFFFFF;
+}
+.breadcrumb a,
+.breadcrumb a:visited { color: #FFFFFF; text-decoration: none; }
+.breadcrumb .sep    { color: #FEAE00; padding: 0 4px; }
+.breadcrumb .accent { color: #FEAE00; }
+
+/* ----------------------- HERO -------------------------------------- *
+ *  At 24 px H Medium the yellow sentence
+ *  "Expert insights on buying cars from USA & Korean auctions." renders
+ *  ~1567 px wide — wider than the content area minus the title.  So we
+ *  put the title on its own row and the description on the row below,
+ *  spanning the FULL content width (1720 @1920).  The description block
+ *  itself stays right-aligned so visually it still sits on the right.
+ *  Vertical anchors are preserved exactly (user spec):
+ *    title  → 148 from header (hero margin-top 76 + breadcrumb 72)
+ *    desc   → 314 from header (title bottom 288 + .heroDescCol mt 26)
+ *  ------------------------------------------------------------------ */
+.hero {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;        /* title sizes to content, no stretch */
+  margin-top: 76px;                /* 52 + 20 + 76 = 148 from header */
+  padding-top: 0;
+}
+
+.heroTitleCol {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(8px, 0.62vw, 12px);
+  flex: 0 0 auto;
+  width: max-content;             /* size to widest text line, no shrink */
+  max-width: 100%;
+}
+.heroTitleRow {
+  display: flex;
+  align-items: baseline;
+  gap: clamp(16px, 1.25vw, 24px);
+  flex-wrap: nowrap;             /* never break "THE IMPORT" onto two lines */
+  white-space: nowrap;
+  width: max-content;
+}
+.titleWord {
+  font-family: 'Mazzard H', var(--font-mazzard, system-ui, sans-serif);
+  font-weight: 700;                        /* H Bold */
+  font-size: clamp(36px, 3.33vw, 64px);    /* 64 @1920 */
+  line-height: 99.9%;
+  text-transform: uppercase;
+  color: #FFFFFF;
+  letter-spacing: 0;
+}
+.titleAccent { color: #FEAE00; }
+
+/* Right column — description block — top-distance 314 from page top (header bottom).
+ * Hero starts at y=148; this padding pushes desc to y = 148 + 166 = 314.
+ * `flex: 0 0 auto` + `margin-left: auto` floats the block to the right while
+ * letting its width follow content (so the nowrap first sentence fits). */
+.heroDescCol {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-end;     /* bracket block hugs the right edge */
+  align-self: stretch;            /* full content-width row */
+  margin-top: 26px;              /* title bottom (288) + 26 = 314 from header */
+  min-width: 0;
+}
+
+/* Brackets + description ---------------------------------------------- */
+.bracketWrap {
+  display: flex;
+  align-items: stretch;                       /* brackets exactly match descText height */
+  gap: clamp(12px, 1.04vw, 20px);
+  max-width: 100%;
+}
+/* Brackets are CSS-rendered divs sized to strictly match the description text
+ * height.  At 1920 (font 24, line-height 1.14, 3 lines) text = ~82 px, so
+ * bracket height = 82 px (user spec 15 × 82).  The bracket height scales
+ * down proportionally with the font on narrower viewports so the top/bottom
+ * strokes always sit exactly on the top of line 1 and the bottom of line 3. */
+.bracket {
+  width: 15px;
+  height: clamp(54px, 4.27vw, 82px);          /* 82 @1920 ↔ 54 @1280, scales with font */
+  flex: 0 0 auto;
+  display: block;
+  border: 3px solid #555452;
+  border-right: 0;                            /* default = left bracket [ */
+  align-self: stretch;                        /* fills the row height = descText height */
+  box-sizing: border-box;
+}
+.bracketRight {
+  border: 3px solid #555452;
+  border-left: 0;                             /* right bracket ] */
+}
+
+.descText {
+  margin: 0;
+  font-family: 'Mazzard H', var(--font-mazzard, system-ui, sans-serif);
+  font-weight: 500;                           /* H Medium */
+  font-size: clamp(16px, 1.25vw, 24px);       /* 24 @1920 → 16 @1280 */
+  /* line-height 1.14 chosen so that 3 lines stack to ≈82 px at 24 px font
+   * (3 × 24 × 1.14 ≈ 82) — matches the 82 px tall bracket exactly. */
+  line-height: 1.14;
+  text-transform: uppercase;
+  color: #FFFFFF;                             /* default = white (descFirst overrides to yellow) */
+  text-align: left;
+  width: max-content;
+  max-width: 100%;
+  padding: 0;                                 /* no extra vertical padding — brackets meet text edges */
+  box-sizing: border-box;
+}
+.descFirst {
+  /* Inline element so it sits on the same line-box rhythm as the white
+   * lines below — guarantees identical gap between line 1↔2 and line 2↔3. */
+  display: inline;
+  white-space: nowrap;                        /* yellow always on a single line */
+  color: #FEAE00;                             /* first sentence yellow */
+}
+.descTail {
+  /* Legacy class — no longer used after refactor.  Kept as no-op so any
+   * leftover references do not break compilation. */
+}
+
+/* -------------------------- Filter pills ----------------------------- *
+ *  Anchor: header → filters top = 526 px (user spec).
+ *  Hero bottom @1920 is ~398 (right col with desc + content), so we add
+ *  ~128 px above filters.  Empirically tuned to land at 526.
+ *  ------------------------------------------------------------------- */
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: clamp(8px, 0.83vw, 16px);
+  margin-top: 132px;
+}
+.pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  /* Symmetric padding per user spec — 12 top / 12 bottom / 24 left / 24 right.
+   * Text is now centered both vertically and horizontally inside the pill. */
+  padding: 12px 24px;
+  border-radius: 24px;
+  border: 1px solid #272725;                /* subtle border for inactive */
+  background: transparent;
+  color: #555452;                           /* GRAY per user spec */
+  font-family: 'Mazzard H', var(--font-mazzard, system-ui, sans-serif);
+  font-weight: 600;                         /* H SemiBold 16 */
+  font-size: 16px;
+  line-height: 1;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background-color 120ms ease, border-color 120ms ease, color 120ms ease;
+  white-space: nowrap;
+}
+.pill:hover {
+  border-color: #FEAE00;
+  color: #FEAE00;
+}
+.pillActive {
+  background: #FEAE00;
+  border-color: #FEAE00;
+  color: #18181B;                            /* dark text on yellow */
+}
+.pillActive:hover {
+  background: #FFC83F;
+  border-color: #FFC83F;
+  color: #18181B;
+}
+
+/* ------------------ Section header ("FEATURED THIS WEEK" / "LATEST") --
+ *  Anchor: header → "FEATURED THIS WEEK" label top = 625 px (user spec).
+ *  Filters bottom @1920 ≈ 566 (526 + 40 pill height), so margin-top 59. */
+.sectionHeader {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  margin-top: 57px;
+}
+.sectionLabel {
+  flex: 0 0 auto;
+  font-family: 'Mazzard H', var(--font-mazzard, system-ui, sans-serif);
+  font-weight: 400;                          /* H Regular per user spec */
+  font-size: 14px;                           /* H Regular 14 */
+  line-height: 99.9%;
+  text-transform: uppercase;
+  color: #555452;                            /* GRAY per user spec */
+  letter-spacing: 0;
+  white-space: nowrap;
+}
+.divider {
+  flex: 1 1 auto;
+  height: 1px;
+  background: #272725;
+}
+
+/* --------------------- Featured-row layout --------------------------- *
+ *  Strict spec (user, session 27):
+ *    Total row size       1724 × 476 px (right-aligned in container)
+ *    Main card            1098 × 476  (inside: img 513×424, padding 24, gap 24)
+ *    Side stack           606  × 476  (two cards stacked, 20 px between them)
+ *    Main ↔ side gap      20 px
+ *  Columns shrink proportionally (1098:606 fr-ratio) below 1724 px content
+ *  width — image inside main card scales with the column so the info
+ *  column never gets squeezed under ~24% of card width.
+ * ------------------------------------------------------------------- */
+.featuredRow {
+  display: grid;
+  grid-template-columns: minmax(0, 1098fr) minmax(0, 606fr);
+  column-gap: 20px;
+  margin-top: 35px;
+  width: 100%;
+  max-width: 1724px;
+  margin-left: auto;                          /* right-align inside container */
+}
+
+.featuredCard {
+  background: #1D1D1B;
+  /* Unified card radius across the site = 8 px (matches catalog,
+   * top-deals, similar cars, cost calculator, have-a-question). */
+  border-radius: 8px;
+  padding: 24px;                              /* inner text padding 24 (user spec) */
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  gap: 24px;                                  /* image ↔ info — 24 (user spec) */
+  height: 476px;                              /* fixed card height (user spec) */
+  cursor: pointer;
+  /* Yellow outline appears ONLY on hover — never permanently (user req). */
+  outline: 1px solid transparent;
+  transition: outline-color 150ms ease, background-color 150ms ease;
+  box-sizing: border-box;
+  min-width: 0;
+}
+.featuredCard:hover { outline-color: #FEAE00; }
+
+/* Image scales with main-card column to keep info column readable on
+ * narrow desktops.  Card height is 476 and outer padding is 24 → inner
+ * height = 428.  We force image height to fill that inner height so its
+ * bottom edge sits exactly at y = card.bottom − 24, which is also where
+ * the info-column bottom row (date + READ ARTICLE) lands — therefore
+ * date and image-bottom are visually aligned (user spec). */
+.featuredImage {
+  width: clamp(280px, 26.72vw, 513px);
+  height: 428px;                               /* inner card height = align with info bottom */
+  flex: 0 0 auto;
+  object-fit: cover;
+  display: block;
+  background: #0F0F0F;
+  align-self: flex-start;
+}
+
+.featuredInfo {
+  flex: 1 1 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-self: stretch;                         /* fill the 428px inner height */
+  min-width: 0;
+  gap: 24px;
+  padding: 0;
+}
+.featuredTop {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-width: 0;
+}
+
+.tagPill {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 16px;
+  border-radius: 20px;
+  background: #2C2418;
+  color: #FEAE00;
+  font-family: 'Mazzard H', var(--font-mazzard, system-ui, sans-serif);
+  font-weight: 400;                          /* H Regular 12 */
+  font-size: 12px;
+  line-height: 99.9%;
+  text-transform: uppercase;
+}
+
+.featuredTitle {
+  margin: 0;
+  font-family: 'Mazzard H', var(--font-mazzard, system-ui, sans-serif);
+  font-weight: 700;                          /* H Bold 40 */
+  font-size: 40px;
+  line-height: 110%;
+  color: #FFFFFF;
+  text-transform: none;
+  /* Clamp to 3 visual lines so the title never pushes the date/CTA out. */
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.featuredExcerpt {
+  margin: 0;
+  font-family: 'Mazzard H', var(--font-mazzard, system-ui, sans-serif);
+  font-weight: 400;                          /* H Regular 14 */
+  font-size: 14px;
+  line-height: 130%;
+  color: #949494;
+}
+
+.featuredBottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: nowrap;
+}
+.dateRow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #949494;                           /* user spec: #949494 */
+  font-family: 'Mazzard H', var(--font-mazzard, system-ui, sans-serif);
+  font-weight: 400;                          /* H Regular */
+  font-size: 12px;                           /* user spec: H Regular 12 */
+  line-height: 1;
+  white-space: nowrap;
+}
+.dateRow .dot     { color: #949494; }
+.dateRow .minRead { color: #949494; font-size: 12px; }
+
+.readBtn {
+  border: 0;
+  background: transparent;
+  color: #FEAE00;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 0;
+  font-family: 'Mazzard H', var(--font-mazzard, system-ui, sans-serif);
+  font-weight: 500;                          /* H Medium 14 */
+  font-size: 14px;
+  line-height: 99.9%;
+  text-transform: uppercase;
+  transition: color 120ms ease, gap 120ms ease;
+}
+.readBtn:hover { color: #FFC83F; gap: 12px; }
+.readBtnArrow  { width: 24px; height: 24px; display: inline-block; }
+
+/* Side stack: 2 cards stacked, total height matches featured card (476).
+ * (476 - 20 gap) / 2 = 228 each.  20 px gap between them per user spec. */
+.featuredSide {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  height: 476px;
+}
+.sideCard {
+  background: #1D1D1B;
+  border-radius: 8px;                         /* unified card radius (user spec) */
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  flex: 1 1 0;
+  cursor: pointer;
+  /* Yellow outline appears ONLY on hover (user req). */
+  outline: 1px solid transparent;
+  transition: outline-color 150ms ease;
+  box-sizing: border-box;
+  min-height: 0;
+}
+.sideCard:hover { outline-color: #FEAE00; }
+/* `sideCardActive` is intentionally left as a no-op — the previous design
+ * applied a permanent yellow outline to the "highlighted" card which the
+ * user explicitly asked to remove.  The class is kept so the JSX does not
+ * need to change, but no visual border is drawn. */
+.sideCardActive { /* no visual change */ }
+.sideCardHead {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.sideCardTitle {
+  margin: 0;
+  font-family: 'Mazzard H', var(--font-mazzard, system-ui, sans-serif);
+  font-weight: 700;
+  font-size: 22px;
+  line-height: 110%;
+  text-transform: uppercase;
+  color: #FFFFFF;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.sideCardExcerpt {
+  margin: 0;
+  font-family: 'Mazzard H', var(--font-mazzard, system-ui, sans-serif);
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 130%;
+  color: #949494;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* ----------------- LATEST ARTICLES grid ------------------------------
+ *  Strict spacing spec (user, session 28):
+ *    • bottom of featured row  → gray divider line = 60.5 px
+ *    • gray divider line       → first grid card   = 60.5 px
+ *    • grid card padding (inner)                   = 24 px
+ *    • grid inter-card gap (horizontal & vertical) = 20 px
+ *    • page L/R padding (already on .container)    = 100 px @1920
+ *
+ *  Implementation note: sectionHeader = label + divider laid out as a flex
+ *  row whose height equals the label's line-box (≈ 14 px).  The divider is
+ *  vertically centred → its centre is sectionHeader.top + ~7 px.  We compen-
+ *  sate by subtracting that half-height from both margins so the *visual*
+ *  distance from the gray line is exactly 60.5 px.
+ * --------------------------------------------------------------------- */
+.latestRow {
+  margin-top: 53.5px;                          /* 60.5 − 7  →  card.bottom → divider line = 60.5 px */
+}
+.latestRow .sectionHeader { margin-top: 0; }   /* divider positioned by latestRow margin alone */
+
+.latestGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px 20px;                              /* 20 vertical + 20 horizontal (user spec) */
+  margin-top: 53.5px;                          /* 60.5 − 7  →  divider line → first card top = 60.5 px */
+}
+.gridCard {
+  background: #1D1D1B;
+  border-radius: 8px;                         /* unified card radius (user spec) */
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  cursor: pointer;
+  /* Yellow outline appears ONLY on hover (user req). */
+  outline: 1px solid transparent;
+  transition: outline-color 150ms ease;
+  height: 476px;                              /* fixed card height per user spec */
+  box-sizing: border-box;
+  overflow: hidden;
+}
+.gridCard:hover { outline-color: #FEAE00; }
+.gridImg {
+  width: 100%;
+  height: 240px;                              /* leaves ~188px for the text block within 476 */
+  object-fit: cover;
+  display: block;
+  background: #0F0F0F;
+  flex: 0 0 240px;
+}
+.gridMeta {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+.gridTitle {
+  margin: 0;
+  font-family: 'Mazzard H', var(--font-mazzard, system-ui, sans-serif);
+  font-weight: 700;
+  font-size: 22px;
+  line-height: 110%;
+  text-transform: uppercase;
+  color: #FFFFFF;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.gridExcerpt {
+  margin: 0;
+  font-family: 'Mazzard H', var(--font-mazzard, system-ui, sans-serif);
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 130%;
+  color: #949494;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Loading / empty states inside featured row */
+.loadingRow, .emptyRow {
+  margin-top: 35px;
+  padding: 60px 0;
+  text-align: center;
+  font-family: 'Mazzard H', var(--font-mazzard, system-ui, sans-serif);
+  font-size: 16px;
+  color: #555452;
+  background: #1D1D1B;
+  border-radius: 4px;
+  border: 1px dashed #272725;
+}
+
+/* ------------------ Show more ----------------------------------------
+ *  H Medium 16 px, centered.  The user-spec anchor "2519 px from header
+ *  top to button center" is automatically satisfied because every block
+ *  above the button is already anchored to that same spec — we only
+ *  enforce the consistent visual spacing here (76 px from the last grid
+ *  row, matching the gap before "FEATURED THIS WEEK").
+ * --------------------------------------------------------------------*/
+.showMoreWrap {
+  display: flex;
+  justify-content: center;
+  padding-top: 76px;
+}
+.showMore {
+  background: transparent;
+  border: 0;
+  color: #FEAE00;
+  font-family: 'Mazzard H', var(--font-mazzard, system-ui, sans-serif);
+  font-weight: 500;                       /* H Medium */
+  font-size: 16px;
+  line-height: 100%;
+  text-transform: uppercase;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+  padding: 0;
+  transition: color 120ms ease;
+}
+.showMore:hover { color: #FFC83F; }
+.showMore:disabled {
+  /* When everything in the latest grid is already visible we keep the button
+   * rendered (for layout symmetry per user spec) but make it non-interactive
+   * while preserving the visual style — color stays yellow, cursor reverts
+   * to default. */
+  cursor: default;
+  opacity: 1;
+}
+.showMore:disabled:hover { color: #FEAE00; }
+
+/* ------------ Free consultation block wrapper -----------------------
+ *  User spec (revised, session 31):
+ *    • SHOW MORE button bottom        → block top                    = 274 px
+ *    • Section size                   = 1920 × 1780 (full bleed)
+ *    • "Free consultation" (h3) bot.  → form top                     = 128 px
+ *    • SEND REQUEST button bottom     → "Have a question?" card top  = 128 px (revised from 680)
+ *    • Contact card bottom            → site footer top              = 161 px
+ *
+ *  We override <CatalogConsultationBlock /> via its public data-testid
+ *  selectors so the same component keeps working unchanged on /catalog.
+ * -------------------------------------------------------------------*/
+.consultWrap {
+  margin-top: 274px;                        /* SHOW MORE bottom → block top (user spec) */
+}
+
+/* Mobile: 128 px gap from preceding content to consultation block
+ * (matches the /catalog mobile spec). */
+@media (max-width: 768px) {
+  .consultWrap { margin-top: 128px; }
+}
+
+/* Desktop-only overrides — on mobile the shared CatalogConsultationBlock
+ * mobile @media rules take effect instead (Figma "Form mobile"). */
+@media (min-width: 769px) {
+  .consultWrap :global([data-testid="catalog-consultation-section"]) {
+    height: 1780px !important;                 /* 1920 × 1780 fixed bleed (user spec) */
+    min-height: 1780px !important;
+    padding-top: 172px !important;
+    padding-bottom: 161px !important;          /* contact card → footer */
+    box-sizing: border-box;
+  }
+  .consultWrap :global([data-testid="catalog-consultation-form"]) {
+    margin-top: 128px !important;              /* h3 'Free consultation' → form top = 128 (user spec) */
+  }
+  .consultWrap :global([data-testid="catalog-consultation-contact"]) {
+    margin-top: 128px !important;              /* SEND REQUEST → 'Have a question?' = 128 (revised user spec) */
+  }
+}
+
+/* Legacy single-button consult placeholder retained for non-blog pages
+ * that still reference these class names.  Keeping the rules avoids
+ * stale-CSS regressions until those callers are migrated. */
+.consultBlock {
+  background: #1D1D1B;
+  padding: 172px 0 161px;
+  text-align: center;
+  margin-top: clamp(80px, 6.25vw, 120px);
+}
+.consultTitle {
+  font-family: 'Mazzard H', var(--font-mazzard, system-ui, sans-serif);
+  font-weight: 700;
+  font-size: 80px;
+  line-height: 99.9%;
+  text-transform: uppercase;
+  color: #FEAE00;
+  margin: 0 0 32px;
+}
+.consultSubtitle {
+  font-family: 'Mazzard H', var(--font-mazzard, system-ui, sans-serif);
+  font-weight: 400;
+  font-size: 80px;
+  line-height: 99.9%;
+  color: #FFFFFF;
+  margin: 0 0 64px;
+}
+.consultLink {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 32px;
+  background: #FEAE00;
+  color: #18181B;
+  border-radius: 6px;
+  border: 0;
+  font-family: 'Mazzard H', var(--font-mazzard, system-ui, sans-serif);
+  font-weight: 500;
+  font-size: 14px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background-color 120ms ease;
+}
+.consultLink:hover { background: #FFC83F; }
+
+/* =========================================================================
+ *  Narrow desktop fallbacks — keep gaps reasonable.
+ *  The yellow first sentence keeps `nowrap` for the entire desktop range
+ *  (≥1000 px viewport).  Below that we explicitly allow it to wrap.
+ *  Mobile (<900 px) is out of scope for this initial pass per user request.
+ * ===================================================================== */
+@media (max-width: 1000px) {
+  .descFirst        { white-space: normal; } /* allow wrap only on tiny screens */
+}
+@media (max-width: 1100px) {
+  .featuredRow      { grid-template-columns: minmax(0, 1fr); column-gap: 0; row-gap: 32px; }
+  .featuredCard     { height: auto; min-height: 420px; flex-direction: column; }
+  .featuredImage    { width: 100%; max-width: 100%; height: auto; aspect-ratio: 513 / 424; }
+  .featuredSide     { height: auto; }
+  .latestGrid       { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+
+/* =========================================================================
+ *  MOBILE LAYOUT (≤ 768 px viewport) — Figma "Blog Mobile" frame.
+ *  ──────────────────────────────────────────────────────────────────────
+ *  Container: 360 wide, L/R padding 12 px, between-blocks 24 px.
+ *  Hero block (336 × ~76 hug):
+ *    • HOME / BLOG breadcrumb : H SemiBold 12 (BLOG accent yellow)
+ *    • "THE IMPORT INSIDER"   : H Bold     24 (IMPORT yellow)
+ *    • "EXPERT INSIGHTS …"    : H Medium   16, yellow first sentence,
+ *                                            white tail.
+ *  Spacings:
+ *    • breadcrumb → title       : 24
+ *    • title → description      : 24
+ *    • description → filters    : 32
+ *    • filters → "FEATURED THIS WEEK" : 32
+ *    • section label → first card     : 24
+ *    • between cards                  : 24
+ *    • card inner padding             : 16
+ *    • tag → title                    : 16
+ *    • title → excerpt                : 12
+ *  Card geometries:
+ *    • Featured card 336 × auto (image 336 × 224, rounded 8 top corners)
+ *    • Sub-cards    336 × 168 (smaller, horizontal layout image+text)
+ *    • Latest grid cards: 336 × auto, 1-column stack
+ *  Typography (inside cards):
+ *    • Tag pill (MARKET ANALYTICS)    : H Regular 10, yellow
+ *    • Date  (May 08, 2026)           : H Regular 12, grey
+ *    • "9 min read"                   : H Regular 12, grey
+ *    • Title  (Best family SUVs to…)  : H Bold    20, white
+ *    • Excerpt                        : H Regular 14, grey/white
+ *  ====================================================================== */
+@media (max-width: 768px) {
+  /* ── Container & breadcrumb ──────────────────────────────────────── */
+  .container {
+    max-width: 100%;
+    padding: 0 12px;
+    box-sizing: border-box;
+  }
+  .breadcrumb {
+    padding-top: 24px;
+    font-family: 'Mazzard H', var(--font-mazzard, system-ui, sans-serif);
+    font-weight: 600;                /* SemiBold */
+    font-size: 12px;
+    line-height: 1.2;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+  }
+
+  /* ── Hero ────────────────────────────────────────────────────────── */
+  .hero {
+    margin-top: 24px;
+    flex-direction: column;
+    align-items: stretch;            /* title stays left, desc centers itself */
+    gap: 24px;
+    padding: 0;
+  }
+  .heroTitleCol {
+    width: 100%;
+    padding: 0;
+    align-items: flex-start;         /* "THE IMPORT INSIDER" stays LEFT-aligned */
+  }
+  .heroTitleRow {
+    flex-wrap: wrap;
+    gap: 6px;
+    justify-content: flex-start;     /* left-aligned title row */
+    width: auto;
+  }
+  .titleWord {
+    font-size: 24px;                 /* H Bold 24 */
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: 0;
+    text-align: left;
+  }
+  .heroDescCol {
+    width: 100%;
+    padding: 0;
+    justify-content: center;         /* center description block horizontally */
+  }
+  .bracketWrap {
+    gap: 0;
+    width: 100%;
+    justify-content: center;
+  }
+  .bracket, .bracketRight { display: none; }      /* drop large desktop brackets */
+  .descText {
+    font-family: 'Mazzard H', var(--font-mazzard, system-ui, sans-serif);
+    font-size: 16px;                 /* H Medium 16 */
+    font-weight: 500;
+    line-height: 1.25;
+    text-transform: uppercase;
+    text-align: center;              /* description text — CENTERED (user spec) */
+    width: 100%;
+    max-width: 100%;
+  }
+  /* Yellow opener flows inline with the rest — `<br />` in JSX handles
+   * line-breaks, so no display:block / margin needed. */
+  .descFirst { color: #FEAE00; }
+  .descTail  { color: #FFFFFF; }
+
+  /* ── Category filters: horizontal scroll ─────────────────────────── */
+  .filters {
+    margin-top: 32px;                /* 32 from description bottom */
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+    gap: 8px;
+    padding-bottom: 4px;
+    /* edge-fade for swipe hint */
+    -webkit-mask-image: linear-gradient(to right, transparent 0, #000 12px, #000 calc(100% - 12px), transparent 100%);
+            mask-image: linear-gradient(to right, transparent 0, #000 12px, #000 calc(100% - 12px), transparent 100%);
+  }
+  .filters::-webkit-scrollbar { display: none; }
+  .pill {
+    flex: 0 0 auto;
+    height: 34px;
+    padding: 0 16px;
+    border-radius: 999px;            /* fully rounded pill (Figma) */
+    font-family: 'Mazzard H', var(--font-mazzard, system-ui, sans-serif);
+    font-weight: 600;                /* SemiBold */
+    font-size: 12px;
+    line-height: 1;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+  }
+
+  /* ── Featured section ────────────────────────────────────────────── */
+  .sectionHeader {
+    margin-top: 32px;                /* 32 from filters to label */
+    gap: 12px;
+  }
+  .sectionLabel {
+    font-size: 14px;                 /* compact for mobile */
+    font-weight: 500;
+    letter-spacing: 0.04em;
+  }
+
+  /* The featured row collapses to a single column; featured card + side
+   * cards stack vertically with 24 px gap. */
+  .featuredRow {
+    margin-top: 24px;
+    grid-template-columns: minmax(0, 1fr);
+    column-gap: 0;
+    row-gap: 24px;
+  }
+
+  /* Featured (main) article card ------------------------------------ */
+  .featuredCard {
+    width: 100%;
+    height: auto;
+    min-height: 0;
+    background: #1A1B19;
+    border-radius: 8px;              /* unified card radius (user spec) */
+    overflow: hidden;
+    flex-direction: column;
+    padding: 0;
+    outline: 0;
+  }
+  .featuredImage {
+    width: 100%;
+    max-width: none;
+    height: 224px;                   /* Figma 336 × 224 */
+    aspect-ratio: auto;
+    object-fit: cover;
+    border-radius: 8px 8px 0 0;      /* match card top corners */
+  }
+  .featuredInfo {
+    width: 100%;
+    padding: 16px;                   /* 16 inner padding */
+    gap: 0;
+  }
+  .featuredTop {
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;                       /* 12 between MARKET ANALYTICS tag and date */
+  }
+  .tagPill {
+    height: 24px;
+    padding: 0 10px;
+    border-radius: 999px;
+    font-family: 'Mazzard H', var(--font-mazzard, system-ui, sans-serif);
+    font-weight: 400;
+    font-size: 10px;                 /* Figma: 10 px */
+    line-height: 1;
+    letter-spacing: 0.04em;
+  }
+  .dateRow {
+    gap: 6px;
+    font-size: 12px;
+    font-weight: 400;
+    color: #949494;
+  }
+  .dateRow .minRead { font-size: 12px; }
+  .featuredTitle {
+    margin-top: 12px;                /* 12 from tag/date row → title */
+    font-size: 20px;                 /* H Bold 20 */
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: 0;
+  }
+  .featuredExcerpt {
+    margin-top: 12px;                /* 12 from title → excerpt */
+    font-size: 14px;                 /* H Regular 14 */
+    font-weight: 400;
+    line-height: 1.45;
+    color: #C8C8C8;
+  }
+  .featuredBottom {
+    margin-top: 16px;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .readBtn { font-size: 12px; font-weight: 500; }
+  .readBtnArrow { width: 20px; height: 20px; }
+
+  /* ── Featured sidebar (the smaller 336 × 168 sub-cards) ─────────── */
+  .featuredSide {
+    width: 100%;
+    height: auto;
+    gap: 24px;
+    padding: 0;
+    border: 0;
+    background: transparent;
+  }
+  .sideCard {
+    width: 100%;
+    height: 168px;                   /* Figma 336 × 168 */
+    background: #1A1B19;
+    border-radius: 4px;
+    padding: 16px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    outline: 0;
+  }
+  .sideCardHead {
+    gap: 8px;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .sideCardTitle {
+    font-size: 16px;                 /* slightly smaller for compact card */
+    font-weight: 700;
+    line-height: 1.2;
+    -webkit-line-clamp: 2;
+  }
+  .sideCardExcerpt {
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.4;
+    color: #C8C8C8;
+    -webkit-line-clamp: 2;
+  }
+
+  /* ── Latest articles row (the bigger grid below) ─────────────────── */
+  .latestRow { margin-top: 32px; }
+  .latestGrid {
+    margin-top: 24px;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 24px;
+  }
+  .gridCard {
+    background: #1A1B19;
+    border-radius: 4px;
+    overflow: hidden;
+    padding: 0;
+    outline: 0;
+  }
+  .gridImg {
+    width: 100%;
+    height: 224px;
+    object-fit: cover;
+    border-radius: 4px 4px 0 0;
+  }
+  .gridMeta { padding: 16px; }
+  .gridTitle {
+    margin-top: 12px;                /* 12 between tag/date and title */
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 1.2;
+  }
+  .gridExcerpt {
+    margin-top: 12px;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.45;
+    color: #C8C8C8;
+  }
+
+  /* ── Show More button — spacing per user spec ────────────────────────
+   *   • last card bottom        → SHOW MORE top    = 24  px
+   *   • SHOW MORE bottom        → consultation top = 128 px  (consultWrap)
+   * ------------------------------------------------------------------*/
+  .showMoreWrap {
+    margin-top: 24px;
+    padding-top: 0;                 /* nullifies desktop's 76 px padding */
+  }
+  .showMore {
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+  }
+}

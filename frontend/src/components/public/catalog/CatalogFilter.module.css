@@ -1,0 +1,303 @@
+/* ──────────────────────────────────────────────────────────────
+ *  Catalog left filter — Figma 1:1 (Vehicles Filter.png).
+ *
+ *  Container spec:
+ *    • Fixed width    : 427 px  (height auto)
+ *    • Background     : #1A1B19
+ *    • Border-radius  : 4 px (cards/inputs/buttons)
+ *    • Horizontal padding from text to edge : 32 px
+ *    • Vertical block-gap : 24 px between major blocks
+ *
+ *  Typography:
+ *    • Section header (SOURCE / TECHNICAL SPECS) — H SemiBold 14, white, uppercase.
+ *    • Field label (Brand, Model, Year…)         — H Medium 14, white.
+ *    • Input value / dropdown value              — H Regular 14, white.
+ *    • Placeholder                               — #5E5E5E.
+ * ───────────────────────────────────────────────────────────────── */
+.filter {
+  width: 100%;
+  max-width: 427px;
+  background: #1A1B19;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  padding: 32px 0;
+  box-sizing: border-box;
+  gap: 24px;
+  font-family: 'Mazzard H', var(--font-mazzard, system-ui, sans-serif);
+  font-size: 14px;
+  color: #FFFFFF;
+  min-width: 0;
+  border-radius: 0;                          /* square corners — user spec */
+}
+
+/* ─── Vehicle type icons (top row) ─────────────────────────────────
+ *  Figma spec @ 1920 / 427-px filter:
+ *    • Outer padding 32 px left & right (32 + 32 = 64 px reserved).
+ *    • Hit-zone of each card: 72.6 × 48 px, border-radius 4 px.
+ *    • 5 cards × 72.6 = 363 px = exact (filter width 427 − 64 padding).
+ *    • Icon inside: 32 × 32 (white default, black on active).
+ *    • Active state: yellow #FEAE00 background over the whole 72.6×48.
+ *  Responsive: cards use `flex:1 1 0; max-width:72.6px;` so on narrower
+ *  filter widths (1440/1280) they shrink proportionally without
+ *  overflowing or “squishing” the icon below its 32 × 32 footprint.
+ * ───────────────────────────────────────────────────────────────── */
+.iconsRow {
+  display: flex;
+  align-items: center;
+  padding: 0 32px;
+  gap: 0;
+  flex-wrap: nowrap;
+}
+.vehCard {
+  flex: 1 1 0;
+  min-width: 0;
+  max-width: 72.6px;
+  height: 48px;
+  padding: 0;
+  background: transparent;
+  border: 0;
+  border-radius: 4px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #FFFFFF;
+  transition: background 120ms ease, color 120ms ease;
+  box-sizing: border-box;
+  outline: none;            /* remove default focus ring (blue border) */
+  -webkit-tap-highlight-color: transparent;
+}
+.vehCard:focus,
+.vehCard:focus-visible { outline: none; box-shadow: none; }
+.vehCard:hover { background: rgba(254, 174, 0, 0.08); }
+.vehCardActive {
+  background: #FEAE00;
+  color: #18181B;
+}
+.vehCardActive:hover { background: #FEAE00; }
+.vehIcon {
+  display: block;
+  width: 32px;
+  height: 32px;
+  background-color: currentColor;
+  -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat;
+  -webkit-mask-position: center;  mask-position: center;
+  -webkit-mask-size: 32px 32px;   mask-size: 32px 32px;
+}
+
+/* ─── Field blocks (label + control) ───────────────────────────── */
+.block {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;                /* Figma: 16 px от label до control */
+  padding: 0 clamp(16px, 1.67vw, 32px);
+}
+.label {
+  font-family: 'Mazzard H', var(--font-mazzard, system-ui, sans-serif);
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 1;
+  text-transform: capitalize;
+  color: #FFFFFF;
+}
+
+/* Two-column grid (Figma: From — To). */
+.row2 {
+  display: grid;
+  /* `minmax(0, 1fr)` instead of bare `1fr` so a column never grows past
+     its allocated slot if its content (e.g. our combo input + chevron)
+     has a min-content larger than the available width — otherwise the
+     right-hand column would visibly overflow the filter sidebar, which
+     is what the regression report showed. */
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  align-items: center;
+  column-gap: 12px;
+}
+
+.textInput {
+  width: 100%;
+  height: 48px;
+  box-sizing: border-box;
+  background: transparent;
+  border: 1px solid #4F4F4F;
+  border-radius: 4px;
+  padding: 0 14px;
+  font-family: 'Mazzard H', var(--font-mazzard, system-ui, sans-serif);
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 1;
+  color: #FFFFFF;
+  outline: none;
+  text-align: center;
+  transition: border-color 120ms ease;
+}
+.textInput::placeholder { color: #5E5E5E; transition: opacity 120ms ease; }
+.textInput:hover  { border-color: #6B6B6B; }
+.textInput:focus  { border-color: #FEAE00; }
+/* Hide the placeholder once the field is focused so the user does not
+ * appear to "type on top of" the From / To / 0 hints. Default browsers
+ * keep the placeholder visible until the first keystroke; we drop it the
+ * moment the input is focused for a cleaner editing UX. */
+.textInput:focus::placeholder { opacity: 0; }
+
+/* Slider sits 16 px below the last form-control of the same block
+ * (.row2 → .sliderWrap == 4 px top because .block gap=12 + 4 = 16).
+ * We override the .block gap right above the slider to exactly 4 px,
+ * because the slider container is 24 px tall and the visual centre of
+ * its thumb is 12 px from its top → 12 + 4 = 16 from the input bottom. */
+.block > .sliderWrap {
+  margin-top: 4px;
+}
+.sliderWrap {
+  width: 100%;
+}
+
+/* ─── Damage segmented control ─────────────────────────────────── */
+.damageRow {
+  display: flex;
+  align-items: stretch;
+  margin: 0 clamp(16px, 1.67vw, 32px);
+  gap: 0;
+  height: 45px;
+  border-radius: 4px;
+  overflow: hidden;
+  background: #1A1B19;
+}
+.dmgBtn {
+  flex: 1; height: 45px;
+  font-family: 'Mazzard H', var(--font-mazzard, system-ui, sans-serif);
+  font-weight: 500; font-size: 14px; line-height: 1;
+  text-transform: uppercase;
+  background: transparent; border: 0; color: #6B6B6B;
+  cursor: pointer; box-sizing: border-box; min-width: 0;
+  transition: background 120ms, color 120ms, box-shadow 120ms;
+}
+.dmgBtn:first-child { border-radius: 4px 0 0 4px; }
+.dmgBtn:last-child  { border-radius: 0 4px 4px 0; }
+.dmgBtn:hover       { color: #B0B0B0; }
+.dmgBtn:first-child.dmgActiveOk {
+  background: rgba(0, 178, 121, 0.10);
+  color: #00B279;
+  box-shadow: inset -4px 0 0 0 #00B279;
+}
+.dmgBtn:last-child.dmgActiveBad {
+  background: rgba(243, 67, 76, 0.10);
+  color: #F3434C;
+  box-shadow: inset 4px 0 0 0 #F3434C;
+}
+
+/* ─── Section divider + collapsible header ─────────────────────── */
+.divider {
+  border: 0;
+  border-top: 1px solid #2C2D2A;
+  margin: 0 clamp(16px, 1.67vw, 32px);
+}
+.sectionHeader {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 clamp(16px, 1.67vw, 32px);
+  background: transparent;
+  border: 0;
+  font-family: 'Mazzard H', var(--font-mazzard, system-ui, sans-serif);
+  font-weight: 700;            /* H Bold (Figma) */
+  font-size: 14px;
+  line-height: 1;
+  color: #FFFFFF;
+  text-transform: uppercase;
+  cursor: pointer;
+  user-select: none;
+  text-align: left;
+}
+.sectionCaret {
+  width: 17px;
+  height: 17px;
+  transition: transform 200ms ease;
+  flex: 0 0 17px;
+}
+.sectionCaretClosed { transform: rotate(-90deg); }
+
+/* ─── Pills (Country USA/Korea, Fuel, Transmission) ──────────────
+ *  Figma:
+ *    • Card adapts to text content (no fixed width).
+ *    • Padding 7 px top/bottom, 16 px left/right.
+ *    • Border-radius 20 px, 1 px border.
+ *    • Font: Mazzard H Regular 14 / line-height 1.
+ *    • Row gap: 8 px (so 4 fuel pills line up in a single row inside
+ *      the 427-px filter — Gasoline / Diesel / Hybrid / EV).
+ *    • Inactive : border #4F4F4F, color #6B6B6B.
+ *    • Active   : bg #FEAE00, border #FEAE00, color #18181B.
+ *  Note: 16 px gap from the section label down to the pill row is
+ *  provided by `.block { gap: 12px }` + 4 px on the label → ~16.
+ * ─────────────────────────────────────────────────────────────── */
+.pillRow {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.pill {
+  height: auto;
+  padding: 7px 16px;
+  background: transparent;
+  color: #6B6B6B;
+  border: 1px solid #4F4F4F;
+  border-radius: 20px;
+  font-family: 'Mazzard H', var(--font-mazzard, system-ui, sans-serif);
+  font-weight: 400;       /* H Regular per Figma */
+  font-size: 14px;
+  line-height: 1;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 120ms ease, color 120ms ease, border-color 120ms ease;
+  outline: none;
+}
+.pill:hover { border-color: #6B6B6B; color: #B0B0B0; }
+.pill:focus-visible { border-color: #FEAE00; }
+.pillActive {
+  background: #FEAE00;
+  border-color: #FEAE00;
+  color: #18181B;
+}
+.pillActive:hover { background: #FEAE00; color: #18181B; }
+
+/* ─── Custom checkbox rows ─────────────────────────────────────── */
+.checkRow {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.checkLabel {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  user-select: none;
+}
+.checkbox {
+  width: 16px;
+  height: 16px;
+  border: 1px solid #5E5E5E;
+  border-radius: 3px;
+  background: transparent;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 16px;
+  transition: border-color 120ms ease, background 120ms ease;
+}
+.checkboxOn {
+  border-color: #FEAE00;
+  background: rgba(254, 174, 0, 0.10);
+}
+.checkText {
+  font-family: 'Mazzard H', var(--font-mazzard, system-ui, sans-serif);
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 1;
+  color: #6B6B6B;
+  transition: color 120ms ease;
+}
+.checkTextOn { color: #FFFFFF; }

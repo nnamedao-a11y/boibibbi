@@ -1,0 +1,114 @@
+/**
+ * RangeStepSelect.module.css — visual rules mirror the open-state of
+ * CustomDropdown / YearSelect so the combo (input + chevron + popover)
+ * sits inside the catalog filter without breaking the existing rhythm.
+ */
+
+.wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  /* Allow flex children (.input) to shrink below their intrinsic
+     min-content so the grid column from `.row2 { grid-template-columns:
+     1fr 1fr }` doesn't get pushed wider than the available column slot
+     (which used to overflow the filter panel and create the broken
+     layout users reported). */
+  min-width: 0;
+  /* Match the original `.textInput` height so the slider sits at the
+     same Y offset and the block rhythm is unchanged. */
+  height: 48px;
+  box-sizing: border-box;
+  background: transparent;
+  border: 1px solid #4F4F4F;
+  border-radius: 4px;
+  transition: border-color 120ms ease;
+}
+.wrap:hover { border-color: #6B6B6B; }
+.wrapOpen { border-color: #FEAE00; }
+
+.input {
+  flex: 1 1 auto;
+  min-width: 0;
+  height: 100%;
+  /* Leave breathing room on both sides — the chevron eats the right
+     edge, so we keep symmetric optical centring via the text-align. */
+  padding: 0 4px 0 12px;
+  background: transparent;
+  border: 0;
+  outline: none;
+  color: #FFFFFF;
+  font-family: 'Mazzard H', var(--bibi-font, system-ui, sans-serif);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1;
+  text-align: center;
+}
+.input::placeholder { color: #5E5E5E; transition: opacity 120ms ease; }
+.input:focus::placeholder { opacity: 0; }
+
+.chevron {
+  /* Narrower than 36 px so the input keeps most of the column width.
+     The chevron is only an affordance; the typeable input remains the
+     primary control. */
+  flex: 0 0 26px;
+  height: 100%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: 0;
+  color: #B5B4B0;
+  cursor: pointer;
+  transition: color 0.16s ease;
+  padding: 0 6px 0 0;
+}
+.chevron:hover { color: #FEAE00; }
+.chevronOpen { color: #FEAE00; }
+.chevronOpen svg { transform: rotate(180deg); transition: transform 0.18s ease; }
+
+/* Popover menu — same chrome as CustomDropdown's open state so the
+   overall filter UI reads as a single design language. */
+.menu {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  right: 0;
+  z-index: 30;
+  max-height: 260px;
+  overflow-y: auto;
+  background: #161616;
+  border: 1px solid #555452;
+  border-radius: 4px;
+  padding: 6px 0;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.55);
+}
+
+.option {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 32px;
+  padding: 0 16px;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  color: #D6D6D6;
+  font-family: 'Mazzard H', var(--bibi-font, system-ui, sans-serif);
+  font-size: 14px;
+  font-weight: 400;
+  text-align: left;
+  transition: background-color 0.12s ease, color 0.12s ease;
+}
+.option:hover { background-color: rgba(254, 174, 0, 0.08); color: #FFFFFF; }
+.optionActive { color: #FEAE00; }
+.optionActive::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #FEAE00;
+  margin-right: 10px;
+  flex: 0 0 6px;
+}
+.optionLabel { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }

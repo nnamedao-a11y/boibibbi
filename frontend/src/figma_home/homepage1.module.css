@@ -1,0 +1,580 @@
+.homepage {
+  width: 100%;
+  position: relative;
+  background-color: var(--color-gray-200);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  isolation: isolate;
+  line-height: normal;
+  letter-spacing: normal;
+}
+.image57Icon {
+  /* The aerial-road background was previously positioned absolutely on
+     the homepage. It is now baked into TurnkeyBanner1 (the consolidated
+     "How to buy a turnkey car" block), so we hide it here to avoid
+     duplicate rendering. */
+  display: none;
+}
+.image57,
+.unsplashwl8dyDm7x8Icon {
+  position: relative;
+  display: none;
+  flex-shrink: 0;
+}
+.image57 {
+  align-self: stretch;
+  height: 1201.6px;
+  z-index: 1;
+}
+.unsplashwl8dyDm7x8Icon {
+  width: 1494.7px;
+  max-height: 100%;
+  object-fit: contain;
+  max-width: 100%;
+  z-index: 2;
+}
+.catalogAction {
+  align-self: stretch;
+  justify-content: center;
+  /* Per Figma: gray top zone has 472px total height, with text positioned at ~2/3 from top.
+     Top padding 232px, bottom padding 134px → text sits closer to the brands card below. */
+  padding: 232px var(--padding-20) 134px;
+  box-sizing: border-box;
+  flex-shrink: 0;
+  text-align: center;
+  font-size: var(--fs-60);
+  color: var(--color-orange-100);
+  font-family: var(--font-mazzard);
+  /* Same gray background as the BrandLogos block below — they form one continuous zone */
+  background-color: var(--color-gray-200);
+}
+.carSearch,
+.catalogAction,
+.searchCopy {
+  display: flex;
+  align-items: center;
+  max-width: 100%;
+}
+.carSearch {
+  width: auto;
+  max-width: 1100px;
+  flex-direction: column;
+  gap: 13px;
+  align-items: center;
+}
+.searchCopy {
+  align-self: center;
+  padding: 0;
+  box-sizing: border-box;
+  justify-content: center;
+}
+.fromAmericaAnd,
+.searchForCars {
+  margin: 0;
+  position: relative;
+  line-height: 100%;
+  text-transform: uppercase;
+  font-family: inherit;
+  white-space: nowrap;
+}
+.searchForCars {
+  font-size: inherit;
+  display: inline-block;
+  max-width: none;
+  white-space: nowrap;
+  /* Per spec: Mazzard H Bold */
+  font-family: 'Mazzard H', 'Mazzard', system-ui, sans-serif;
+  font-weight: 700;
+}
+.fromAmericaAnd {
+  align-self: center;
+  font-size: var(--fs-50);
+  color: var(--color-white);
+  white-space: nowrap;
+  /* Per spec: Mazzard H Bold */
+  font-family: 'Mazzard H', 'Mazzard', system-ui, sans-serif;
+  font-weight: 700;
+}
+.frameChild,
+.rectangleParent {
+  background-color: var(--color-black);
+  max-width: 100%;
+  flex-shrink: 0;
+}
+.rectangleParent {
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 155px 98px 173px;
+  box-sizing: border-box;
+  gap: 74px;
+  text-align: left;
+  font-size: var(--fs-16);
+  color: var(--color-orange-100);
+  font-family: var(--font-mazzard);
+}
+.frameChild {
+  width: 1919.5px;
+  height: 2541.9px;
+  position: relative;
+  display: none;
+}
+.moreVehicles {
+  display: flex;
+  align-items: flex-start;
+  padding: var(--padding-0) 790px var(--padding-0) 788px;
+  flex-shrink: 0;
+}
+.moreVehicles2 {
+  position: relative;
+  text-decoration: underline;
+  line-height: 99.9%;
+  text-transform: uppercase;
+  z-index: 1;
+}
+.lineiconsaudi {
+  width: 123px;
+  max-height: 100%;
+  z-index: 11;
+}
+.homepageChild,
+.lineiconsaudi,
+.lineiconsaudi2 {
+  position: relative;
+  display: none;
+  flex-shrink: 0;
+}
+.lineiconsaudi2 {
+  width: 123px;
+  max-height: 100%;
+  z-index: 12;
+}
+.homepageChild {
+  align-self: stretch;
+  height: -1205.6px;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.1), var(--color-black));
+  z-index: 15;
+}
+.serviceVisualsParent {
+  align-self: stretch;
+  background-color: var(--color-black);
+  overflow: hidden;
+  flex-direction: column;
+  padding: 148px var(--padding-0) 119.7px 101px;
+  box-sizing: border-box;
+  gap: 12px;
+  flex-shrink: 0;
+}
+.beforeAndAfterWrapper,
+.serviceVisuals,
+.serviceVisualsParent {
+  display: flex;
+  align-items: flex-start;
+  max-width: 100%;
+}
+.serviceVisuals {
+  width: 1193px;
+  flex-direction: column;
+  padding: var(--padding-0) var(--padding-20) 82px var(--padding-0);
+  box-sizing: border-box;
+  gap: var(--gap-60);
+  text-align: left;
+  font-size: var(--fs-64);
+  color: var(--color-orange-100);
+  font-family: var(--font-mazzard);
+}
+.beforeAndAfterWrapper {
+  align-self: stretch;
+  justify-content: flex-end;
+}
+.beforeAndAfter {
+  margin: 0;
+  width: 629px;
+  position: relative;
+  font-size: inherit;
+  line-height: 99.9%;
+  text-transform: uppercase;
+  font-weight: 400;
+  font-family: inherit;
+  display: inline-block;
+  min-height: var(--min-h-76);
+  max-width: 100%;
+}
+.serviceDiagram {
+  width: 429px;
+  display: flex;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  align-content: flex-start;
+  gap: 8.2px;
+  max-width: 100%;
+  font-size: var(--fs-24);
+}
+.serviceDiagramInner {
+  width: var(--width-78);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 2.9px var(--padding-0) var(--padding-0);
+  box-sizing: border-box;
+}
+.vectorWrapper {
+  align-self: stretch;
+  height: var(--height-70);
+  position: relative;
+}
+.vectorIcon {
+  position: absolute;
+  top: calc(50% - 37.9px);
+  left: calc(50% - 39px);
+  width: 100%;
+  height: var(--height-76);
+  flex-shrink: 0;
+}
+.ourClientsReceiveTheBestSParent {
+  height: var(--height-70);
+  flex: 1;
+  position: relative;
+  min-width: 223px;
+  max-width: 100%;
+}
+.ourClientsReceiveContainer {
+  margin: 0;
+  position: absolute;
+  top: 10.5px;
+  left: 0;
+  font-size: inherit;
+  line-height: 99.9%;
+  text-transform: uppercase;
+  font-weight: 400;
+  font-family: inherit;
+}
+.theBestService {
+  color: var(--color-white);
+}
+.vectorContainer {
+  position: absolute;
+  top: 70px;
+  left: 342.8px;
+  width: var(--width-78);
+  height: var(--height-70);
+  transform: rotate(180deg);
+  transform-origin: 0 0;
+  z-index: 1;
+}
+.vectorIcon2 {
+  position: absolute;
+  top: calc(50% - 37.9px);
+  left: calc(50% - 39px);
+  width: 100%;
+  height: var(--height-76);
+  transform: rotate(-180deg);
+  flex-shrink: 0;
+}
+.navigation {
+  width: 1717.5px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: var(--padding-0) var(--padding-20) 170.2px;
+  box-sizing: border-box;
+  max-width: 100%;
+}
+.carouselControls {
+  display: flex;
+  align-items: flex-end;
+  gap: var(--gap-11);
+}
+.navigationControls {
+  height: var(--height-32);
+  width: var(--width-32);
+  position: relative;
+}
+.navigationControlsChild {
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-radius: var(--br-50);
+  border: 0 solid var(--color-orange-100);
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+}
+.lsiconleftFilled {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  width: var(--width-16);
+  height: var(--height-16);
+  z-index: 1;
+}
+.controls {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-end;
+  padding: var(--padding-0) var(--padding-0) 12.8px;
+}
+.ellipseParent {
+  align-self: stretch;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: var(--gap-16);
+}
+.frameInner,
+.frameItem {
+  height: var(--height-6_3);
+  width: var(--width-6_3);
+  position: relative;
+  border-radius: var(--br-50);
+  background-color: var(--color-orange-100);
+}
+.frameInner {
+  background-color: var(--color-gray-200);
+}
+.navigationControlsItem {
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-radius: var(--br-50);
+  background-color: var(--color-orange-100);
+  width: 100%;
+  height: 100%;
+}
+.lsiconleftFilled2 {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  width: var(--width-16);
+  height: var(--height-16);
+  object-fit: contain;
+  z-index: 1;
+}
+.reviewsContainer,
+.reviewsContainerWrapper {
+  display: flex;
+  align-items: flex-start;
+  max-width: 100%;
+}
+.reviewsContainerWrapper {
+  width: 1127.5px;
+  padding: var(--padding-0) var(--padding-6) 0;
+  box-sizing: border-box;
+  text-align: left;
+  font-size: var(--fs-64);
+  color: var(--color-orange-100);
+  font-family: var(--font-mazzard);
+}
+.reviewsContainer {
+  flex: 1;
+  flex-direction: column;
+  gap: 78.2px;
+}
+.testimonialsHeader {
+  align-self: stretch;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-end;
+}
+.ourClientsSay {
+  margin: 0;
+  position: relative;
+  font-size: inherit;
+  line-height: 99.9%;
+  text-transform: uppercase;
+  font-weight: 700;
+  font-family: inherit;
+  display: inline-block;
+  min-height: var(--min-h-76);
+}
+.clientReviews {
+  display: flex;
+  align-items: flex-start;
+  padding: var(--padding-0) var(--padding-20) var(--padding-0) var(--padding-0);
+  box-sizing: border-box;
+  gap: 41px;
+  max-width: 100%;
+  font-size: var(--fs-24);
+  color: var(--color-white);
+}
+.image34Icon {
+  width: 259px;
+  position: relative;
+  max-height: 100%;
+  object-fit: cover;
+}
+.reviewContent {
+  flex-direction: column;
+  padding: var(--padding-17) var(--padding-0) var(--padding-0);
+}
+.reviewContent,
+.reviewDetails,
+.reviewInfo {
+  display: flex;
+  align-items: flex-start;
+}
+.reviewInfo {
+  flex-direction: column;
+  gap: var(--gap-6);
+}
+.reviewDetails {
+  padding: var(--padding-0) var(--padding-0) var(--padding-0) var(--padding-1);
+}
+.parent {
+  align-self: stretch;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--gap-15);
+}
+.h3 {
+  margin: 0;
+  width: var(--width-36);
+  position: relative;
+  font-size: inherit;
+  font-weight: 700;
+  font-family: inherit;
+  display: inline-block;
+}
+.rating {
+  display: flex;
+  align-items: center;
+}
+.materialSymbolsstarIcon {
+  width: var(--width-24);
+  position: relative;
+  max-height: 100%;
+}
+.googleReviews {
+  width: 139px;
+  position: relative;
+  font-size: var(--fs-16);
+  font-weight: 500;
+  font-family: 'Mazzard', 'Mazzard H', system-ui, sans-serif;
+  text-decoration: underline;
+  display: inline-block;
+}
+.controlsContainer {
+  align-self: stretch;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-end;
+  padding: var(--padding-0) 53px;
+}
+.reviewCarousels {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--gap-11);
+}
+.reviewCarouselsInner {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 12.8px var(--padding-0) var(--padding-0);
+}
+@media screen and (max-width: 1350px) {
+  .rectangleParent {
+    gap: var(--gap-37);
+    padding: var(--padding-66) var(--padding-49) 73px;
+    box-sizing: border-box;
+  }
+  .moreVehicles {
+    padding-left: 394px;
+    padding-right: 395px;
+    box-sizing: border-box;
+  }
+  .serviceVisualsParent {
+    padding-left: var(--padding-50);
+    padding-top: 62px;
+    padding-bottom: 51px;
+    box-sizing: border-box;
+  }
+  .serviceVisuals {
+    gap: var(--gap-30);
+  }
+  .reviewsContainer {
+    gap: 39px;
+  }
+}
+@media screen and (max-width: 925px) {
+  .searchCopy {
+    padding-left: var(--padding-33);
+    padding-right: var(--padding-33);
+    box-sizing: border-box;
+  }
+  .searchForCars {
+    font-size: var(--fs-48);
+    line-height: var(--lh-48);
+  }
+  .fromAmericaAnd {
+    font-size: var(--fs-40);
+    line-height: var(--lh-40);
+  }
+  .rectangleParent {
+    gap: var(--gap-18);
+    padding: 43px var(--padding-24) var(--padding-47);
+    box-sizing: border-box;
+  }
+  .moreVehicles {
+    padding-left: 197px;
+    padding-right: 197px;
+    box-sizing: border-box;
+  }
+  .serviceVisualsParent {
+    gap: 29px;
+    padding-left: var(--padding-25);
+    padding-top: var(--padding-40);
+    padding-bottom: var(--padding-33);
+    box-sizing: border-box;
+  }
+  .beforeAndAfter {
+    font-size: var(--fs-51);
+    line-height: var(--lh-51);
+  }
+  .reviewsContainer {
+    gap: var(--gap-20);
+  }
+  .ourClientsSay {
+    font-size: var(--fs-51);
+    line-height: var(--lh-51);
+  }
+  .clientReviews {
+    gap: var(--gap-20);
+    flex-wrap: wrap;
+  }
+}
+@media screen and (max-width: 450px) {
+  .searchForCars {
+    font-size: var(--fs-36);
+    line-height: var(--lh-36);
+  }
+  .fromAmericaAnd {
+    font-size: var(--fs-30);
+    line-height: var(--lh-30);
+  }
+  .moreVehicles {
+    padding-left: var(--padding-20);
+    padding-right: var(--padding-20);
+    box-sizing: border-box;
+  }
+  .beforeAndAfter {
+    font-size: var(--fs-38);
+    line-height: var(--lh-38);
+  }
+  .ourClientsReceiveContainer {
+    font-size: var(--fs-19);
+    line-height: var(--lh-19);
+  }
+  .ourClientsSay {
+    font-size: var(--fs-38);
+    line-height: var(--lh-38);
+  }
+  .h3 {
+    font-size: var(--fs-19);
+  }
+}

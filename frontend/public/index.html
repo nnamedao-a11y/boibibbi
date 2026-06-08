@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="theme-color" content="#000000" />
+        <meta name="description" content="BIBI Cars — auction-to-keys vehicle import platform" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <!-- Mazzard family is self-hosted under /fonts/. We preload the
+             Regular weight (DEFAULT body) and Bold weight (h1/h2 emphasis)
+             so the brand typography is available before the first paint. -->
+        <link rel="preload" as="font" type="font/woff2" href="/fonts/MazzardH-Regular.woff2" crossorigin="anonymous" />
+        <link rel="preload" as="font" type="font/woff2" href="/fonts/MazzardH-Medium.woff2"  crossorigin="anonymous" />
+        <link rel="preload" as="font" type="font/woff2" href="/fonts/MazzardH-Bold.woff2"    crossorigin="anonymous" />
+        <link rel="preload" as="font" type="font/woff2" href="/fonts/MazzardM-Light.woff2"   crossorigin="anonymous" />
+        <!-- Anti-FOUT: pin a sans-serif fallback BEFORE any CSS loads so
+             the browser never falls back to its Times-style default while
+             Mazzard is fetching. The cascade still picks up Mazzard once
+             it's available. -->
+        <style>
+            html, body, #root {
+                font-family: 'Mazzard', 'Mazzard H', 'Mazzard M',
+                    -apple-system, BlinkMacSystemFont, 'Segoe UI',
+                    Roboto, Helvetica, Arial, sans-serif;
+                -webkit-font-smoothing: antialiased;
+                -moz-osx-font-smoothing: grayscale;
+                text-rendering: optimizeLegibility;
+            }
+        </style>
+        <title>BIBI Cars</title>
+        <script>
+            // Suppress the noisy DataCloneError that some browsers emit when
+            // attempting to clone a PerformanceServerTiming entry across realms.
+            // It is harmless and unrelated to the application.
+            window.addEventListener("error", function (e) {
+                if (
+                    e.error instanceof DOMException &&
+                    e.error.name === "DataCloneError" &&
+                    e.message &&
+                    e.message.includes("PerformanceServerTiming")
+                ) {
+                    e.stopImmediatePropagation();
+                    e.preventDefault();
+                }
+            }, true);
+        </script>
+    </head>
+    <body>
+        <noscript>You need to enable JavaScript to run this app.</noscript>
+        <div id="root"></div>
+    </body>
+</html>

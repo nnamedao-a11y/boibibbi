@@ -1,0 +1,175 @@
+.bibiLogo021Parent,
+.header {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+.header {
+  width: var(--width-1920);
+  height: var(--height-100);
+  background-color: var(--color-gray-200);
+  overflow: visible;
+  padding: 0 32px;
+  box-sizing: border-box;
+  gap: 40px;
+  z-index: 5;
+  text-align: left;
+  font-size: var(--fs-16);
+  color: var(--color-orange-100);
+  font-family: var(--font-mazzard);
+  justify-content: space-between;
+}
+.bibiLogo021Parent {
+  height: 48.2px;
+  width: auto;
+  gap: 51px;
+  z-index: 2;
+  flex-shrink: 0;
+}
+.bibiLogo021Icon {
+  height: 48.2px;
+  width: 141px;
+  position: relative;
+  z-index: 2;
+}
+.frameWrapper {
+  height: auto;
+  width: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 0;
+  box-sizing: border-box;
+  z-index: 1;
+}
+.contactsParent {
+  margin: 0;
+  width: auto;
+  display: flex;
+  align-items: center;
+  gap: 55px;
+  text-align: left;
+  font-size: var(--fs-16);
+  color: var(--color-white);
+  font-family: var(--font-mazzard);
+}
+.headerInner {
+  height: auto;
+  width: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 0;
+  box-sizing: border-box;
+  z-index: 1;
+  flex-shrink: 0;
+}
+.searchInputParent {
+  width: auto;
+  height: auto;
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
+.searchInput,
+.searchInputChild {
+  border-radius: 8px;                   /* Figma: corner radius 8 */
+  box-sizing: border-box;
+}
+.searchInput {
+  height: 40px;                         /* Figma: 459 × 40 */
+  width: 459px;
+  display: flex;
+  align-items: center;
+  padding: 0 16px 0 9px;                /* Figma: 9 px to magnifier */
+  position: relative;
+  isolation: isolate;
+  z-index: 2;
+}
+.searchInputChild {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  margin: 0 !important;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  border: 1px solid #2C2D2A;
+  background: transparent;
+  z-index: 0;
+  flex-shrink: 0;
+}
+.boxiconssearchParent {
+  display: flex;
+  align-items: center;
+  gap: 9px;                             /* Figma: 9 px from icon to input */
+  z-index: 1;
+  flex-shrink: 0;
+  flex: 1;
+  min-width: 0;
+}
+.boxiconssearch {
+  width: 24px;                          /* Figma: 24 × 24 */
+  height: 24px;
+  position: relative;
+}
+.searchByVin {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  outline: 0;
+  font-family: 'Mazzard H', var(--font-mazzard, system-ui, sans-serif);
+  font-weight: 400;                     /* Mazzard H Regular */
+  font-size: 14px;                      /* Figma: 14 */
+  background-color: transparent;
+  position: relative;
+  color: #FFFFFF;
+  text-align: left;
+  display: inline-block;
+  padding: 0;
+}
+.searchByVin::placeholder { color: #5E5E5E; }
+.searchByVin:focus { outline: 0; }
+.searchInput:focus-within .searchInputChild { border-color: #FEAE00; }
+.searchInputItem {
+  height: var(--height-30);
+  width: 278px;
+  position: relative;
+  background-color: var(--color-gainsboro-200);
+  display: none;
+  z-index: 2;
+  flex-shrink: 0;
+}
+.placeholder {
+  width: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  z-index: 1;
+  line-height: 1.2;
+  /* Phone numbers — Mazzard H SemiBold 16 per Figma spec */
+  font-family: 'Mazzard H', var(--font-mazzard, system-ui, sans-serif);
+  font-weight: 600;
+  font-size: 16px;
+  letter-spacing: 0;
+}
+.placeholderContent {
+  height: auto;
+}
+.placeholderContent,
+.placeholderContent2 {
+  width: auto;
+  position: relative;
+  display: inline-block;
+  flex-shrink: 0;
+  white-space: nowrap;
+  /* Inherit the SemiBold 16 typography from .placeholder so both phone
+   * links render identically (was previously inheriting Regular 16 from
+   * the header). */
+  font-weight: 600;
+  font-size: 16px;
+}

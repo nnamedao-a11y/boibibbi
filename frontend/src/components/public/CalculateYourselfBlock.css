@@ -1,0 +1,232 @@
+/* =============================================================================
+ * BIBI Cars — "Calculate a car yourself" block
+ *
+ * Design source: Figma frame 1922 × 1286 px
+ *   Outer frame  : #FEAE00 (yellow)        — full-bleed border ring
+ *   Inner card   : #000000 (black)
+ *   Title        : Mazzard H Bold, ~120px, two lines
+ *                    line-1 -> #FEAE00  ("Calculate a car yourself")
+ *                    line-2 -> #FFFFFF  ("with a price guarantee")
+ *   Subtitle     : Mazzard H Medium, ~28px, white  ("From the USA and Korea")
+ *   Input        : 1px #FEAE00 border, transparent fill, 64px height,
+ *                  Helvetica Now Display Regular -> aliased to Mazzard 400
+ *   CTA          : #FEAE00 fill, 80px height, Mazzard H Medium uppercase
+ *   "ALL CATALOG+" : Mazzard H Medium uppercase, #FEAE00, underlined
+ *   Truck photo  : square (≈630 × 630), object-cover
+ *
+ * Layout:
+ *   - Title centered across the full inner-card width
+ *   - Below: 2-column grid (image left, form right) on ≥1024px
+ *   - On <1024px: stacks vertically, image first then form
+ * ========================================================================== */
+
+.cyb-frame {
+  width: 100%;
+  background: #FEAE00;
+  /* yellow ring around the inner card — Figma shows ~96px on desktop  */
+  padding: clamp(24px, 5vw, 96px) clamp(20px, 5vw, 96px);
+  font-family: 'Mazzard', 'Mazzard H', system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.cyb-card {
+  max-width: 1730px;
+  margin: 0 auto;
+  background: #000;
+  padding: clamp(40px, 6vw, 96px) clamp(28px, 5vw, 96px);
+  display: flex;
+  flex-direction: column;
+  gap: clamp(40px, 5vw, 80px);
+}
+
+/* ── Title ───────────────────────────────────────────────────────────── */
+
+.cyb-title {
+  margin: 0;
+  text-align: center;
+  font-family: 'Mazzard H', 'Mazzard', system-ui, sans-serif;
+  font-weight: 700;
+  font-size: clamp(36px, 6.4vw, 120px);
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(4px, 0.6vw, 14px);
+}
+
+.cyb-title-yellow {
+  color: #FEAE00;
+  display: block;
+}
+
+.cyb-title-white {
+  color: #FFFFFF;
+  display: block;
+}
+
+/* ── Body grid ───────────────────────────────────────────────────────── */
+
+.cyb-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: clamp(32px, 5vw, 80px);
+  align-items: center;
+}
+
+.cyb-photo {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  background: #0a0a0a;
+}
+
+.cyb-photo img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+/* ── Right column ────────────────────────────────────────────────────── */
+
+.cyb-right {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(20px, 2.4vw, 36px);
+}
+
+.cyb-subtitle {
+  font-family: 'Mazzard H', 'Mazzard', system-ui, sans-serif;
+  font-weight: 500;
+  color: #FFFFFF;
+  font-size: clamp(16px, 1.6vw, 28px);
+  line-height: 1.2;
+}
+
+.cyb-form {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(16px, 1.6vw, 28px);
+  width: 100%;
+}
+
+.cyb-input-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  height: clamp(54px, 4.4vw, 72px);
+  border: 1px solid #FEAE00;
+  border-radius: 6px;
+  background: transparent;
+  transition: box-shadow 0.18s ease, border-color 0.18s ease;
+}
+
+.cyb-input-wrap:focus-within {
+  border-color: #FEAE00;
+  box-shadow: 0 0 0 2px rgba(254, 174, 0, 0.25);
+}
+
+.cyb-input-icon {
+  flex-shrink: 0;
+  margin: 0 14px 0 22px;
+  color: #FEAE00;
+}
+
+.cyb-input {
+  flex: 1;
+  height: 100%;
+  background: transparent;
+  border: 0;
+  outline: 0;
+  color: #FFFFFF;
+  /* "Helvetica Now Display Regular" — aliased to Mazzard 400 in this build */
+  font-family: 'Mazzard', 'Mazzard H', 'Helvetica Now Display', system-ui, sans-serif;
+  font-weight: 400;
+  font-size: clamp(14px, 1.05vw, 18px);
+  letter-spacing: 0.01em;
+  padding: 0 16px 0 0;
+  min-width: 0;
+}
+
+.cyb-input::placeholder {
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.cyb-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: clamp(60px, 5vw, 80px);
+  border: 0;
+  border-radius: 6px;
+  background: #FEAE00;
+  color: #000000;
+  font-family: 'Mazzard H', 'Mazzard', system-ui, sans-serif;
+  font-weight: 500;
+  font-size: clamp(15px, 1.15vw, 20px);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: filter 0.18s ease, transform 0.05s ease;
+}
+
+.cyb-cta:hover { filter: brightness(1.06); }
+.cyb-cta:active { transform: translateY(1px); }
+.cyb-cta:focus-visible {
+  outline: 2px solid #FFFFFF;
+  outline-offset: 2px;
+}
+
+.cyb-all-catalog {
+  align-self: center;
+  display: inline-block;
+  margin-top: clamp(8px, 1vw, 16px);
+  color: #FEAE00;
+  font-family: 'Mazzard H', 'Mazzard', system-ui, sans-serif;
+  font-weight: 500;
+  font-size: clamp(14px, 1.04vw, 18px);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  text-decoration-thickness: 1px;
+  cursor: pointer;
+  transition: filter 0.15s ease;
+}
+
+.cyb-all-catalog:hover { filter: brightness(1.15); }
+
+/* ── Tablet / Mobile ─────────────────────────────────────────────────── */
+
+@media (max-width: 1024px) {
+  .cyb-grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 32px;
+  }
+  .cyb-photo {
+    max-width: 600px;
+    margin: 0 auto;
+    width: 100%;
+  }
+}
+
+@media (max-width: 640px) {
+  .cyb-frame {
+    padding: 18px;
+  }
+  .cyb-card {
+    padding: 28px 18px;
+    gap: 28px;
+  }
+  .cyb-title {
+    font-size: clamp(30px, 9vw, 48px);
+  }
+  .cyb-subtitle {
+    font-size: 16px;
+    text-align: left;
+  }
+}

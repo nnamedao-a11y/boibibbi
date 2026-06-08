@@ -1,0 +1,369 @@
+/* GetInTouchModal — premium dark-glass modal matching BIBI Cars palette
+   Yellow #FEAE00 / black background / white text. Mazzard / Inter stack. */
+
+.git-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: rgba(0, 0, 0, 0.72);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 32px 16px;
+  overflow-y: auto;
+  animation: gitFadeIn 0.18s ease-out both;
+}
+
+@keyframes gitFadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes gitSlideIn {
+  from { opacity: 0; transform: translateY(16px) scale(0.985); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.git-modal-card {
+  position: relative;
+  width: 100%;
+  max-width: 540px;
+  margin: auto;
+  /* Slightly lighter than the page background so the card silhouette is
+     clearly visible against the dark site backdrop. We keep the tone in
+     the same dark family — just a couple of stops lighter — so the
+     premium-dark feel is preserved. */
+  background: #141417;
+  border: 1px solid #232328;
+  border-radius: 20px;
+  /* Generous internal padding so every label / input / button gets real
+     breathing room from the card edges. Top a bit higher to balance the
+     close-button area. */
+  padding: 44px 40px 32px 40px;
+  color: #FFFFFF;
+  font-family: var(--bibi-font, 'Mazzard', 'Inter', system-ui, sans-serif);
+  box-shadow: 0 30px 90px rgba(0, 0, 0, 0.70);
+  animation: gitSlideIn 0.24s ease-out both;
+}
+
+.git-modal-close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 32px;
+  height: 32px;
+  /* No border / no background — just the X glyph itself, WHITE by
+     default. Yellow read as "decorative accent", white reads as a
+     functional close affordance against the dark card. */
+  border: 0;
+  background: transparent;
+  color: #FFFFFF;
+  font-size: 22px;
+  line-height: 1;
+  padding: 0;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.18s ease, opacity 0.18s ease, transform 0.18s ease;
+}
+.git-modal-close:hover {
+  color: #FEAE00;
+  transform: scale(1.05);
+}
+
+.git-modal-header {
+  /* More air between the header block (title + subtitle) and the first
+     form field — matches the breathing room of the catalog filter where
+     "Brand" label sits well below the section header. */
+  margin-bottom: 32px;
+  text-align: left;
+}
+.git-modal-title {
+  margin: 0;
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 1.1;
+  color: #FEAE00;
+  letter-spacing: -0.01em;
+  text-transform: capitalize;
+}
+.git-modal-subtitle {
+  margin: 12px 0 0;
+  font-size: 14px;
+  line-height: 1.55;
+  color: #B8B8BA;
+  max-width: 440px;
+}
+
+.git-modal-form {
+  display: flex;
+  flex-direction: column;
+  /* 24 px between every form field (Name → Phone → Email → …) — same
+     vertical rhythm used by the catalog filter (.block { gap: 24px })
+     so the public site has ONE consistent form spacing system. */
+  gap: 24px;
+}
+
+.git-field {
+  display: flex;
+  flex-direction: column;
+  /* 16 px between the field label and its input/control — matches
+     `.block { gap: 16px }` from CatalogFilter.module.css (the "Brand →
+     All brands" reference users explicitly asked us to align to).
+     24 px tested too airy; 16 px is the sweet spot. */
+  gap: 16px;
+}
+.git-label {
+  /* H Medium 14 px, white — matches the rest of the platform's form labels. */
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #FFFFFF;
+}
+/* Required indicator stays white to match the label colour — yellow asterisks
+   were reading as "decorative" rather than as a meaningful "required" marker.
+   Sits flush with the label text (no leading space) to mirror the About-us
+   form: "Your Phone Number*" → no whitespace between word and asterisk. */
+.git-req { color: #FFFFFF; margin-left: 2px; }
+
+.git-input {
+  width: 100%;
+  background: #0F0F11;
+  border: 1px solid #232326;
+  border-radius: 10px;
+  padding: 0 14px;
+  height: 46px;
+  font-family: inherit;
+  /* H Regular 14 px — placeholder + entered value share the same scale as
+     every other input on the public site (see ConsultationCTA, Catalog
+     consultation, About page CTA, etc.). */
+  font-size: 14px;
+  font-weight: 400;
+  color: #FFFFFF;
+  outline: none;
+  transition: border-color 0.16s ease, background-color 0.16s ease, box-shadow 0.16s ease;
+}
+.git-input::placeholder { color: #6B6B6F; }
+.git-input:focus {
+  border-color: #FEAE00;
+  background: #121214;
+  box-shadow: 0 0 0 3px rgba(254, 174, 0, 0.18);
+}
+.git-textarea {
+  height: auto;
+  padding: 12px 14px;
+  resize: vertical;
+  min-height: 80px;
+  line-height: 1.5;
+}
+/* Hide native number spinners */
+.git-input[type="number"]::-webkit-outer-spin-button,
+.git-input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.git-input[type="number"] { -moz-appearance: textfield; }
+
+.git-budget-row {
+  display: flex;
+  gap: 10px;
+  align-items: stretch;
+}
+.git-input--budget { flex: 1 1 auto; }
+
+.git-currency {
+  display: inline-flex;
+  border: 1px solid #232326;
+  border-radius: 10px;
+  padding: 4px;
+  background: #0F0F11;
+}
+.git-currency-btn {
+  appearance: none;
+  border: none;
+  background: transparent;
+  color: #B8B8BA;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  padding: 0 12px;
+  height: 36px;
+  min-width: 56px;
+  border-radius: 7px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.git-currency-btn:hover { color: #FEAE00; }
+.git-currency-btn.is-active {
+  background: #FEAE00;
+  color: #000000;
+}
+
+.git-error {
+  background: rgba(220, 38, 38, 0.10);
+  border: 1px solid rgba(220, 38, 38, 0.40);
+  color: #FCA5A5;
+  border-radius: 10px;
+  padding: 10px 12px;
+  font-size: 13px;
+}
+
+.git-submit {
+  /* The form has a 24 px gap between fields. Submit button should sit a
+     bit further down to read as a "decision moment", not just another
+     field. */
+  margin-top: 8px;
+  appearance: none;
+  border: none;
+  height: 50px;
+  width: 100%;
+  border-radius: 10px;
+  background: #FEAE00;
+  color: #000000;
+  font-family: inherit;
+  /* H Medium 14 px — consistent with all other primary buttons on the site. */
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: filter 0.18s ease, transform 0.08s ease;
+}
+.git-submit:hover:not(:disabled) { filter: brightness(1.08); }
+.git-submit:active:not(:disabled) { transform: translateY(1px); }
+.git-submit:disabled { opacity: 0.55; cursor: not-allowed; }
+
+.git-disclaimer {
+  /* Sits below the submit button — give it real air so it reads as
+     fine-print, not crammed against the CTA. */
+  margin: 16px 0 0;
+  text-align: center;
+  font-size: 11.5px;
+  color: #6B6B6F;
+}
+.git-disclaimer a,
+.git-disclaimer .git-policy-link {
+  color: #B8B8BA;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.git-disclaimer .git-policy-link {
+  background: transparent;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  font: inherit;
+  cursor: pointer;
+}
+.git-disclaimer a:hover,
+.git-disclaimer .git-policy-link:hover { color: #FEAE00; }
+
+/* Phone field with locked +359 prefix + Bulgarian flag — mirrors the
+   pattern used by CatalogConsultationBlock so every form on the site
+   has identical phone-input UX. */
+.git-input-with-icon {
+  position: relative;
+}
+.git-input-icon {
+  position: absolute;
+  top: 50%;
+  left: 16px;
+  transform: translateY(-50%);
+  pointer-events: none;
+  user-select: none;
+  display: block;
+}
+.git-input--with-icon {
+  padding-left: 50px;
+}
+
+/* Success state */
+.git-success {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  /* Generous breathing room — clean stacked composition, ample air
+     between every node per design spec. */
+  padding: 24px 8px 12px;
+  gap: 28px;
+}
+.git-success-icon {
+  width: 88px;
+  height: 88px;
+  border-radius: 50%;
+  background: rgba(254, 174, 0, 0.12);
+  color: #FEAE00;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid rgba(254, 174, 0, 0.40);
+  margin: 0;
+}
+.git-success-title {
+  margin: 0;
+  /* H Semibold per spec — slightly heavier than the form labels so the
+     success heading reads as a "moment". */
+  font-family: inherit;
+  font-size: 22px;
+  font-weight: 600;
+  line-height: 1.2;
+  color: #FEAE00;
+  letter-spacing: -0.005em;
+}
+.git-success-text {
+  margin: 0;
+  max-width: 420px;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.55;
+  color: #B8B8BA;
+}
+.git-success-btn {
+  appearance: none;
+  /* Primary CTA — yellow filled button, black text. Same visual weight as
+     "Send request" so the user has a clear, branded way to dismiss the
+     confirmation. NO transparent / outlined variant — that read as
+     secondary and was too easy to miss against the dark card. */
+  background: #FEAE00;
+  border: 1px solid #FEAE00;
+  color: #0A0A0A;
+  font-family: inherit;
+  /* H Medium 14 px — identical to the Send request button typography. */
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  height: 46px;
+  min-width: 200px;
+  padding: 0 28px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background-color 0.18s ease, border-color 0.18s ease, transform 0.08s ease;
+  margin-top: 4px;
+}
+.git-success-btn:hover {
+  background: #FFC23D;
+  border-color: #FFC23D;
+}
+.git-success-btn:active {
+  transform: translateY(1px);
+}
+.git-success-btn:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(254, 174, 0, 0.32);
+}
+
+/* Mobile */
+@media (max-width: 560px) {
+  .git-modal-card { padding: 28px 20px 22px; border-radius: 16px; }
+  .git-modal-title { font-size: 24px; }
+  .git-budget-row { flex-direction: column; }
+  .git-currency { align-self: stretch; justify-content: stretch; }
+  .git-currency-btn { flex: 1 1 50%; }
+}

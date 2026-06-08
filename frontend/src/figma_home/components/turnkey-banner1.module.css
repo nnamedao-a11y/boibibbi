@@ -1,0 +1,485 @@
+/* =============================================================================
+ * BIBI Cars — "How to buy a turnkey car" block
+ *
+ * Pixel-perfect Figma rebuild over the aerial-road photo (1918 × 2379 px).
+ *
+ * Layout strategy
+ * ----------------
+ *   The whole section uses an absolute-positioning canvas anchored to a
+ *   1918 × 2379 aspect-ratio frame, so every element lands exactly over
+ *   the road feature it belongs to (car, parking-lot lines, etc.). All
+ *   coordinates below are expressed as percentages of that frame.
+ *
+ *   Approximate Figma anchors (relative to a 1918 × 2379 canvas):
+ *
+ *     Title          y =  140 - 360     (centred)
+ *     USA  label     y =  580 - 760     left  side of the car
+ *     Korea label    y =  580 - 760     right side of the car
+ *     Logos row 1    y = 1180 - 1240    (Copart · CARFAX · Manheim)
+ *     Logos row 2    y = 1290 - 1340    (IAA · Encar)
+ *     Step  1        y = 1620 (left)
+ *     Step  2        y = 1620 (right)
+ *     Step  3        y = 1830 (left)
+ *     Step  4        y = 1830 (right)
+ *     Step  5        y = 2030 (centred)
+ *     PICK UP A CAR  y = 2200 (centred)
+ *     Join card      y = 2300 (centred)
+ *
+ *   Below 1024 px we abandon the absolute canvas and stack everything
+ *   in a normal flex column.
+ * ========================================================================== */
+
+/* ── Section / background ────────────────────────────────────────────── */
+
+.section {
+  position: relative;
+  width: 100%;
+  align-self: stretch;
+  background-color: var(--color-black);
+  font-family: var(--font-mazzard);
+  overflow: hidden;
+  isolation: isolate;
+  /* aspect-ratio must match the road photo so every absolute % lands
+     in the right place. */
+  aspect-ratio: 1918 / 2379;
+}
+
+.bgRoad {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Light, even darken across the upper third so light areas of the
+   photo don't compete with the title / source labels. */
+.bgTop {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0.30) 0%,
+    rgba(0, 0, 0, 0.10) 25%,
+    transparent 45%
+  );
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* Figma "Rectangle 240657846" — bottom linear gradient
+ * #000000 10% → #000000 100% pinned to the lower portion of the section. */
+.bgScrim {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 32%;
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0.10) 0%,
+    rgba(0, 0, 0, 1.00) 100%
+  );
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* ── Inner canvas ────────────────────────────────────────────────────── */
+
+.inner {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+}
+
+/* ── Title ───────────────────────────────────────────────────────────── */
+
+.title {
+  position: absolute;
+  top: 5%;            /* well above the car: y ≈ 119 / 2379 */
+  left: 0;
+  right: 0;
+  margin: 0;
+  text-align: center;
+  font-family: var(--font-mazzard);
+  font-weight: 700;
+  font-size: clamp(48px, 6.66vw, 128px);
+  line-height: 100%;
+  letter-spacing: -0.01em;
+  color: var(--color-orange-100);
+}
+
+/* ── USA / Korea source labels ───────────────────────────────────────── */
+
+/* Photo analysis (image-57@2x, 1918 × 2379):
+ *   Car body  : y =  342 - 777            (centre y ≈ 560 → 23.5%)
+ *   Car body  : x ≈  750 - 1170           (centre ≈ 959)
+ *   The labels flank the car, vertically centred on the car body.
+ *   USA  bullet at x ≈ 384 / 1918 = 20.0%
+ *   Korea bullet at x ≈ 1240 / 1918 = 64.6%
+ */
+.source {
+  position: absolute;
+  top: 19.5%;          /* ≈ 464 / 2379 — sits just above the car midline */
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 14px;
+}
+
+.sourceUSA   { left: 20%;   }   /*  ≈  384 / 1918 */
+.sourceKorea { left: 64.6%; }   /*  ≈ 1240 / 1918 */
+
+.sourceFrom {
+  font-family: var(--font-mazzard);
+  font-weight: 700;
+  font-size: clamp(14px, 1.25vw, 24px);
+  line-height: 100%;
+  color: var(--color-orange-100);
+}
+
+.sourceRow {
+  display: inline-flex;
+  align-items: center;
+  gap: clamp(8px, 0.83vw, 16px);
+}
+
+.dot {
+  /* Figma "Ellipse 12" — Width 27.29px / Height 27.29px / #FEAE00 */
+  width: clamp(14px, 1.42vw, 27px);
+  height: clamp(14px, 1.42vw, 27px);
+  border-radius: 999px;
+  background-color: var(--color-orange-100);
+  flex-shrink: 0;
+}
+
+.sourceName {
+  font-family: var(--font-mazzard);
+  font-weight: 700;
+  font-size: clamp(28px, 3.12vw, 60px);
+  line-height: 100%;
+  color: var(--color-white);
+}
+
+/* ── Partner logos ───────────────────────────────────────────────────── */
+
+/* Figma places the logos in the OPEN ROAD GAP between where the car
+ * ends (y ≈ 777, 32.7%) and where the brown parking-lot strips begin
+ * (y ≈ 1238, 52%). They sit centred horizontally between those two
+ * strips, well below the car body. */
+.logos {
+  position: absolute;
+  top: 41.5%;          /* ≈  988 / 2379 — middle of the empty road */
+  left: 0;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(14px, 1.45vw, 28px);
+}
+
+.logosRow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(28px, 4vw, 76px);
+  flex-wrap: nowrap;
+}
+
+/* Per Figma spec — exact size for each auction logo (NOT scaling). */
+.logoCopart  { width: 121.33px; height: 52.15px;  object-fit: contain; }
+.logoCarfax  { width: 154.7px;  height: 28.78px;  object-fit: contain; }
+.logoManheim { width: 178.78px; height: 45.12px;  object-fit: contain; }
+.logoIaa     { width: 101.86px; height: 29.24px;  object-fit: contain; }
+.logoEncar   { width: 64.56px;  height: 36.89px;  object-fit: contain; }
+
+/* ── Steps (zig-zag, all absolute) ───────────────────────────────────── */
+
+/* Figma: the step blocks are compact (≤ 28 % of section width) and the
+ * 1-2 row sits CLOSE to the 3-4 row, with a larger vertical jump down
+ * to the centred step 5.
+ *
+ *   step1 / step2  : y =  56.0%        — closer to row 3-4
+ *   step3 / step4  : y =  64.5%        — only ~8 % below row 1-2
+ *   step5          : y =  79.0%        — bigger gap, centred between
+ *                                         the two parking strips
+ *
+ * X anchors:
+ *   left   row : x =  19.0%             (just inside left white stripe)
+ *   right  row : x =  58.0%             (just inside right white stripe)
+ *   centre row : x = 50%, translateX(-50%)
+ */
+.step {
+  position: absolute;
+  display: flex;
+  align-items: flex-start;
+  gap: clamp(12px, 1.2vw, 22px);
+  width: 28%;             /* compact, not stretched */
+}
+
+.step1 { top: 56.0%; left: 19.0%; }
+.step2 { top: 56.0%; left: 58.0%; }
+.step3 { top: 64.5%; left: 19.0%; }
+.step4 { top: 64.5%; left: 58.0%; }
+
+/* Step 5 sits centred between the two parking-lot strips with the
+ * "5/" + text rendered as one inline-flex pair so the whole pair is
+ * visually centred (not just the bounding box). */
+.step5 {
+  top: 79.0%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: auto;
+  max-width: 36%;
+  justify-content: flex-start;
+}
+
+.stepNum {
+  flex-shrink: 0;
+  font-family: var(--font-mazzard);
+  font-weight: 800;
+  font-size: clamp(20px, 2.08vw, 40px);
+  line-height: 100%;
+  letter-spacing: 0;
+  color: var(--color-orange-100);
+  min-width: clamp(28px, 2.3vw, 44px);
+}
+
+.stepText {
+  margin: 0;
+  font-family: var(--font-mazzard);
+  font-weight: 700;
+  font-size: clamp(16px, 1.66vw, 32px);
+  line-height: 110%;
+  color: var(--color-white);
+}
+
+/* ── PICK UP A CAR button ────────────────────────────────────────────── */
+
+.pickup {
+  position: absolute;
+  top: 87%;             /* ≈ 2070 / 2379, sits in the bottom black-fade */
+  left: 50%;
+  transform: translateX(-50%);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  /* Figma spec: 380 × 45. Tablet falls back to mobile layout below. */
+  height: 45px;
+  width: 380px;
+  border: 0;
+  border-radius: 6px;
+  background-color: var(--color-orange-100);
+  color: var(--color-black);
+  font-family: var(--font-mazzard);
+  font-weight: 500;
+  font-size: 14px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-decoration: none;
+  cursor: pointer;
+  transition: filter 0.18s ease, transform 0.05s ease;
+  white-space: nowrap;
+}
+
+.pickup:hover  { filter: brightness(1.07); }
+.pickup:active { transform: translate(-50%, 1px); }
+
+/* ── Join our group / Viber pill ─────────────────────────────────────── */
+
+.joinCard {
+  position: absolute;
+  top: 93%;             /* ≈ 2213 / 2379 */
+  left: 50%;
+  transform: translateX(-50%);
+  /* Figma spec: 394 × 118. */
+  width: 394px;
+  height: 118px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 18px 24px;
+  background-color: rgba(28, 28, 28, 0.55);
+  border: 0;
+  border-radius: 12px;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 0.18s ease;
+  box-sizing: border-box;
+  white-space: normal;
+}
+
+.joinCard:hover {
+  background-color: rgba(28, 28, 28, 0.78);
+}
+
+.joinText {
+  font-family: var(--font-mazzard);
+  font-weight: 700;
+  font-size: 18px;
+  line-height: 130%;
+  color: var(--color-white);
+  text-align: left;
+}
+
+.joinIcon {
+  width: 56px;
+  height: 56px;
+  flex-shrink: 0;
+}
+
+/* ── Staggered directional reveal for the 5 zig-zag steps ─────────────
+ *
+ *   step 1 ← slides in from LEFT   (delay   0 ms)
+ *   step 2 → slides in from RIGHT  (delay 180 ms)
+ *   step 3 ← slides in from LEFT   (delay 360 ms)
+ *   step 4 → slides in from RIGHT  (delay 540 ms)
+ *   step 5 ↑ slides in from BELOW  (delay 720 ms, centred)
+ *
+ * Each step starts hidden (opacity 0) and offset along its travel axis.
+ * The `.stepInView` modifier (added once the zig-zag scrolls into view)
+ * animates opacity → 1 and transform → resting position. Step 5 keeps
+ * its `translateX(-50%)` horizontal centring at every keyframe.
+ *
+ * `will-change` + GPU-friendly transforms keep the cascade buttery on
+ * mid-range devices. Users with `prefers-reduced-motion: reduce` get
+ * the final state instantly with no transitions.
+ */
+.step {
+  opacity: 0;
+  will-change: transform, opacity;
+  transition:
+    opacity 900ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 900ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.step1 { transform: translateX(-72px); }
+.step2 { transform: translateX(72px);  }
+.step3 { transform: translateX(-72px); }
+.step4 { transform: translateX(72px);  }
+.step5 { transform: translate(-50%, 56px); }
+
+.step1.stepInView { transform: translateX(0); transition-delay: 0ms;   opacity: 1; }
+.step2.stepInView { transform: translateX(0); transition-delay: 180ms; opacity: 1; }
+.step3.stepInView { transform: translateX(0); transition-delay: 360ms; opacity: 1; }
+.step4.stepInView { transform: translateX(0); transition-delay: 540ms; opacity: 1; }
+.step5.stepInView { transform: translate(-50%, 0); transition-delay: 720ms; opacity: 1; }
+
+@media (prefers-reduced-motion: reduce) {
+  .step,
+  .step1,
+  .step2,
+  .step3,
+  .step4 {
+    transform: none;
+    transition: none;
+    opacity: 1;
+  }
+  .step5 {
+    transform: translateX(-50%);
+    transition: none;
+    opacity: 1;
+  }
+}
+
+/* ── Mobile / tablet fallback (≤ 1024 px) ────────────────────────────── */
+
+@media screen and (max-width: 1024px) {
+  .section {
+    aspect-ratio: auto;
+    padding: 56px 20px;
+  }
+
+  .bgRoad        { object-fit: cover; }
+  .bgScrim       { height: 60%; }
+
+  .inner {
+    position: relative;
+    inset: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 32px;
+  }
+
+  .title,
+  .source,
+  .logos,
+  .step,
+  .pickup,
+  .joinCard {
+    position: static;
+    transform: none;
+    left: auto;
+    right: auto;
+    top: auto;
+  }
+
+  /* On mobile the steps stack vertically — skip the directional reveal
+   * (the absolute zig-zag layout that the animation was designed around
+   * does not apply here). Force-show them instead. */
+  .step,
+  .step1,
+  .step2,
+  .step3,
+  .step4,
+  .step5 {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .title { font-size: 44px; }
+
+  .sourceUSA, .sourceKorea {
+    width: 100%;
+    align-items: center;
+    text-align: center;
+  }
+  .sourceFrom { font-size: 16px; }
+  .sourceName { font-size: 32px; }
+
+  .logos {
+    width: 100%;
+    gap: 16px;
+  }
+  .logosRow { gap: 24px; }
+  .logoCopart  { width: 75px; height: 32px; }
+  .logoCarfax  { width: 96px; height: 18px; }
+  .logoManheim { width: 110px; height: 28px; }
+  .logoIaa     { width: 64px; height: 18px; }
+  .logoEncar   { width: 40px; height: 23px; }
+
+  .step {
+    width: 100%;
+    max-width: 460px;
+    gap: 14px;
+  }
+  .stepNum  { font-size: 22px; min-width: 32px; }
+  .stepText { font-size: 18px; }
+
+  .pickup {
+    width: min(360px, 100%);
+    height: 45px;
+    font-size: 12px;
+  }
+  .pickup:active { transform: translateY(1px); }
+
+  .joinCard {
+    width: min(360px, 92%);
+    height: auto;
+    min-height: 88px;
+    padding: 14px 18px;
+  }
+  .joinText { font-size: 14px; }
+  .joinIcon { width: 40px; height: 40px; }
+}
+
+@media screen and (max-width: 480px) {
+  .title { font-size: 32px; }
+  .sourceName { font-size: 24px; }
+}

@@ -1,0 +1,359 @@
+{
+  "timestamp": "2026-05-26T07:36:10.428356",
+  "base_url": "https://repo-complete-2.preview.emergentagent.com",
+  "total_tests": 56,
+  "passed": 44,
+  "failed": 12,
+  "success_rate": "78.6%",
+  "backend_errors": [
+    {
+      "endpoint": "/api/stripe/create-checkout-session",
+      "status": 503,
+      "error": "{\"detail\":\"Stripe is disabled in admin Integrations.\"}"
+    }
+  ],
+  "failed_tests": [
+    {
+      "test": "Team Lead login",
+      "details": "{'challenge': 'email_otp', 'user_id': 'staff_team_lead_1779774792', 'user_email': 'teamlead@bibi.cars', 'role': 'team_lead', 'challenge_token': 'pXJHfTZObs0qQMfYd_VS4LoMWn4Npa-O', 'recipient_masked': 't***@bibi.cars', 'expires_in_seconds': 600, 'hint': 'Code was sent to the master-admin \u2014 ask them for the 6-digit code.'}",
+      "critical": true
+    },
+    {
+      "test": "Calculator quote generation",
+      "details": "Quote ID: None, Total: None",
+      "critical": false
+    },
+    {
+      "test": "Manager creates wishlist deal",
+      "details": "Expected 200, got 400: {'detail': \"category must be one of ['motorbike', 'pickup', 'sedan', 'suv', 'van']\"}",
+      "critical": false
+    },
+    {
+      "test": "Create deposit",
+      "details": "Result: Expected 200, got 422: {'detail': [{'type': 'missing', 'loc': ['body', 'customer_id'], 'msg': 'Field required', 'input': {'customer_email': 'user@bibi.cars', 'amount': 1000, 'currency': 'USD'}, 'url': 'https://errors.pydantic.dev/2.12/v/missing'}, {'type': 'missing', 'loc': ['body', 'max_bid_usd'], 'msg': 'Field required', 'input': {'customer_email': 'user@bibi.cars', 'amount': 1000, 'currency': 'USD'}, 'url': 'https://errors.pydantic.dev/2.12/v/missing'}]}",
+      "critical": false
+    },
+    {
+      "test": "POST auction/won",
+      "details": "No deal_id available for testing",
+      "critical": false
+    },
+    {
+      "test": "GET deal financials",
+      "details": "No deal_id available for testing",
+      "critical": false
+    },
+    {
+      "test": "POST Stripe checkout session",
+      "details": "Status: 503, Response: 5xx error: {\"detail\":\"Stripe is disabled in admin Integrations.\"}",
+      "critical": false
+    },
+    {
+      "test": "POST DocuSign envelope",
+      "details": "Status: 200, Response: {'success': True, 'envelopeId': 'env-1779780965.194446'}",
+      "critical": false
+    },
+    {
+      "test": "Ringostat test-connection (fake keys)",
+      "details": "Response: {'success': False, 'status_code': None, 'message': 'Invalid API key format (too short).'}",
+      "critical": false
+    },
+    {
+      "test": "GET lemon/lookup/vin/{vin}",
+      "details": "Lemon data: N/A",
+      "critical": false
+    },
+    {
+      "test": "POST shipments",
+      "details": "Shipment ID: None",
+      "critical": false
+    },
+    {
+      "test": "Team lead dashboard tests",
+      "details": "No team lead token available",
+      "critical": false
+    }
+  ],
+  "test_results": {
+    "Admin login": {
+      "status": "PASS",
+      "details": "Token: eyJhbGciOiJIUzI1NiIs...",
+      "critical": true
+    },
+    "Manager login": {
+      "status": "PASS",
+      "details": "Token: eyJhbGciOiJIUzI1NiIs...",
+      "critical": true
+    },
+    "Team Lead login": {
+      "status": "FAIL",
+      "details": "{'challenge': 'email_otp', 'user_id': 'staff_team_lead_1779774792', 'user_email': 'teamlead@bibi.cars', 'role': 'team_lead', 'challenge_token': 'pXJHfTZObs0qQMfYd_VS4LoMWn4Npa-O', 'recipient_masked': 't***@bibi.cars', 'expires_in_seconds': 600, 'hint': 'Code was sent to the master-admin \u2014 ask them for the 6-digit code.'}",
+      "critical": true
+    },
+    "Customer login": {
+      "status": "PASS",
+      "details": "Token: g6xYXPdkxcUaKibauOkd...",
+      "critical": true
+    },
+    "Admin /me": {
+      "status": "PASS",
+      "details": "Role: admin",
+      "critical": false
+    },
+    "Customer /me": {
+      "status": "PASS",
+      "details": "Customer ID: test_user_bibi",
+      "critical": false
+    },
+    "Manager blocked from admin/system/settings": {
+      "status": "PASS",
+      "details": "Status: 403 (expected 401/403)",
+      "critical": false
+    },
+    "Customer blocked from admin/orders": {
+      "status": "PASS",
+      "details": "Status: 401 (expected 401/403)",
+      "critical": false
+    },
+    "Calculator quote generation": {
+      "status": "FAIL",
+      "details": "Quote ID: None, Total: None",
+      "critical": false
+    },
+    "Admin can list leads": {
+      "status": "PASS",
+      "details": "Leads count: 0",
+      "critical": false
+    },
+    "Get manager ID": {
+      "status": "PASS",
+      "details": "Manager ID: staff_manager_1779774791",
+      "critical": false
+    },
+    "Manager creates wishlist deal": {
+      "status": "FAIL",
+      "details": "Expected 200, got 400: {'detail': \"category must be one of ['motorbike', 'pickup', 'sedan', 'suv', 'van']\"}",
+      "critical": false
+    },
+    "Create deposit": {
+      "status": "FAIL",
+      "details": "Result: Expected 200, got 422: {'detail': [{'type': 'missing', 'loc': ['body', 'customer_id'], 'msg': 'Field required', 'input': {'customer_email': 'user@bibi.cars', 'amount': 1000, 'currency': 'USD'}, 'url': 'https://errors.pydantic.dev/2.12/v/missing'}, {'type': 'missing', 'loc': ['body', 'max_bid_usd'], 'msg': 'Field required', 'input': {'customer_email': 'user@bibi.cars', 'amount': 1000, 'currency': 'USD'}, 'url': 'https://errors.pydantic.dev/2.12/v/missing'}]}",
+      "critical": false
+    },
+    "POST auction/won": {
+      "status": "FAIL",
+      "details": "No deal_id available for testing",
+      "critical": false
+    },
+    "GET deal financials": {
+      "status": "FAIL",
+      "details": "No deal_id available for testing",
+      "critical": false
+    },
+    "GET Stripe public config": {
+      "status": "PASS",
+      "details": "Config: {'enabled': False, 'publishableKey': '', 'currency': 'usd', 'paymentMethods': ['card'], 'enabledMethods': {'card': True}, 'displayMethods': [{'key': 'card', 'label': 'Card', 'hint': 'Visa, Mastercard, Amex, Discover'}], 'checkoutMode': 'hosted', 'automaticPaymentMethods': True, 'mode': 'sandbox'}",
+      "critical": false
+    },
+    "POST Stripe checkout session": {
+      "status": "FAIL",
+      "details": "Status: 503, Response: 5xx error: {\"detail\":\"Stripe is disabled in admin Integrations.\"}",
+      "critical": false
+    },
+    "GET admin/payments": {
+      "status": "PASS",
+      "details": "Payments: N/A",
+      "critical": false
+    },
+    "GET admin/payments/stats": {
+      "status": "PASS",
+      "details": "Stats: {'success': True, 'windowDays': 30, 'totalAmount': 0, 'totalCount': 0, 'succeeded': 0, 'failed': 0, 'pending': 0, 'refunded': 0, 'byMethod': [], 'byCurrency': [], 'daily': []}",
+      "critical": false
+    },
+    "POST DocuSign envelope": {
+      "status": "FAIL",
+      "details": "Status: 200, Response: {'success': True, 'envelopeId': 'env-1779780965.194446'}",
+      "critical": false
+    },
+    "GET contracts/me (customer)": {
+      "status": "PASS",
+      "details": "Contracts: N/A",
+      "critical": false
+    },
+    "Ringostat test-connection (empty body)": {
+      "status": "PASS",
+      "details": "Status: 400 (expected 400 for missing creds)",
+      "critical": false
+    },
+    "Ringostat test-connection (fake keys)": {
+      "status": "FAIL",
+      "details": "Response: {'success': False, 'status_code': None, 'message': 'Invalid API key format (too short).'}",
+      "critical": false
+    },
+    "Ringostat test-webhook": {
+      "status": "PASS",
+      "details": "Result: {'success': True, 'message': 'Test webhook event created', 'call_id': 'test_1779780965'}",
+      "critical": false
+    },
+    "GET Ringostat health": {
+      "status": "PASS",
+      "details": "Health: {'connection': {'status': 'disconnected', 'api_key_set': False, 'project_id_set': False}, 'webhook': {'last_event': '2026-05-26T07:36:05.626000', 'events_today': 1}, 'calls_today': 1, 'unassigned': {'extensions': 0, 'calls_today': 1}, 'mappings': {'total': 0, 'unmapped': 0}}",
+      "critical": false
+    },
+    "GET Ringostat stats/overview": {
+      "status": "PASS",
+      "details": "Stats: {'window_days': 7, 'totals': {'all': 1, 'inbound': 1, 'outbound': 0, 'answered': 1, 'missed': 0, 'completed': 0}, 'answer_rate': 100.0, 'avg_duration_sec': 125.0, 'by_day': [{'day': '2026-05-26', 'total': 1, 'answered': 1, 'missed': 0}]}",
+      "critical": false
+    },
+    "GET Ringostat stats/managers": {
+      "status": "PASS",
+      "details": "Managers: {'window_days': 7, 'managers': [{'manager_id': None, 'manager_name': '(unassigned)', 'extension': None, 'total': 1, 'answered': 0, 'missed': 0, 'inbound': 0, 'outbound': 0, 'answer_rate': 0.0, 'avg_duration_sec': 0.0, 'last_call_at': None}]}",
+      "critical": false
+    },
+    "GET Ringostat calls": {
+      "status": "PASS",
+      "details": "Calls: N/A",
+      "critical": false
+    },
+    "POST email-otp/request": {
+      "status": "PASS",
+      "details": "Status: 400, Response: {'detail': 'user_id required'}",
+      "critical": false
+    },
+    "POST email-otp/verify (fake code)": {
+      "status": "PASS",
+      "details": "Status: 400 (expected 4xx for invalid code)",
+      "critical": false
+    },
+    "GET google-reviews/config": {
+      "status": "PASS",
+      "details": "Config: {'enabled': True, 'place_id': '', 'place_ids': [], 'min_rating_filter': 4, 'max_reviews_to_show': 6, 'auto_sync_enabled': False, 'sync_interval_hours': 24, 'last_synced_at': None, 'last_sync_error': None, 'fallback_rating': 4.9, 'fallback_count': 31, 'fallback_url': '', 'created_at': '2026-05-26T05:57:55.367445+00:00', 'updated_at': '2026-05-26T05:57:55.367453+00:00', 'api_key_preview': '', 'has_api_key': False}",
+      "critical": false
+    },
+    "POST google-reviews/manual": {
+      "status": "PASS",
+      "details": "Result: {'id': 'manual_a479a051f72f4d84', 'google_review_id': None, 'author_name': 'Anonymous', 'author_avatar_url': '', 'rating': 5, 'text': 'Great service!', 'text_bg': '', 'language': 'en', 'time': '2026-05-26T07:36:06.499498+00:00', 'source': 'manual', 'hidden': False, 'pinned': False, 'created_at': '2026-05-26T07:36:06.499505+00:00', 'updated_at': '2026-05-26T07:36:06.499507+00:00'}",
+      "critical": false
+    },
+    "GET public/google-reviews": {
+      "status": "PASS",
+      "details": "Reviews: N/A",
+      "critical": false
+    },
+    "GET public/vin/{vin}": {
+      "status": "PASS",
+      "details": "VIN data: {'success': True, 'data': None, 'message': 'VIN not found in database'}",
+      "critical": false
+    },
+    "GET lemon/lookup/vin/{vin}": {
+      "status": "FAIL",
+      "details": "Lemon data: N/A",
+      "critical": false
+    },
+    "GET statvin/lookup/{vin}": {
+      "status": "PASS",
+      "details": "StatVIN data: {'success': False, 'found': False, 'vin': '1HGBH41JXMN109186', 'response_time_ms': 1069}",
+      "critical": false
+    },
+    "POST shipments": {
+      "status": "FAIL",
+      "details": "Shipment ID: None",
+      "critical": false
+    },
+    "GET tracking/providers": {
+      "status": "PASS",
+      "details": "Providers: {'success': True, 'providers': {'vesselfinder': {'name': 'VesselFinder (Master API)', 'purpose': 'Real-time vessel position by IMO', 'envVar': 'VESSELFINDER_API_KEY', 'configured': False, 'signUpUrl': 'https://www.vesselfinder.com/api'}, 'vesselfinder_fleet': {'name': 'VesselFinder Fleet API', 'purpose': 'Whole-fleet positions (subscription to IMO list)', 'envVar': 'VESSELFINDER_FLEET_KEY', 'configured': False, 'signUpUrl': 'https://www.vesselfinder.com/api'}, 'shipsgo': {'name': 'ShipsGo (Container API)', 'purpose': 'Container/VIN \u2192 IMO / ETA / ports', 'envVar': 'SHIPSGO_API_KEY', 'configured': False, 'signUpUrl': 'https://shipsgo.com'}, 'shipsgo_fleet': {'name': 'ShipsGo Fleet (Vessel)', 'purpose': 'Vessel position via ShipsGo Fleet API (alternative to VesselFinder)', 'envVar': 'SHIPSGO_FLEET_KEY', 'configured': False, 'signUpUrl': 'https://shipsgo.com'}, 'aftership': {'name': 'AfterShip', 'purpose': 'Universal fallback parcel tracker', 'envVar': 'AFTERSHIP_API_KEY', 'configured': False, 'signUpUrl': 'https://www.aftership.com'}}, 'hybridFlow': ['VIN/Container \u2192 ShipsGo \u2192 get container + vessel IMO', 'IMO \u2192 VesselFinder OR ShipsGo Fleet \u2192 live lat/lng/speed/course', 'Cache 90s, interpolate \u2264 2h, fallback to SIMULATE']}",
+      "critical": false
+    },
+    "GET cabinet/dashboard": {
+      "status": "PASS",
+      "details": "Data: {'success': True, 'data': {'favorites': 5, 'compares': 2, 'orders': 1, 'invoices': 0}}",
+      "critical": false
+    },
+    "GET cabinet/deals": {
+      "status": "PASS",
+      "details": "Data: {'success': True, 'data': [{'id': 'deal_test_user_bibi_3', 'title': 'Audi Q7 Premium Plus 2024', 'vi",
+      "critical": false
+    },
+    "GET cabinet/orders": {
+      "status": "PASS",
+      "details": "Data: {'orders': [{'_id': '6a154d68e23b7aca28cd3960', 'id': 'deal_test_user_bibi_3', 'auctionDate': '2026-",
+      "critical": false
+    },
+    "GET cabinet/contracts": {
+      "status": "PASS",
+      "details": "Data: {'contracts': []}",
+      "critical": false
+    },
+    "GET cabinet/shipping": {
+      "status": "PASS",
+      "details": "Data: {'shipments': []}",
+      "critical": false
+    },
+    "GET cabinet/invoices": {
+      "status": "PASS",
+      "details": "Data: {'invoices': []}",
+      "critical": false
+    },
+    "GET cabinet/deposits": {
+      "status": "PASS",
+      "details": "Data: {'deposits': [{'_id': '6a154d68e23b7aca28cd3993', 'id': 'dep_test_user_bibi_1', 'amount': 5000, 'cre",
+      "critical": false
+    },
+    "GET cabinet/notifications": {
+      "status": "PASS",
+      "details": "Data: {'notifications': []}",
+      "critical": false
+    },
+    "GET cabinet/profile": {
+      "status": "PASS",
+      "details": "Data: {'id': 'test_customer_001', 'email': 'test@customer.com', 'name': 'Test Customer', 'phone': '+380123",
+      "critical": false
+    },
+    "Team lead dashboard tests": {
+      "status": "FAIL",
+      "details": "No team lead token available",
+      "critical": false
+    },
+    "GET manager/calls/my": {
+      "status": "PASS",
+      "details": "Data: {'success': True, 'calls': [{'_id': '6a154d650f5c661112ea55f6', 'call_id': 'test_1779780965', 'direc",
+      "critical": false
+    },
+    "GET manager/calls/missed": {
+      "status": "PASS",
+      "details": "Data: {'success': True, 'calls': []}",
+      "critical": false
+    },
+    "GET manager/orders": {
+      "status": "PASS",
+      "details": "Data: {'success': True, 'items': []}",
+      "critical": false
+    },
+    "GET manager/invoices/my": {
+      "status": "PASS",
+      "details": "Data: {'success': True, 'items': []}",
+      "critical": false
+    },
+    "GET manager/engagement/analytics": {
+      "status": "PASS",
+      "details": "Data: {'totalUsers': 2, 'activeUsers': 0, 'engagementRate': 0.0, 'pageViews': 0, 'hotUsers': 0, 'warmUsers",
+      "critical": false
+    },
+    "GET admin/integrations": {
+      "status": "PASS",
+      "details": "Integrations: 6",
+      "critical": false
+    },
+    "GET admin/integrations/health": {
+      "status": "PASS",
+      "details": "Health: {'google_oauth': {'status': 'not_configured', 'isEnabled': False, 'lastCheck': None}, 'stripe': {'status': 'not_configured', 'isEnabled': False, 'lastCheck': None, 'lastTest': None, 'lastTestStatus': None, 'lastTestError': None}, 'ringostat': {'status': 'not_configured', 'isEnabled': False, 'lastCheck': None}, 'email': {'status': 'not_configured', 'isEnabled': False, 'lastCheck': None}, 'shipping': {'status': 'not_configured', 'isEnabled': False, 'lastCheck': '2026-05-26T07:36:10.305580+00:00'}, 'openai': {'status': 'not_configured', 'isEnabled': False, 'lastCheck': None}}",
+      "critical": false
+    },
+    "GET admin/system/settings": {
+      "status": "PASS",
+      "details": "Settings: {'settings': {'production_domain': '', 'cors_origins': [], 'cors_origin_regex': None, 'allow_subdoma",
+      "critical": false
+    }
+  }
+}

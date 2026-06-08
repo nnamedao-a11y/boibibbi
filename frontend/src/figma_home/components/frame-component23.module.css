@@ -1,0 +1,479 @@
+/* =============================================================================
+ * BIBI Cars — "How we work" block
+ *
+ * Pixel-perfect Figma rebuild.
+ *   Background      : #000000 (var(--color-black))
+ *   Title           : "How we work" - Mazzard H Bold, 96px, color #FEAE00,
+ *                       uppercase, top-left of inner container.
+ *   Tag (right)     : bracketed label
+ *                       [ WE WORK FOR EACH CLIENT
+ *                         DEPENDING ON THE BUDGET ]
+ *                       Brackets: 3px stroke #555452, height 76px
+ *                       Line 1: orange (#FEAE00), Mazzard H Medium, ~16-18px
+ *                       Line 2: white,           Mazzard H Medium, ~16-18px
+ *
+ *   Cards (3 across):
+ *     [1] Standard          — bg #1D1D1B (dark)
+ *     [2] Turnkey           — bg #FEAE00 (yellow)  + "popular" pill
+ *     [3] Sourcing+Delivery — bg #1D1D1B (dark)
+ *
+ *   Each card has:
+ *     - top-left bracket counter [1] / [2] / [3] (3px stroke #555452 or #040103)
+ *     - title          : Mazzard H Bold, 40px (orange on dark, #040103 on yellow)
+ *     - description    : Helvetica Now Display Regular, 22-24px
+ *                          (white on dark, #040103 on yellow)
+ *     - cta line       : Helvetica Now Display Bold, 30-32px
+ *                          (orange on dark, #040103 on yellow)
+ *
+ *   Bottom card:
+ *     "Have a question? / Contact us" - Mazzard H Bold, 32px
+ *     phones - Helvetica Now Display Bold, 24px, orange
+ *     1px #FEAE00 border, rounded 8px
+ * ========================================================================== */
+
+.howWeWorkSection {
+  align-self: stretch;
+  background-color: var(--color-black);
+  font-family: var(--font-mazzard);
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.inner {
+  width: 100%;
+  max-width: 1920px;
+  /* Per Figma spec: section total 1920×1813.
+     – top padding to "HOW WE WORK" title: 154
+     – horizontal: 0 (cards row spans full 1920 width)
+     – bottom padding: 154 */
+  padding: 154px 0 154px;
+  display: flex;
+  flex-direction: column;
+  gap: 131px;   /* brackets-bottom → cards-top: 130.83 ≈ 131 */
+  box-sizing: border-box;
+}
+
+/* ─── Top row ────────────────────────────────────────────────────────── */
+/* Per design: stacked column.
+   – Row 1: "HOW WE WORK" centered horizontally
+   – 65px gap (visual gap between title bottom and bracket top, derived
+     from spec: bracket top y = 315 from section top, title at y = 154
+     with line-height 96 → bottom ≈ 250, so gap = 315 − 250 = 65)
+   – Row 2: bracketed "[ WE WORK FOR EACH CLIENT / DEPENDING ON THE
+     BUDGET ]" right-aligned. */
+.topRow {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 65px;
+  width: 100%;
+}
+
+.howWeWork {
+  margin: 0;
+  font-family: var(--font-mazzard);
+  /* Mazzard H Bold = 700 */
+  font-weight: 700;
+  font-size: 96px;
+  line-height: 100%;
+  color: var(--color-orange-100);
+  text-transform: uppercase;
+  letter-spacing: -0.005em;
+  /* CENTERED — was top-left in the old build. Per Figma the HW WORK
+     title is centered horizontally on the section. */
+  text-align: center;
+  width: 100%;
+}
+
+.eachClientTag {
+  display: flex;
+  /* RIGHT-ALIGNED — was inline next to the title. Per Figma the
+     bracketed tag sits below the title, on the right side of the
+     section. We keep ~100px right inset so it doesn't crash into
+     the page edge. */
+  justify-content: flex-end;
+  padding: 0 100px 0 0;
+}
+
+.eachClientStack {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 4px;
+  white-space: nowrap;
+  text-align: left;
+  font-family: var(--font-mazzard);
+  font-weight: 500; /* Mazzard H Medium */
+  font-size: 18px;
+  line-height: 120%;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.eachClientYellow { color: var(--color-orange-100); }
+.eachClientWhite  { color: var(--color-white); }
+
+/* ─── Bracketed label `[ … ]` with 3px #555452 brackets ──────────────── */
+/* The bracket is built with two pseudo-elements: ::before is "[" and
+   ::after is "]". Each is rendered as a vertical 3px line plus two
+   small horizontal caps, all in the variable colour `--bracket-color`.
+*/
+
+.bracketLabel {
+  display: inline-flex;
+  align-items: center;
+  position: relative;
+  /* Outer padding pushes the bracket lines 70 px AWAY from the text
+     on both sides — matching the canonical Figma spec used by
+     Vehicle Deals ("Thousands of listings.") and Before/After
+     ("Our clients receive the best service"). Previously the
+     bracketLabel had only 14 px of horizontal padding which made the
+     "WE WORK FOR EACH CLIENT" block look visibly tighter than its
+     two reference siblings. */
+  padding: 0 70px;
+  --bracket-color: var(--color-dimgray-200);
+}
+
+.bracketChild {
+  display: inline-flex;
+  align-items: center;
+  /* Vertical padding only — horizontal spacing is owned by the
+     bracketLabel above so the 70 px gap to the bracket lines stays
+     consistent across all four bracketed taglines on /welcome. */
+  padding: 2px 0;
+}
+
+.bracketLabel::before,
+.bracketLabel::after {
+  content: "";
+  position: absolute;
+  /* Hug the text rather than sticking out 8px above/below — keeps the
+     visual proportion identical between EN ("WE WORK FOR EACH CLIENT")
+     and BG ("РАБОТИМ ЗА ВСЕКИ КЛИЕНТ"). */
+  top: 0;
+  bottom: 0;
+  width: 16px;
+  border: 3px solid var(--bracket-color);
+}
+
+.bracketLabel::before {
+  left: 0;
+  border-right: 0;
+}
+
+.bracketLabel::after {
+  right: 0;
+  border-left: 0;
+}
+
+/* ─── Cards row ──────────────────────────────────────────────────────── */
+/* Per Figma spec:
+   – section width 1920
+   – left & right padding 100 each → content area 1720
+   – 3 equal cards with 10px gap between them
+   – each card width ≈ (1720 − 20) / 3 ≈ 566.67 px (Figma: 562.77 +
+     small horizontal asymmetry; we use auto-fit grid so the layout
+     fluidly matches at any width while preserving the 10px gap). */
+.cardsRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 10px;
+  width: 100%;
+  padding: 0 100px;
+  box-sizing: border-box;
+}
+
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 38px;
+  padding: 40px 40px 56px;
+  min-height: 620px;
+  box-sizing: border-box;
+}
+
+/* ── Hover parallax (zoom only, NO 3D tilt, NO glow) ────────────────────────
+ * The user wanted the gentle parallax "zoom" feel back on the 3 plan cards
+ * but with a CLEAN, FLUID hover: just a noticeable scale-up / scale-down on
+ * enter and leave — no geometric tilt/rotation, no Z-lift, and no amber
+ * glow "подсветка".
+ *
+ * MOTION CURVE NOTES:
+ *  • Duration is 560 ms — fast enough to feel responsive but long enough
+ *    for the eye to track a "flowing" melt-in / melt-out rather than a
+ *    binary snap.
+ *  • Easing is a symmetric in-out cubic-bezier `(0.65, 0, 0.35, 1)`. The
+ *    in-out curve spreads the motion evenly across the whole window so
+ *    the scale feels like it "flows" instead of jumping.
+ *  • `box-shadow` rides on a slightly slower 640 ms curve so the
+ *    elevation settles a hair AFTER the scale completes — adds a
+ *    layered "weight" feel.
+ *
+ * ─── CRITICAL: TRANSFORM-FUNCTION COMPATIBILITY ───
+ *
+ * The cards are direct children of `.cardsRow[data-stagger]` and pick up
+ * the site-wide reveal cascade animation `bibiRevealFadeUp` with
+ * `animation-fill-mode: both`. After that animation completes, the held
+ * end-state value of `transform: translate3d(0, 0, 0)` lives in the
+ * Animations cascade origin, which sits ABOVE the Author origin even
+ * when the static declaration is `!important`. More importantly: when a
+ * CSS transition tries to interpolate between two `transform` values
+ * that DO NOT share the same function list, the browser can NOT
+ * compute intermediate frames — it just snaps to the end value.
+ *
+ * That is why the previous "transform: scale(1.06) !important" tried to
+ * transition from `translate3d(0,0,0)` → `scale(1.06)` and ended up
+ * SNAPPING (no smooth interpolation possible across mismatched function
+ * lists).
+ *
+ * Fix: keep the function list identical on both rest and hover. Rest is
+ * `translate3d(0,0,0) scale(1)` and hover is `translate3d(0,0,0)
+ * scale(1.06)`. With both transforms sharing `translate3d() scale()`,
+ * the browser interpolates the scale parameter component-by-component
+ * across the 560 ms transition — giving a properly flowing zoom.
+ *
+ * `:global()` is required because the tilt-card classes come from the
+ * shared global TiltParallax.css while `.card` is the local CSS-module
+ * class. */
+.card:global(.tilt-card) {
+  /* Fast & fluid — quick to follow the cursor, smooth to settle. */
+  transform: translate3d(0, 0, 0) scale(1) !important;
+  transform-origin: center center;
+  will-change: transform, box-shadow;
+  transition:
+    transform 240ms cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 280ms cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+.card:global(.tilt-card.tilt-hover),
+.card:global(.tilt-card.tilt-pressed) {
+  /* Hover state — same function list, only the scale parameter changes
+     so the transition interpolates smoothly over 560 ms. */
+  transform: translate3d(0, 0, 0) scale(1.06) !important;
+  box-shadow:
+    0 28px 52px -22px rgba(0, 0, 0, 0.55),
+    0 12px 22px -14px rgba(0, 0, 0, 0.35) !important;
+}
+
+.cardDark {
+  background-color: var(--color-gray-200); /* #1D1D1B */
+  /* Subtle leather/noise vignette to match Figma material */
+  background-image:
+    radial-gradient(ellipse at 30% 20%, rgba(255, 255, 255, 0.04) 0%, transparent 60%),
+    radial-gradient(ellipse at 70% 80%, rgba(255, 255, 255, 0.02) 0%, transparent 60%);
+}
+
+.cardYellow {
+  background-color: var(--color-orange-100);
+  /* Card 2 is slightly larger / popped forward in the Figma — keep flat
+     visual but allow the popular pill to align right. */
+}
+
+.cardTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  min-height: 48px;
+}
+
+.tileNum {
+  font-family: var(--font-mazzard);
+  /* Per Figma: Mazzard H SemiBold = 600 (was Medium 500). */
+  font-weight: 600;
+  /* Per Figma: number glyph at 24px size, centered inside the fixed
+     39.239 × 32.699 bracket frame (see overrides below). The previous
+     22px / 500 was a Wave-2 carry-over that visually squished the digit. */
+  font-size: 24px;
+  line-height: 100%;
+  color: inherit;
+  display: inline-block;
+  min-width: 14px;
+  text-align: center;
+}
+
+/* ──────────────────────────────────────────────────────────────────────
+   Card-tile bracket override.
+
+   The generic `.bracketLabel` (used by "WE WORK FOR EACH CLIENT") auto-
+   stretches its 3-px brackets to hug the wrapped text content. That
+   behaviour is correct for the tag block but it COMPRESSED the small
+   number badges [1] [2] [3] on plan cards because the inner glyph is
+   a single ~24px tall character.
+
+   Per Figma spec the number bracket frame is FIXED:
+     • width  : 39.239 px
+     • height : 32.699 px
+     • stroke : 3 px solid #555452
+   We re-apply that exact geometry when a `.bracketLabel` contains a
+   `.tileNum` child — without breaking the tag-block sibling.
+   ────────────────────────────────────────────────────────────────────── */
+.bracketLabel:has(> .bracketChild > .tileNum) {
+  padding: 0;
+  width: 39.239px;
+  height: 32.699px;
+  flex-shrink: 0;
+}
+.bracketLabel:has(> .bracketChild > .tileNum) > .bracketChild {
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  justify-content: center;
+}
+.bracketLabel:has(> .bracketChild > .tileNum)::before,
+.bracketLabel:has(> .bracketChild > .tileNum)::after {
+  top: 0;
+  bottom: 0;
+  width: 8px; /* visual width of the bracket cap — keeps 3 px stroke + cap */
+}
+
+.cardDark .tileNum   { color: var(--color-dimgray-200); }
+.cardYellow .tileNum { color: var(--color-gray-500); }   /* #040103 */
+
+/* ─── Popular pill ──────────────────────────────────────────────────── */
+
+.popularPill {
+  cursor: default;
+  border: 1px solid var(--color-black);
+  background: transparent;
+  color: var(--color-black);
+  font-family: var(--font-mazzard);
+  font-weight: 500;
+  font-size: 16px;
+  letter-spacing: 0.02em;
+  padding: 8px 16px;
+  border-radius: 6px;
+  line-height: 1;
+  text-transform: lowercase;
+}
+
+/* ─── Card titles ───────────────────────────────────────────────────── */
+
+.cardTitle {
+  margin: 0;
+  font-family: var(--font-mazzard);
+  /* Mazzard H Bold = 700 */
+  font-weight: 700;
+  font-size: 40px;
+  line-height: 110%;
+  letter-spacing: -0.005em;
+}
+
+.titleOrange { color: var(--color-orange-100); }
+.titleBlack  { color: var(--color-gray-500); }
+
+/* ─── Card description ─────────────────────────────────────────────── */
+
+.cardDesc {
+  margin: 0;
+  font-family: var(--font-helvetica-now-display);
+  font-weight: 400;
+  font-size: 22px;
+  line-height: 130%;
+  max-width: 520px;
+}
+
+.descWhite { color: var(--color-white); }
+.descBlack { color: var(--color-gray-500); }
+
+/* ─── Card CTA / catchphrase ───────────────────────────────────────── */
+
+.cardCta {
+  margin: 0;
+  margin-top: auto; /* pin to bottom */
+  font-family: var(--font-helvetica-now-display);
+  font-weight: 700;
+  font-size: 32px;
+  line-height: 115%;
+  letter-spacing: -0.005em;
+}
+
+.ctaOrange { color: var(--color-orange-100); }
+.ctaBlack  { color: var(--color-gray-500); }
+
+/* ─── Bottom: Have a question card ─────────────────────────────────── */
+
+.questionWrap {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.questionCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 32px;
+  padding: 56px 96px;
+  border: 1px solid var(--color-orange-100);
+  border-radius: 8px;
+  text-align: center;
+  width: 100%;
+  max-width: 564px;
+  box-sizing: border-box;
+}
+
+.questionTitle {
+  margin: 0;
+  font-family: var(--font-mazzard);
+  font-weight: 700;
+  font-size: 32px;
+  line-height: 120%;
+  color: var(--color-white);
+  text-align: center;
+}
+
+.questionPhones {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+}
+
+.questionPhone {
+  font-family: var(--font-helvetica-now-display);
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 100%;
+  color: var(--color-orange-100);
+  text-decoration: none;
+  letter-spacing: 0.02em;
+  transition: filter 0.15s ease;
+}
+
+.questionPhone:hover { filter: brightness(1.15); }
+
+/* ─── Responsive ───────────────────────────────────────────────────── */
+
+@media screen and (max-width: 1350px) {
+  .inner { padding: 110px 64px; gap: 72px; }
+  .howWeWork { font-size: 72px; }
+  .cardTitle { font-size: 34px; }
+  .cardCta { font-size: 28px; }
+  .card { min-height: 560px; padding: 36px 32px 48px; gap: 32px; }
+  /* Scale the bracket↔text gap down on smaller desktops so the
+     bracketed tagline doesn't overflow the 100px right inset. */
+  .bracketLabel:not(:has(> .bracketChild > .tileNum)) { padding: 0 40px; }
+}
+
+@media screen and (max-width: 925px) {
+  .inner { padding: 64px 24px; gap: 40px; }
+  .topRow { flex-direction: column; gap: 24px; }
+  .howWeWork { font-size: 44px; }
+  .eachClientTag { padding-top: 0; }
+  .eachClientStack { font-size: 14px; white-space: normal; }
+  .cardsRow { grid-template-columns: 1fr; gap: 16px; }
+  .card { min-height: 0; padding: 28px 22px 36px; gap: 24px; }
+  .cardTitle { font-size: 28px; }
+  .cardDesc { font-size: 18px; }
+  .cardCta  { font-size: 22px; }
+  .questionCard { padding: 36px 24px; gap: 22px; }
+  .questionTitle { font-size: 24px; }
+  .questionPhone { font-size: 18px; }
+  .bracketLabel:not(:has(> .bracketChild > .tileNum)) { padding: 0 20px; }
+}
+
+@media screen and (max-width: 480px) {
+  .howWeWork { font-size: 36px; }
+  .bracketLabel:not(:has(> .bracketChild > .tileNum)) { padding: 0 14px; }
+}

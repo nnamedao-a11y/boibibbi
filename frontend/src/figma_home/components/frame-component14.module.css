@@ -1,0 +1,232 @@
+.instanceChild,
+.rectangleParent {
+  background-color: var(--color-gray-200);
+}
+.rectangleParent {
+  align-self: stretch;
+  height: var(--height-727);
+  position: relative;
+  max-width: 100%;
+  z-index: 0;
+  text-align: left;
+  font-size: var(--fs-32);
+  color: var(--color-white);
+  font-family: var(--font-mazzard);
+}
+.instanceChild {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+.bmv328Wrapper {
+  position: absolute;
+  top: 500.9px;
+  left: 22px;
+  display: flex;
+  align-items: flex-start;
+  padding: var(--padding-0) var(--padding-0) var(--padding-0) var(--padding-7);
+}
+.bmv328 {
+  margin: 0;
+  position: relative;
+  font-size: inherit;
+  line-height: 99.9%;
+  text-transform: uppercase;
+  font-weight: 400;
+  font-family: inherit;
+}
+.rectangleGroup {
+  position: absolute;
+  top: 24px;
+  left: calc(50% - 406px);
+  width: var(--width-812);
+  height: var(--height-40);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--gap--402);
+}
+.frameChild {
+  height: var(--height-370_4);
+  width: var(--width-402);
+  position: relative;
+  background-color: var(--color-gray-100);
+  display: none;
+  flex-shrink: 0;
+}
+.instanceInner,
+.instanceItem,
+.rectangleDiv {
+  position: absolute;
+  top: 505px;
+  border-radius: var(--br-8);
+  background-color: var(--color-black);
+  height: var(--height-118_3);
+  display: none;
+}
+.instanceItem {
+  left: 26px;
+  width: var(--width-223);
+}
+.instanceInner,
+.rectangleDiv {
+  width: var(--width-255_2);
+}
+.instanceInner {
+  left: calc(50% - 127.5px);
+}
+.rectangleDiv {
+  left: 582.9px;
+}
+.frameParent,
+.frameWrapper {
+  display: flex;
+  align-items: flex-start;
+  max-width: 100%;
+}
+.frameWrapper {
+  position: absolute;
+  top: 582.2px;
+  left: 22px;
+  padding: var(--padding-0) var(--padding-0) var(--padding-0) var(--padding-7);
+  box-sizing: border-box;
+  font-size: var(--fs-16);
+}
+.frameParent {
+  gap: 54.1px;
+}
+.theDateOfTheFinishedCarParent {
+  width: var(--width-217);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--gap-18);
+  z-index: 1;
+}
+.theDateOf {
+  align-self: stretch;
+  position: relative;
+  z-index: 2;
+}
+.labelturnkey {
+  margin: 0;
+  width: var(--width-103);
+  position: relative;
+  font-size: var(--fs-20);
+  line-height: 99.9%;
+  text-transform: uppercase;
+  font-weight: 400;
+  font-family: inherit;
+  display: inline-block;
+  z-index: 1;
+}
+.rectangleContainer {
+  height: var(--height-76_4);
+  width: 244.9px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--gap-20);
+}
+.frameInner {
+  align-self: stretch;
+  width: var(--width-0_6);
+  position: relative;
+  background-color: var(--color-gainsboro-200);
+  flex-shrink: 0;
+  z-index: 2;
+}
+.turnkeyPriceInBulgariaParent {
+  width: var(--width-193);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--gap-19);
+  flex-shrink: 0;
+  z-index: 1;
+}
+.turnkeyPriceIn {
+  align-self: stretch;
+  position: relative;
+}
+.euro {
+  margin: 0;
+  position: relative;
+  font-size: var(--fs-20);
+  line-height: 99.9%;
+  text-transform: uppercase;
+  font-weight: 400;
+  font-family: inherit;
+  display: inline-block;
+  min-width: var(--min-w-114);
+}
+.dtKlausenLs1351Parent,
+.frameGroup {
+  display: flex;
+  align-items: flex-start;
+  max-width: 100%;
+}
+.frameGroup {
+  position: absolute;
+  top: 18.4px;
+  left: 22px;
+  gap: var(--gap-8);
+}
+.dtKlausenLs1351Parent {
+  width: var(--width-402);
+  row-gap: var(--gap-20);
+}
+.dtKlausenLs1351Icon {
+  width: var(--width-402);
+  position: relative;
+  max-height: 100%;
+  object-fit: contain;
+  max-width: 100%;
+  flex-shrink: 0;
+}
+.dtKlausenLs1352Wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 58.6px var(--padding-0) var(--padding-0);
+  box-sizing: border-box;
+  max-width: 100%;
+}
+.dtKlausenLs1352Icon {
+  width: 100%;
+  position: relative;
+  max-height: 100%;
+  height: auto;
+  object-fit: contain;
+  max-width: 100%;
+}
+@media screen and (max-width: 925px) {
+  .rectangleParent {
+    height: auto;
+    min-height: var(--min-h-727);
+  }
+  .bmv328 {
+    font-size: var(--fs-26);
+    line-height: var(--lh-26);
+  }
+  .dtKlausenLs1351Parent,
+  .frameGroup,
+  .frameParent {
+    flex-wrap: wrap;
+  }
+}
+@media screen and (max-width: 450px) {
+  .bmv328 {
+    font-size: var(--fs-19);
+    line-height: var(--lh-19);
+  }
+  .euro,
+  .labelturnkey {
+    font-size: var(--fs-16);
+    line-height: var(--lh-16);
+  }
+}

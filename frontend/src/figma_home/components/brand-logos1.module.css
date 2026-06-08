@@ -1,0 +1,294 @@
+/* ──────────────────────────────────────────────────────────────────
+   BrandLogos1 — "Most popular brands" expandable grid.
+   • 6 brands per row, evenly spaced with thin amber vertical dividers
+     between cells in the same row (Figma look).
+   • Each cell is 90px tall (the same height the original single-row
+     layout used) so vertical rhythm stays uniform when expanding.
+   • Subtle hover lift + amber glow → reinforces clickability while
+     respecting the dark theme.
+   ────────────────────────────────────────────────────────────────── */
+
+.brandLogos {
+  align-self: stretch;
+  display: flex;
+  justify-content: center;
+  /* Per Figma: gray BOTTOM zone (below brands card) is 316px tall total. */
+  padding: 0 20px 226px;
+  box-sizing: border-box;
+  flex-shrink: 0;
+  text-align: left;
+  font-size: 32px;
+  color: var(--color-white);
+  font-family: var(--font-mazzard);
+  background-color: var(--color-gray-200);
+}
+
+.popularBrands {
+  width: 1706px;
+  max-width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 82px;
+}
+
+.rectangleParent {
+  background-color: var(--color-black);
+  padding: 60px 80px;
+  display: flex;
+  flex-direction: column;
+  gap: 60px;
+  border-radius: 0;
+}
+
+.brandsHeader {
+  display: flex;
+  justify-content: center;
+}
+
+.mostPopularBrands {
+  margin: 0;
+  font-size: inherit;
+  line-height: 100%;
+  text-transform: uppercase;
+  font-family: 'Mazzard H', 'Mazzard', system-ui, sans-serif;
+  font-weight: 400;
+  color: var(--color-white);
+}
+
+/* ────────── Grid ────────── */
+.brandsGrid {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  align-items: center;
+  width: 100%;
+  row-gap: 32px;
+  column-gap: 0;
+}
+
+.brandItem {
+  height: 90px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  padding: 0 24px;
+  text-decoration: none;
+  color: inherit;
+  isolation: isolate; /* keep ::before glow contained */
+  transition: transform 240ms cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+/* ── Per-logo cascade reveal (left → right) ──
+   Same ease-out-quint physics as the hero "FROM AUCTION TO KEYS"
+   headline, so the two reveals feel like one continuous motion.
+   The animation is paused until the section gets the global
+   `.is-visible` class (flipped by IntersectionObserver via
+   useInView), then each logo plays in turn thanks to the
+   per-index inline `animation-delay` set in the JSX. */
+.brandReveal {
+  opacity: 0;
+  transform: translate3d(-44px, 18px, 0);
+  will-change: opacity, transform;
+  animation-name: brandLogoReveal;
+  animation-duration: 900ms;
+  animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  animation-fill-mode: both;
+  animation-play-state: paused;
+}
+
+:global(.is-visible) .brandReveal {
+  animation-play-state: running;
+}
+
+@keyframes brandLogoReveal {
+  0% {
+    opacity: 0;
+    transform: translate3d(-44px, 18px, 0);
+  }
+  60% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .brandReveal {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
+/* Soft amber radial glow that lights up under the logo on hover.
+   June 2026 — toned down from a hot 0.22 alpha to a subtle 0.10 so the
+   yellow tint doesn't dominate the hovered card. */
+.brandItem::before {
+  content: "";
+  position: absolute;
+  inset: 6px 12px;
+  border-radius: 14px;
+  background: radial-gradient(
+    closest-side,
+    rgba(254, 174, 0, 0.10),
+    rgba(254, 174, 0, 0.03) 60%,
+    transparent 75%
+  );
+  opacity: 0;
+  transform: scale(0.85);
+  transition: opacity 260ms ease, transform 260ms cubic-bezier(0.2, 0.7, 0.2, 1);
+  z-index: -1;
+  pointer-events: none;
+}
+
+/* Vertical divider between cells of the SAME row (every 6 = new row) */
+.brandItem:not(:nth-child(6n))::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  top: 12%;
+  bottom: 12%;
+  width: 1px;
+  background-color: var(--color-orange-100);
+  opacity: 0.7;
+  transition: opacity 240ms ease;
+}
+
+.brandItem:hover {
+  transform: translateY(-3px);
+}
+.brandItem:hover::before {
+  opacity: 1;
+  transform: scale(1);
+}
+.brandItem:hover .brandLogo {
+  transform: scale(1.06);
+  filter: brightness(1.04) saturate(1.08)
+          drop-shadow(0 4px 10px rgba(254, 174, 0, 0.18));
+}
+/* Dividers stay visible at all times — including on hover.
+   (Previously hovering hid the current item's right divider AND the
+   next item's right divider, which made 2 separators disappear at once
+   and broke the visual rhythm of the 6-cell row.) */
+.brandItem:hover::after,
+.brandItem:hover + .brandItem::after {
+  opacity: 0.7;
+}
+
+.brandItem:focus-visible {
+  outline: 2px solid var(--color-orange-100);
+  outline-offset: 4px;
+  border-radius: 6px;
+}
+
+.brandLogo {
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  transition: transform 260ms cubic-bezier(0.2, 0.7, 0.2, 1),
+              filter 260ms ease;
+  will-change: transform, filter;
+}
+
+.brandFallback {
+  display: none;
+  font-family: var(--font-mazzard);
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--color-white);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+/* ────────── Meta counter ────────── */
+.brandsMeta {
+  margin-top: -8px;
+  text-align: center;
+  font-family: var(--font-mazzard);
+  font-size: 14px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-orange-100);
+  font-weight: 600;
+}
+.brandsMetaDim {
+  color: rgba(255, 255, 255, 0.45);
+  font-weight: 400;
+}
+
+/* ────────── "OTHER BRANDS +" toggle ────────── */
+.otherBrands {
+  display: flex;
+  justify-content: center;
+  font-size: 16px;
+  color: var(--color-orange-100);
+}
+.otherBrands2 {
+  background: transparent;
+  border: 0;
+  padding: 8px 12px;
+  text-decoration: underline;
+  line-height: 100%;
+  text-transform: uppercase;
+  cursor: pointer;
+  font-family: 'Mazzard H', 'Mazzard', system-ui, sans-serif;
+  font-weight: 500;
+  letter-spacing: 0.03em;
+  color: inherit;
+  transition: color 180ms ease, transform 180ms ease;
+}
+.otherBrands2:hover {
+  color: #ffd166;
+  transform: translateY(-1px);
+}
+
+/* ────────── Responsive ────────── */
+@media screen and (max-width: 1350px) {
+  .rectangleParent { padding: 50px 40px; }
+  .brandItem { padding: 0 12px; }
+}
+
+@media screen and (max-width: 1100px) {
+  .brandsGrid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .brandItem:not(:nth-child(6n))::after { display: none; }
+  .brandItem:not(:nth-child(4n))::after {
+    content: "";
+    position: absolute;
+    right: 0;
+    top: 12%;
+    bottom: 12%;
+    width: 1px;
+    background-color: var(--color-orange-100);
+    opacity: 0.5;
+  }
+}
+
+@media screen and (max-width: 760px) {
+  .brandLogos { padding-bottom: 100px; }
+  .rectangleParent { padding: 40px 24px; gap: 36px; }
+  .brandsGrid { grid-template-columns: repeat(3, minmax(0, 1fr)); row-gap: 22px; }
+  .brandItem { height: 64px; padding: 0 8px; }
+  .brandItem::after,
+  .brandItem:not(:nth-child(4n))::after,
+  .brandItem:not(:nth-child(6n))::after { display: none !important; }
+  .mostPopularBrands { font-size: 22px; }
+}
+
+/* ────────── Bulgarian (BG) adaptive overrides ──────────
+   "MOST POPULAR BRANDS" → "НАЙ-ПОПУЛЯРНИ МАРКИ" — wider in Cyrillic.
+   Slight font-size shrink + tighter letter-spacing so the section
+   header occupies the SAME visual width as in English.
+*/
+:global(html[lang="bg"]) .mostPopularBrands {
+  letter-spacing: -0.005em;
+}
+:global(html[lang="bg"]) .otherBrands2 {
+  letter-spacing: 0.02em;
+}
+@media screen and (max-width: 1350px) {
+  :global(html[lang="bg"]) .mostPopularBrands { font-size: 20px; }
+}

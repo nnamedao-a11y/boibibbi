@@ -1,0 +1,57 @@
+/* CatalogSearchBar — Figma 1:1.
+ *   459 × 40, radius 8, 1 px border #2C2D2A, focus border #FEAE00,
+ *   magnifier 24 × 24 at 9 px from left edge,
+ *   Mazzard H Regular 14, placeholder #5E5E5E.
+ */
+
+.root {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  width: 459px;
+  height: 40px;
+  padding: 0 16px 0 9px;                /* 9 px от левого края до лупы */
+  background: transparent;
+  border: 1px solid #2C2D2A;
+  border-radius: 8px;                   /* Figma */
+  box-sizing: border-box;
+  transition: border-color 120ms ease;
+  z-index: 5;
+}
+.root:focus-within { border-color: #FEAE00; }
+
+.icon {
+  width: 24px;                          /* Figma 24×24 */
+  height: 24px;
+  flex-shrink: 0;
+  margin-right: 9px;                    /* lупа ↔ input */
+  pointer-events: none;
+  user-select: none;
+}
+
+.input {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  font-family: 'Mazzard H', var(--font-mazzard, system-ui, sans-serif);
+  font-weight: 400;                     /* Figma: Regular */
+  font-size: 14px;                      /* Figma: 14 */
+  color: #FFFFFF;
+  padding: 0;
+}
+.input::placeholder { color: #5E5E5E; } /* Figma grey */
+
+/* Mobile (≤ 768 px) — full width × 36, icon 20×20 per spec. */
+@media (max-width: 768px) {
+  .root {
+    width: 100%;
+    height: 36px;
+    border-radius: 4px;
+    padding: 0 12px 0 12px;
+  }
+  .icon { width: 20px; height: 20px; margin-right: 8px; }
+  .input { font-size: 14px; }
+}

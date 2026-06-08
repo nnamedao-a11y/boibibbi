@@ -1,0 +1,863 @@
+/* =========================================================================
+ *  CalculatorPage — Figma "CALCULATOR USA" 1:1 port (BIBI Cars).
+ *
+ *  Pixel-perfect spec (in design coordinates, viewport = 1920):
+ *
+ *    Outer left/right padding ............................. 100 px
+ *    Header bottom → breadcrumb "HOME / CALCULATOR" ........  52 px
+ *    Header bottom → "CALCULATOR" H1 ......................  148 px
+ *    Header bottom → "[ Calculate the approximate cost… ]"   296 px
+ *    Subtitle box position: left 1322 / right 139
+ *    Header bottom → calculator gray block ................  480 px
+ *
+ *    Gray calculator block ................................ 1720 × 1133 px
+ *    Block inner padding .................................. 72 px
+ *    Gap between the two columns (form / estimate) ........ 80 px
+ *    NO border-radius on the block, NO rounded inner cards.
+ *
+ *    Left column gaps inside the form:
+ *      • Country buttons → next label .....................  22 px
+ *      • Vehicle icon row → next label ....................  24 px
+ *      • "Fill the summ" input → next label ...............  24 px
+ *
+ *    Right column row-group spacing .......................  44 px
+ *    Disclaimer → CTA "I want a complete calculation" .....  56 px
+ *    Calc block bottom → footer ........................... 128 px
+ *
+ *    Button sizes:
+ *      • USA / Korea ............ 374 × 45
+ *      • Fill the summ .......... 748 × 45
+ *      • NOT DAMAGED / DAMAGED .. 374 × 45
+ *      • I want a complete …  ... 325 × 45
+ *
+ *    Typography (Mazzard H):
+ *      "CALCULATOR"   ............. Bold 64
+ *      Subtitle ................... Medium 24 (orange + white parts)
+ *      Calculation Form / Cost
+ *        Estimate ................. Semibold 18 white
+ *      Row labels (white) ......... Medium 14
+ *      Row labels (gray totals) ... Medium 14 (#B0B0B0)
+ *      TOTAL APPROXIMATE COST ..... Bold 20 (#FEAE00)
+ *      CTA button text ............ Medium 14
+ * ====================================================================== */
+
+.calcPage {
+  background: #000;
+  color: #fff;
+  font-family: 'Mazzard H', var(--font-mazzard, system-ui, sans-serif);
+  width: 100%;
+  /* 128 px gap from the bottom of the gray block to the public footer. */
+  padding-bottom: 128px;
+}
+
+/* ── Outer container — locks the 100 px left/right gutter ────────────── */
+.container {
+  max-width: 1920px;
+  margin: 0 auto;
+  padding: 0 100px;
+  box-sizing: border-box;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── Breadcrumb (52 px from header bottom) ───────────────────────────── */
+.breadcrumb {
+  margin-top: 52px;
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  font-family: inherit;
+  font-size: 20px;             /* H SemiBold 20 per spec */
+  font-weight: 600;
+  line-height: 1;
+  text-transform: uppercase;
+  color: #ffffff;
+}
+.breadcrumb a { color: inherit; text-decoration: none; }
+.breadcrumb a:hover { color: #FEAE00; }
+.breadcrumb .crumbActive { color: #FEAE00; }
+
+/* ── H1 "CALCULATOR" (148 px from header) ────────────────────────────── */
+.pageTitle {
+  /* gap to breadcrumb top: 148-52 = 96, minus breadcrumb height ~14 = 82 */
+  margin: 82px 0 0;
+  font-size: 64px;             /* H Bold 64 */
+  font-weight: 700;
+  line-height: 1;
+  text-transform: uppercase;
+  color: #fff;
+}
+
+/* ── Subtitle row "[ CALCULATE THE APPROXIMATE COST… ]" ────────────────
+ *   left 1322, right 139 in design coords  ⇒  positioned at
+ *   left edge of inner content area + 1222 (since container has 100 px
+ *   gutter, the design's 1322 = 100 + 1222).
+ *   Width = 1920 - 1322 - 139 = 459 → block is 459 px wide.
+ *   Height of 3 lines × 24 ≈ 84 px.
+ *   gap to title bottom: 296-148-64 = 84 px → margin-top: 84.            */
+/* ── Subtitle row "[ CALCULATE THE APPROXIMATE COST… ]" ────────────────
+ *   In the Figma the right edge of the closing bracket aligns with the
+ *   right edge of the 1720 px grey calculator block below — i.e. with
+ *   the container's right padding (100 px from page edge). So the
+ *   subtitle is right-aligned with `margin-right: 0` (the 100 px is
+ *   already supplied by .container's padding).
+ *   Height of the 3-line text is matched to the 80 px bracket by using
+ *   a tight 26 px line-height (3 × 26 = 78 ≈ 80).                       */
+.subBox {
+  margin-top: 84px;
+  margin-left: auto;
+  margin-right: 0;             /* right-aligned with grey block right edge */
+  width: auto;                  /* let inner text drive width */
+  max-width: 720px;
+  display: inline-flex;
+  /* Phase B3.2.2 — stretch the bracket frame to the natural height of
+     the inner text. Previously fixed at 80 px which left a visible gap
+     when the text was shorter (EN) and clipped when it was longer (BG/UK).
+     Brackets are SVG with preserveAspectRatio="none" so they scale Y
+     freely; vector-effect="non-scaling-stroke" keeps the 3 px stroke
+     crisp at every height. */
+  align-items: stretch;
+  /* Phase B3.2.3 — match the canonical homepage / Before-&-After bracket
+     rhythm: 70 px breathing room on each side instead of the previous
+     tight 16 px. Brackets now sit visibly apart from the text exactly
+     like VehicleDeals1 (`THOUSANDS OF LISTINGS / …`). */
+  gap: 70px;
+  align-self: flex-end;
+  padding: 4px 0;
+}
+.bracketL,
+.bracketR {
+  width: 14px;                 /* spec: bracket 14 × variable, gray #949494 */
+  height: auto;
+  align-self: stretch;
+  flex: 0 0 auto;
+  display: block;
+}
+.bracketR { transform: scaleX(-1); }  /* mirror "[" → "]" */
+.subText {
+  margin: 0;
+  flex: 1;
+  align-self: center;
+  font-family: inherit;
+  font-size: 24px;             /* H Medium 24 */
+  font-weight: 500;
+  line-height: 26px;           /* tight so 3 lines (= 78 px) fit inside the 80 px bracket */
+  text-transform: uppercase;
+  color: #FEAE00;
+  white-space: nowrap;          /* keep orange line + white lines unbroken */
+}
+.subText .subWhite { color: #fff; }
+
+/* BG: bulgarian copy is ~10% wider than EN. Expand the subBox & relax the
+   font a notch so the longest BG line ("НА ВАШИЯ АВТОМОБИЛ И ИЗПРАТЕТЕ
+   ЗАЯВКА") still fits on a single line without overflowing. */
+:global(html[lang="bg"]) .subBox {
+  max-width: 820px;
+}
+:global(html[lang="bg"]) .subText {
+  font-size: 22px;
+  line-height: 26px;
+}
+
+/* =========================================================================
+ *  GRAY CALCULATOR CARD — Adaptive 1720 × 1133 (max), keeps the 50/50
+ *  column split at any viewport (no more "left wide / right narrow").
+ *  • ≥ 1920 viewport (100 + 1720 + 100 = 1920) → strict 1720 × 1133.
+ *  • < 1920 → card width shrinks to fit container, columns still 50/50.
+ *  Inner padding 72, column gap 80.
+ * ====================================================================== */
+.calcBlock {
+  margin-top: 104px;
+  width: 100%;                 /* fill the 100 px-gutter container */
+  max-width: 1720px;           /* but never exceed the spec */
+  height: 1133px;
+  background: #232323;
+  border-radius: 0;
+  padding: 72px;
+  box-sizing: border-box;
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: flex-start;
+  gap: 80px;
+  font-family: inherit;
+}
+
+/* ── Two equal-width columns inside the gray card ────────────────────
+ *   At 1920 viewport: (1720 − 144 − 80) / 2 = 748 each.
+ *   At any narrower: still 50/50, just smaller — left never grows wider
+ *   than right (the bug the user was seeing).
+ *   Left: Hug 510 / Right: Fill 989 with CTA pinned to bottom.
+ * ──────────────────────────────────────────────────────────────────── */
+.col {
+  flex: 1 1 0;                 /* equal grow, equal shrink */
+  min-width: 0;                /* allow shrinking below content size */
+  display: flex;
+  flex-direction: column;
+  background: transparent;
+}
+.colLeft  { height: 510px; }
+.colRight { height: 989px; }
+.colRight .estStack {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+}
+.colRight .ctaBtn { margin-top: auto; }
+
+/* ── Section header — "Calculation Form" / "Cost Estimate" ───────────── */
+.sectionHead {
+  align-self: stretch;
+  display: flex;
+  align-items: center;
+  padding: 0 0 10px;
+  border-bottom: 1px solid #2E2E2E;
+}
+.sectionHead h2 {
+  margin: 0;
+  font-family: inherit;
+  font-size: 18px;             /* H Semibold 18 */
+  font-weight: 600;
+  line-height: 1;
+  text-transform: uppercase;
+  color: #fff;
+}
+
+/* =========================================================================
+ *  LEFT COLUMN — Calculation Form
+ * ====================================================================== */
+.formStack {
+  display: flex;
+  flex-direction: column;
+  align-self: stretch;
+}
+/* margin-top per field group — STRICT per spec:
+ *   • section head → first field   : 56 px
+ *   • field-to-field everywhere    : 24 px  (was a mix of 22 / 24)
+ */
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;                   /* label → control inside the field */
+}
+.field + .field            { margin-top: 24px; }
+.fieldLabel {
+  font-family: inherit;
+  font-size: 14px;             /* H Medium 14 */
+  font-weight: 500;
+  line-height: 1;
+  color: #fff;
+}
+.fieldLabel .req { color: #FEAE00; }
+.firstField { margin-top: 56px; }   /* section-head → first field gap, strict 56 */
+
+/* ── Country-of-origin row (fills col width, 2 equal buttons) ────────── */
+.ctryRow {
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+  width: 100%;                 /* fill column — 748 max at 1920 viewport */
+  max-width: 748px;
+  height: 45px;
+}
+.ctryBtn,
+.ctryBtn2 {
+  height: 45px;
+  flex: 1 1 0;                 /* equal width grow */
+  min-width: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 32px;
+  gap: 10px;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  text-transform: uppercase;
+  box-sizing: border-box;
+  border-radius: 0;
+  background: transparent;
+  color: #B0B0B0;
+  transition: background 120ms, color 120ms, border-color 120ms;
+  border: 1px solid #2E2E2E;
+  border-right-width: 0;
+}
+.ctryBtn  { border-radius: 4px 0 0 4px; }
+.ctryBtn2 { border-radius: 0 4px 4px 0; border-right-width: 1px; }
+.ctryActive {
+  background: #FEAE00;
+  color: #000;
+  border-color: #FEAE00;
+}
+.flag {
+  width: 20px;
+  height: 12px;
+  object-fit: cover;
+  flex-shrink: 0;
+  border-radius: 1px;
+}
+
+/* ── Vehicle-type icon row ───────────────────────────────────────────── */
+.vehRow {
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+  width: 100%;
+  max-width: 748px;
+  margin-bottom: 8px;
+}
+.vehCard {
+  flex: 1 1 0;
+  min-width: 0;
+  border-radius: 4px;
+  /* extra 8 px padding-bottom so the label has a visible breathing strip
+     inside both inactive (transparent) and active (orange) cards */
+  padding: 12px 12px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  background: transparent;
+  color: #949494;             /* H Regular grey per spec */
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 400;            /* Regular */
+  line-height: 1;
+  text-transform: uppercase;
+  border: 0;
+  transition: background 120ms, color 120ms;
+}
+/* Icon glyph rendered via CSS mask so we can recolour the silhouette
+ * to match the card foreground (grey when inactive, black when active). */
+.vehIcon {
+  display: block;
+  width: 40px;
+  height: 40px;
+  background-color: currentColor;
+  -webkit-mask-repeat: no-repeat;
+          mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+          mask-position: center;
+  -webkit-mask-size: 40px 40px;
+          mask-size: 40px 40px;
+  flex-shrink: 0;
+}
+.vehLabel { display: block; }
+.vehCard:hover { color: #ffffff; }
+.vehCardActive { background: #FEAE00; color: #000; }
+
+/* ── Price input (fills col, ≤ 748 × 45) — orange € icon prefix ──────── */
+.priceRow {
+  width: 100%;
+  max-width: 748px;
+  height: 45px;
+  border: 1px solid #2E2E2E;
+  border-radius: 4px;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  padding: 0 15px;
+  gap: 16px;
+  background: transparent;
+  transition: border-color 120ms;
+}
+.priceRow:focus-within { border-color: #FEAE00; }
+.priceEuro {
+  width: 11px;
+  height: 11px;
+  flex-shrink: 0;
+  display: block;
+}
+.priceInput {
+  flex: 1;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: #fff;
+  font-family: inherit;
+  font-size: 14px;             /* H Regular 14 per spec */
+  font-weight: 400;
+  padding: 0;
+}
+.priceInput::placeholder { color: #6B6B6B; font-weight: 400; }
+
+/* ── Damage toggle (equal halves) — Figma: no outer border, only the
+ *   center splitter and the bottom shadow line carry the active colour.
+ *   Inactive: transparent bg, grey label, hairline shared border between
+ *   the two cells. Active: tinted bg + bold coloured label, and BOTH the
+ *   center splitter (own right-border on the active half) and the
+ *   bottom edge of the entire toggle pick up the active colour.
+ * ──────────────────────────────────────────────────────────────────── */
+.dmgRow {
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+  width: 100%;
+  max-width: 748px;
+  height: 45px;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #1A1B19;
+}
+/* ── DAMAGE TOGGLE ───────────────────────────────────────────────────
+ *  Segmented control: [ NOT DAMAGED | DAMAGED ].
+ *  Активный сегмент подсвечивается ТОЛСТОЙ (4 px) цветной линией
+ *  на ВНУТРЕННЕЙ грани (т.е. в середине пары, между двумя кнопками)
+ *  + лёгкая тинтованная заливка + цветной текст.
+ *  Логика "сквозная": тот же паттерн используется в калькуляторе.
+ * ----------------------------------------------------------------- */
+.dmgBtn,
+.dmgBtn2 {
+  height: 45px;
+  flex: 1 1 0;
+  min-width: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 32px;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  text-transform: uppercase;
+  box-sizing: border-box;
+  background: transparent;
+  color: #6B6B6B;
+  transition: background 120ms, color 120ms, box-shadow 120ms;
+  border: 0;
+  border-radius: 0;
+}
+.dmgBtn  { border-radius: 8px 0 0 8px; }
+.dmgBtn2 { border-radius: 0 8px 8px 0; }
+
+.dmgBtn.dmgOk {
+  background: rgba(0, 178, 121, 0.10);
+  color: #00B279;
+  box-shadow: inset -4px 0 0 0 #00B279;   /* thick green line on RIGHT = middle */
+}
+.dmgBtn2.dmgErr {
+  background: rgba(243, 67, 76, 0.10);
+  color: #F3434C;
+  box-shadow: inset 4px 0 0 0 #F3434C;    /* thick red line on LEFT = middle */
+}
+.dmgBtn:hover:not(.dmgOk)   { color: #B0B0B0; }
+.dmgBtn2:hover:not(.dmgErr) { color: #B0B0B0; }
+
+/* =========================================================================
+ *  RIGHT COLUMN — Cost Estimate
+ *  Strict spec:
+ *    • section head → first group   : 56 px
+ *    • group → group                 : 44 px
+ *    • group total → TOTAL APPROX    : 44 px
+ *    • TOTAL APPROX → disclaimer     : 44 px
+ *    • disclaimer → CTA              : 56 px
+ * ====================================================================== */
+.estStack {
+  display: flex;
+  flex-direction: column;
+  align-self: stretch;
+}
+.estGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;                   /* row-to-row within a sub-group */
+}
+.estGroup + .estGroup      { margin-top: 44px; }   /* group → group, strict 44 */
+.firstEstGroup             { margin-top: 56px; }   /* section-head → first group, strict 56 */
+
+.estRow {
+  align-self: stretch;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+.estRow .lbl,
+.estRow .val {
+  font-family: inherit;
+  font-size: 14px;             /* H Medium 14 */
+  font-weight: 500;
+  line-height: 1;
+}
+.estRow .lbl { color: #fff; }
+.estRow .val { color: #fff; white-space: nowrap; }
+
+/* ── Group total row (CAR & AUCTION / LOGISTICS / CUSTOMS) ───────────── */
+.estGroupTotal {
+  align-self: stretch;
+  border-top: 1px solid #2E2E2E;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding-top: 6px;
+}
+.estGroupTotal .gtLbl,
+.estGroupTotal .gtVal {
+  font-family: inherit;
+  font-size: 14px;             /* H Medium 14 uppercase, gray */
+  font-weight: 500;
+  line-height: 1;
+  text-transform: uppercase;
+  color: #949494;
+}
+.estGroupTotal .gtVal { color: #949494; white-space: nowrap; }
+
+/* ── TOTAL approximate cost — H Bold 20 orange (44 px gap above) ────── */
+.grandTotal {
+  align-self: stretch;
+  margin-top: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+.grandTotal h3 {
+  margin: 0;
+  font-family: inherit;
+  font-size: 20px;             /* H Bold 20 */
+  font-weight: 700;
+  line-height: 1;
+  text-transform: uppercase;
+  color: #FEAE00;
+}
+.grandTotal .totalVal { white-space: nowrap; }
+
+/* ── Approximate-estimate disclaimer (44 px gap from TOTAL above) ────── */
+.disclaimer {
+  align-self: stretch;
+  margin-top: 44px;
+  width: 100%;
+  max-width: 748px;
+  min-height: 66px;
+  box-sizing: border-box;
+  background: #2C2418;           /* dark brown per Figma */
+  border-left: 3px solid #644310;
+  padding: 16px;
+  font-family: inherit;
+  font-size: 14px;               /* H Regular 14 */
+  font-weight: 400;
+  line-height: 17px;
+  color: #949494;
+}
+.disclaimer .em { color: #949494; font-weight: 600; }  /* "Approximate estimate" — SemiBold, same grey */
+
+/* ── CTA "I want a complete calculation" (325 × 45) ──────────────────── */
+.ctaBtn {
+  margin-top: 56px;             /* 56 px from disclaimer to CTA */
+  width: 325px;
+  max-width: 100%;
+  height: 45px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 32px;
+  border: 0;
+  border-radius: 4px;
+  cursor: pointer;
+  background: #FEAE00;
+  color: #000;
+  font-family: inherit;
+  font-size: 14px;             /* H Medium 14 */
+  font-weight: 500;
+  text-transform: uppercase;
+  align-self: center;          /* centered within the right column per Figma */
+  transition: filter 120ms;
+}
+.ctaBtn:hover { filter: brightness(0.94); }
+.ctaBtn:disabled { opacity: 0.55; cursor: not-allowed; }
+
+/* ── Right-column loading veil ───────────────────────────────────────── */
+.loading { opacity: 0.55; pointer-events: none; transition: opacity 200ms; }
+
+/* =========================================================================
+ *  Responsive guards — desktop ≥ 1280 keeps strict 100 px gutter and the
+ *  fixed 1720 × 1133 card. Below that the card overflows horizontally
+ *  (acceptable per Figma — 1720 × 1133 is strict / Hug).
+ *  Below 720 px (mobile) we degrade gracefully so the page is at least
+ *  usable on phones.
+ * ====================================================================== */
+@media (max-width: 1279px) {
+  .container { padding: 0 max(24px, min(100px, 5vw)); }
+  .subBox { margin-right: max(0px, calc(5vw - 61px)); width: min(459px, 36vw); }
+}
+
+/* =========================================================================
+ *  MOBILE LAYOUT (≤ 768 px) — pixel-precise per user spec session 34.
+ *  Reference: zipped Next.js export "Calculator mobi.zip" + screenshot.
+ *
+ *  Vertical anchors (top → bottom, from below header):
+ *    • Breadcrumb HOME / CALCULATOR              24 px from header
+ *    • CALCULATOR H1                             24 px below breadcrumb
+ *    • Subtitle "CALCULATE THE APPROXIMATE COST" 24 px below H1
+ *    • Calculation Form (grey card top)          32 px below subtitle
+ *
+ *  Page L/R padding 12.  Grey card is EDGE-TO-EDGE (escape via negative
+ *  margins).  All inner content keeps 12 L/R inside the grey.
+ *
+ *  Fonts (Mazzard H):
+ *    Breadcrumb            : H SemiBold 12  (HOME #5E5E5E / CALCULATOR #FEAE00)
+ *    Page title            : H Bold 24    white, left
+ *    Subtitle line 1       : H Medium 16  #FEAE00  (no break)
+ *    Subtitle line 2-3     : H Medium 16  #FFFFFF
+ *    Section heads
+ *      (Calculation Form,
+ *       Cost Estimate)     : H Medium 16  white   → 8 px grey divider
+ *    Field labels          : H Medium 14  white
+ *    Country active (USA)  : H Medium 14  black
+ *    Country inactive (KR) : H Medium 14  #949494
+ *    Damage (NOT/DAMAGED)  : H Medium 14
+ *    Estimate row labels   : H Regular 14 white
+ *    Estimate values       : H Medium 14
+ *    Group total           : H Medium 14  (uppercase, grey)
+ *    TOTAL approx. cost    : H Medium 16  #FEAE00
+ *    Disclaimer "Approx."  : H SemiBold 14
+ *    Disclaimer text       : H Regular 14
+ *    CTA button text       : H Medium 14  → 336 × 45 yellow filled
+ *
+ *  Inner spacings:
+ *    Form section-head → field-1                 32 px
+ *    Field label → control                       12 px
+ *    Field → field                               24 px
+ *    Cost-Estimate head → group-1                32 px
+ *    Within sub-group (row → row)                16 px
+ *    Sub-group → sub-group                       40 px
+ *    Group "CUSTOMS & FINAL FEES" → TOTAL        44 px
+ *    TOTAL → "Approximate estimate" disclaimer   32 px
+ *    Disclaimer → CTA button                     56 px
+ *    CTA → grey card bottom                      56 px
+ * ===================================================================== */
+@media (max-width: 768px) {
+  .calcPage {
+    padding-bottom: 0;                            /* footer spacing handled in card */
+  }
+  .container {
+    padding: 0 12px;                              /* user spec: 12 L/R */
+    max-width: 100%;
+  }
+
+  /* ── Breadcrumb ─────────────────────────────────────────────────── */
+  .breadcrumb {
+    margin-top: 24px;
+    gap: 4px;                                     /* tight slash spacing */
+    font-size: 12px;                              /* H SemiBold 12 */
+    font-weight: 600;
+    line-height: 1;
+    letter-spacing: 0.02em;
+    color: #5E5E5E;
+  }
+  .breadcrumb a,
+  .breadcrumb a:visited { color: #5E5E5E; }
+  .breadcrumb a:hover   { color: #FEAE00; }
+  .breadcrumb .crumbActive,
+  .breadcrumb > span:last-child { color: #FEAE00; }
+
+  /* ── H1 "CALCULATOR" ───────────────────────────────────────────── */
+  .pageTitle {
+    margin-top: 24px;                             /* 24 from breadcrumb bottom */
+    font-size: 24px;                              /* H Bold 24 */
+    font-weight: 700;
+    line-height: 1.1;
+    text-align: left;
+  }
+
+  /* ── Subtitle (centered, brackets hidden on mobile) ────────────── */
+  .subBox {
+    margin-top: 24px;                             /* 24 from H1 */
+    margin-left: 0;
+    margin-right: 0;
+    width: 100%;
+    max-width: 100%;
+    align-self: stretch;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    gap: 0;
+  }
+  .bracketL, .bracketR { display: none; }
+  .subText {
+    font-size: 16px;                              /* H Medium 16 */
+    font-weight: 500;
+    line-height: 1.25;
+    text-align: center;
+    white-space: normal;                          /* allow natural wrap */
+    color: #FFFFFF;                               /* default white; first span overrides */
+  }
+  .subText > span:first-child,
+  .subText > span:first-of-type {
+    color: #FEAE00;                               /* "CALCULATE THE APPROXIMATE COST" line — yellow */
+  }
+  .subText .subWhite { color: #FFFFFF; }
+
+  /* ── GRAY CARD — edge-to-edge full-bleed ────────────────────────── */
+  .calcBlock {
+    margin-top: 32px;                             /* 32 from subtitle → card top */
+    margin-left: -12px;                           /* escape .container L padding */
+    margin-right: -12px;                          /* escape .container R padding */
+    width: calc(100% + 24px);
+    max-width: none;
+    height: auto;
+    min-height: 0;
+    background: #1A1B19;                          /* match other cards on mobile */
+    /* Top padding 32 (user spec).  Bottom padding 0 so the spec'd 56 px
+     * from the CTA button to the end of the form is provided entirely by
+     * `.ctaBtn { margin-bottom: 56 }` — no extra padding stacking. */
+    padding: 32px 12px 0;
+    gap: 32px;                                    /* between Form and Estimate sections */
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-items: stretch;
+  }
+  .col,
+  .colLeft,
+  .colRight {
+    flex: 0 0 auto;
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    min-height: 0;
+  }
+
+  /* ── Section head — H Medium 16 + 8 px grey divider ────────────── */
+  .sectionHead {
+    padding: 0 0 8px;
+    border-bottom: 1px solid #2E2E2E;
+  }
+  .sectionHead h2 {
+    font-size: 16px;                              /* H Medium 16 */
+    font-weight: 500;
+    text-transform: uppercase;
+  }
+
+  /* ── Form fields ───────────────────────────────────────────────── */
+  .formStack { gap: 0; }
+  .field {
+    gap: 12px;                                    /* user spec: 12 label → control */
+  }
+  .field + .field { margin-top: 24px; }           /* user spec: 24 field → field */
+  .firstField     { margin-top: 32px; }           /* user spec: 32 head → first field */
+  .fieldLabel {
+    font-size: 14px;
+    font-weight: 500;                             /* H Medium 14 */
+    color: #FFFFFF;
+  }
+
+  /* Country buttons — full-width 336 / 45 */
+  .ctryRow {
+    max-width: none;
+    width: 100%;
+    height: 45px;
+  }
+  .ctryBtn, .ctryBtn2 {
+    font-size: 14px;
+    font-weight: 500;
+  }
+  /* Inactive country = grey, active = black on yellow (already handled). */
+  .ctryBtn:not(.ctryActive),
+  .ctryBtn2:not(.ctryActive) { color: #949494; }
+
+  /* Vehicle icon row */
+  .vehRow {
+    max-width: none;
+    width: 100%;
+    margin-bottom: 0;
+    gap: 4px;
+  }
+  .vehCard {
+    padding: 8px 4px 12px;
+    gap: 6px;
+    font-size: 10px;
+  }
+  .vehIcon { width: 32px; height: 32px; mask-size: 32px 32px; -webkit-mask-size: 32px 32px; }
+
+  /* Price input */
+  .priceRow {
+    max-width: none;
+    width: 100%;
+  }
+
+  /* Damage segmented */
+  .dmgRow {
+    max-width: none;
+    width: 100%;
+  }
+  .dmgBtn, .dmgBtn2 {
+    font-size: 14px;
+    font-weight: 500;
+  }
+
+  /* ── COST ESTIMATE column ──────────────────────────────────────── */
+  .estStack { gap: 0; }
+  .estGroup       { gap: 16px; }                  /* user spec: 16 within sub-group */
+  .firstEstGroup  { margin-top: 32px; }           /* user spec: 32 head → first group */
+  .estGroup + .estGroup { margin-top: 40px; }     /* user spec: 40 sub-group → sub-group (real gap from group total to next first row text) */
+  .estRow .lbl,
+  .estRow .val {
+    font-size: 14px;
+  }
+  .estRow .lbl { font-weight: 400; }              /* H Regular 14 white per spec */
+  .estRow .val { font-weight: 500; }              /* H Medium 14 white per spec */
+  .estGroupTotal {
+    padding-top: 8px;                             /* user spec: 8 above group total */
+    border-top-color: #2E2E2E;
+    gap: 16px;
+  }
+  .estGroupTotal .gtLbl,
+  .estGroupTotal .gtVal {
+    font-size: 14px;                              /* H Medium 14, gray */
+    font-weight: 500;
+    color: #949494;
+  }
+
+  /* TOTAL approximate cost */
+  .grandTotal {
+    margin-top: 44px;                             /* user spec: 44 from CUSTOMS & FINAL FEES */
+  }
+  .grandTotal h3 {
+    font-size: 16px;                              /* H Medium 16, orange */
+    font-weight: 500;
+  }
+
+  /* Disclaimer */
+  .disclaimer {
+    margin-top: 32px;                             /* user spec: 32 from TOTAL */
+    max-width: 100%;
+    font-size: 14px;                              /* H Regular 14 */
+    font-weight: 400;
+    line-height: 18px;
+    padding: 14px 12px;
+  }
+  .disclaimer .em {
+    font-weight: 600;                             /* H SemiBold 14 for "Approximate estimate." */
+  }
+
+  /* CTA "I want a complete calculation" — 336 × 45 yellow, centered.
+   * Higher specificity (.colRight .ctaBtn) needed to override the desktop
+   * `.colRight .ctaBtn { margin-top: auto }` rule that pushes the button
+   * to the bottom of the flex column.  Without this, the spec'd 56 px
+   * gap from the disclaimer collapses (flex auto absorbs all slack). */
+  .colRight .ctaBtn,
+  .ctaBtn {
+    margin-top: 56px;                             /* 56 px from disclaimer to button (user spec) */
+    margin-bottom: 56px;                          /* 56 px from button to grey card bottom (user spec) */
+    margin-left: auto;
+    margin-right: auto;                           /* horizontal centering inside card */
+    width: 336px;                                 /* user spec: 336 × 45 */
+    max-width: calc(100% - 0px);
+    height: 45px;
+    font-size: 14px;
+    font-weight: 500;
+    align-self: center;
+    border-radius: 4px;
+  }
+}
+
+/* Legacy fallback for ultra-narrow viewports (kept for safety; the
+ * 768-px block above already covers everything ≤ 768).            */
+@media (max-width: 380px) {
+  .vehCard { padding: 6px 2px 10px; font-size: 9px; }
+  .vehIcon { width: 28px; height: 28px; mask-size: 28px 28px; -webkit-mask-size: 28px 28px; }
+}

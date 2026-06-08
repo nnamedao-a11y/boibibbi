@@ -1,0 +1,496 @@
+.frameChild,
+.rectangleParent {
+  background-color: var(--color-black);
+  max-width: 100%;
+  flex-shrink: 0;
+}
+.rectangleParent {
+  margin-left: -3.1px;
+  align-self: stretch;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 176.4px 140px 178.1px 401px;
+  box-sizing: border-box;
+  gap: 139.8px;
+  z-index: 4;
+  text-align: left;
+  font-size: var(--fs-64);
+  color: var(--color-orange-100);
+  font-family: var(--font-mazzard);
+}
+.frameChild {
+  width: var(--width-1920);
+  height: 1415.9px;
+  position: relative;
+  display: none;
+}
+.lessPayContainer {
+  width: 1154px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  /* Reduced horizontal padding so "WHY YOU PAY LESS" fits on one line at
+     the 64 px H Bold size (Figma: 2-line block — line 1 "WHY YOU PAY
+     LESS", line 2 "— AND GET MORE"). */
+  padding: var(--padding-0) var(--padding-20);
+  box-sizing: border-box;
+  max-width: 100%;
+  flex-shrink: 0;
+}
+.whyYouPayContainer {
+  margin: 0;
+  height: auto;
+  position: relative;
+  font-size: inherit;
+  line-height: 99.9%;
+  text-transform: uppercase;
+  /* H Bold per Figma spec — 64 px / weight 700 */
+  font-weight: 700;
+  font-family: inherit;
+  display: inline-block;
+  z-index: 1;
+  white-space: nowrap;
+}
+.andGetMore {
+  color: var(--color-white);
+}
+.paylessReasons {
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 74.8px;
+  max-width: 100%;
+  flex-shrink: 0;
+  font-size: 204.1px;
+  color: var(--color-gray-200);
+}
+.advantages {
+  margin: 0;
+  align-self: stretch;
+  position: relative;
+  font-size: inherit;
+  line-height: 100%;
+  text-transform: uppercase;
+  font-weight: 400;
+  font-family: inherit;
+  z-index: 2;
+}
+.vehicleAdvantage {
+  width: 1333.2px;
+  display: flex;
+  align-items: flex-start;
+  position: relative;
+  isolation: isolate;
+  max-width: 100%;
+  font-size: 359.9px;
+  color: var(--color-white);
+}
+.car {
+  width: 772px;
+  position: absolute;
+  margin: 0 !important;
+  top: 479px;
+  left: -272px;
+  line-height: 100%;
+  text-transform: uppercase;
+  display: inline-block;
+  /* H Bold 359.94 px per Figma spec. */
+  font-weight: 700;
+  transform: rotate(-90deg);
+  transform-origin: 0 0;
+  z-index: 1;
+  flex-shrink: 0;
+}
+.trimContainer {
+  flex: 1;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-end;
+  max-width: 100%;
+  flex-shrink: 0;
+}
+.contentAdvantage {
+  width: 1209.1px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2.1px;
+  max-width: 100%;
+}
+.infoContainer {
+  align-self: stretch;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--gap-20);
+  max-width: 100%;
+  text-align: left;
+  font-size: var(--fs-32);
+  color: var(--color-white);
+  font-family: var(--font-mazzard);
+}
+.detailAdvantage,
+.titleAdvantage {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.detailAdvantage {
+  width: var(--width-348);
+  gap: 209.9px;
+  max-width: 100%;
+}
+.titleAdvantage {
+  align-self: stretch;
+  gap: var(--gap-33);
+}
+.advantageFeatures {
+  width: auto;
+  min-width: 271px;
+  display: flex;
+  align-items: flex-start;
+  padding: var(--padding-0) var(--padding-6);
+  box-sizing: border-box;
+}
+.largeSelection,
+.moreTrimLevels {
+  margin: 0;
+  position: relative;
+  font-weight: 400;
+  font-family: inherit;
+  z-index: 1;
+}
+.largeSelection {
+  flex: 1;
+  font-size: inherit;
+  line-height: 100%;
+  /* H Bold 32 px per Figma — keep on a single line. */
+  font-weight: 700;
+  white-space: nowrap;
+}
+.moreTrimLevels {
+  font-size: var(--fs-24);
+}
+.cheaperAdvantage,
+.trimFeatures {
+  display: flex;
+  align-items: flex-start;
+}
+.trimFeatures {
+  width: auto;
+  min-width: 293px;
+  padding: var(--padding-0) var(--padding-6);
+  box-sizing: border-box;
+}
+.cheaperAdvantage {
+  gap: var(--gap-36);
+  max-width: 100%;
+}
+.image79Icon {
+  flex: 0 1 391px;
+  width: 391px;
+  height: 391px;
+  position: relative;
+  max-width: 100%;
+  overflow: hidden;
+  object-fit: cover;
+  min-width: 254px;
+  flex-shrink: 0;
+  z-index: 1;
+}
+.descriptionContainer {
+  width: var(--width-348);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 125.9px;
+  flex-shrink: 0;
+  max-width: 100%;
+}
+.evenTakingInto,
+.muchCheaper,
+.transparentHistory {
+  margin: 0;
+  position: relative;
+  font-family: inherit;
+  display: inline-block;
+  z-index: 1;
+}
+.evenTakingInto {
+  font-size: var(--fs-24);
+  line-height: var(--lh-27_5);
+  min-height: 140px;
+  /* H Regular 24 px per Figma. */
+  font-weight: 400;
+}
+.muchCheaper {
+  width: auto;
+  min-width: 244px;
+  font-size: inherit;
+  line-height: 100%;
+  /* H Bold 32 px per Figma — single line. */
+  font-weight: 700;
+  white-space: nowrap;
+}
+.transparentHistory {
+  width: auto;
+  min-width: 318px;
+  font-size: inherit;
+  line-height: 100%;
+  /* H Bold 32 px per Figma — single line. */
+  font-weight: 700;
+  white-space: nowrap;
+}
+.multimediaFeatures {
+  align-self: stretch;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--gap-20);
+  max-width: 100%;
+  text-align: left;
+  font-size: var(--fs-24);
+  color: var(--color-white);
+  font-family: var(--font-mazzard);
+}
+.moreOptionsBetterMultimedia {
+  margin: 0;
+  width: 267px;
+  position: relative;
+  font-size: inherit;
+  font-weight: 400;
+  font-family: inherit;
+  display: inline-block;
+  z-index: 1;
+}
+.vINTool {
+  width: var(--width-348);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: var(--padding-3) var(--padding-0) var(--padding-0);
+  box-sizing: border-box;
+  max-width: 100%;
+}
+.vinChecksCarfax {
+  margin: 0;
+  align-self: stretch;
+  position: relative;
+  /* Now nested inside .titleAdvantage → inherit would give 32 px from
+     .infoContainer. Lock to 24 px H Regular per Figma so the "VIN checks
+     (Carfax, AutoCheck)" body styles identically to "Even taking into
+     account…" under the Much cheaper title. */
+  font-size: var(--fs-24);
+  line-height: var(--lh-27_5);
+  font-weight: 400;
+  font-family: inherit;
+  display: inline-block;
+  z-index: 1;
+}
+@media screen and (max-width: 1850px) {
+  .infoContainer {
+    flex-wrap: wrap;
+  }
+  .cheaperAdvantage,
+  .detailAdvantage {
+    flex: 1;
+  }
+}
+@media screen and (max-width: 1350px) {
+  .rectangleParent {
+    gap: 70px;
+    padding: 115px 70px 116px 200px;
+    box-sizing: border-box;
+  }
+  .lessPayContainer {
+    padding-left: var(--padding-136);
+    padding-right: var(--padding-136);
+    box-sizing: border-box;
+  }
+  .cheaperAdvantage,
+  .descriptionContainer,
+  .detailAdvantage {
+    min-width: 100%;
+  }
+}
+@media screen and (max-width: 925px) {
+  .rectangleParent {
+    gap: 35px;
+    padding: var(--padding-75) 35px var(--padding-75) var(--padding-100);
+    box-sizing: border-box;
+  }
+  .lessPayContainer {
+    padding-left: var(--padding-68);
+    padding-right: var(--padding-68);
+    box-sizing: border-box;
+  }
+  .whyYouPayContainer {
+    font-size: var(--fs-51);
+    line-height: var(--lh-51);
+  }
+  .paylessReasons {
+    gap: var(--gap-37);
+  }
+  .advantages {
+    font-size: 82px;
+    line-height: 122px;
+  }
+  .car {
+    font-size: 144px;
+    line-height: 216px;
+  }
+  .largeSelection {
+    font-size: var(--fs-26);
+    line-height: var(--lh-26);
+  }
+  .cheaperAdvantage {
+    flex-wrap: wrap;
+  }
+  .descriptionContainer {
+    flex: 1;
+  }
+  .muchCheaper,
+  .transparentHistory {
+    font-size: var(--fs-26);
+    line-height: var(--lh-26);
+  }
+  .multimediaFeatures {
+    flex-wrap: wrap;
+  }
+}
+@media screen and (max-width: 450px) {
+  .lessPayContainer {
+    padding-left: var(--padding-20);
+    padding-right: var(--padding-20);
+    box-sizing: border-box;
+  }
+  .whyYouPayContainer {
+    font-size: var(--fs-38);
+    line-height: var(--lh-38);
+  }
+  .paylessReasons {
+    gap: var(--gap-19);
+  }
+  .advantages {
+    font-size: var(--fs-51);
+    line-height: 82px;
+  }
+  .car {
+    font-size: 90px;
+    line-height: 144px;
+  }
+  .detailAdvantage {
+    gap: 105px;
+  }
+  .titleAdvantage {
+    gap: var(--gap-16);
+  }
+  .largeSelection {
+    line-height: var(--lh-19);
+  }
+  .largeSelection,
+  .moreTrimLevels {
+    font-size: var(--fs-19);
+  }
+  .cheaperAdvantage {
+    gap: var(--gap-18);
+  }
+  .descriptionContainer {
+    gap: 63px;
+  }
+  .muchCheaper {
+    line-height: var(--lh-19);
+  }
+  .evenTakingInto,
+  .muchCheaper {
+    font-size: var(--fs-19);
+  }
+  .transparentHistory {
+    line-height: var(--lh-19);
+  }
+  .moreOptionsBetterMultimedia,
+  .transparentHistory,
+  .vinChecksCarfax {
+    font-size: var(--fs-19);
+  }
+}
+
+/* ────────────────────────────────────────────────────────────────────────
+   Bulgarian (BG) adaptive overrides
+   ----------------------------------------------------------------------
+   Problem:
+     • "CAR" (EN, 3 chars) → "АВТОМОБИЛ" (BG, 9 chars) — rotated -90°,
+       at 359.94px the BG word overflows the vertical box (was ~1780px
+       tall vs the 772px the design allocates).
+     • "ADVANTAGES" (EN, 10 chars) → "ПРЕДИМСТВА" (BG, 10 chars but
+       cyrillic glyphs are wider) — at 204.1px the BG word renders at
+       ~1487px wide vs the 1379px container, so it bleeds into the
+       right-side feature column.
+   Solution:
+     EN baseline is preserved verbatim. For BG we shrink font-size +
+     apply a tight negative letter-spacing so the glyphs fit into the
+     SAME geometry boxes as the EN version.
+   Geometry targets (≈ same visual footprint as EN):
+     .car         : visual length after rotation ≤ 772px  → font 130px
+     .advantages  : text width ≤ 1379px (container)       → font 184px
+   ──────────────────────────────────────────────────────────────────── */
+:global(html[lang="bg"]) .car {
+  font-size: 130px;
+  letter-spacing: -1.5px;
+}
+:global(html[lang="bg"]) .advantages {
+  font-size: 184px;
+  letter-spacing: -3px;
+}
+/* Inner feature titles ("/ Голям избор", "/ Много по-евтино",
+   "/ По-добри комплектации", "/ Прозрачна история") — cyrillic copy is
+   ~10% wider than english, and the cell width is fixed at 348/293 px.
+   Drop the BG H2 from 32 → 27 px so each title still fits on one line. */
+:global(html[lang="bg"]) .largeSelection,
+:global(html[lang="bg"]) .muchCheaper,
+:global(html[lang="bg"]) .transparentHistory {
+  font-size: 27px;
+}
+/* Body description under the first feature ("Повече комплектации,
+   цветове, редки модели") is slightly wider than its 348px column
+   at H Regular 24 — drop it to 22 in BG. */
+:global(html[lang="bg"]) .moreTrimLevels,
+:global(html[lang="bg"]) .evenTakingInto,
+:global(html[lang="bg"]) .moreOptionsBetterMultimedia,
+:global(html[lang="bg"]) .vinChecksCarfax {
+  font-size: 22px;
+}
+
+@media screen and (max-width: 1350px) {
+  :global(html[lang="bg"]) .car {
+    font-size: 108px;
+  }
+  :global(html[lang="bg"]) .advantages {
+    font-size: 158px;
+  }
+}
+
+@media screen and (max-width: 925px) {
+  :global(html[lang="bg"]) .car {
+    font-size: 52px;
+    line-height: 78px;
+  }
+  :global(html[lang="bg"]) .advantages {
+    font-size: 66px;
+    line-height: 100px;
+  }
+}
+
+@media screen and (max-width: 450px) {
+  :global(html[lang="bg"]) .car {
+    font-size: 32px;
+    line-height: 50px;
+  }
+  :global(html[lang="bg"]) .advantages {
+    font-size: 42px;
+    line-height: 70px;
+  }
+}

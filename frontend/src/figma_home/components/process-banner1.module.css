@@ -1,0 +1,381 @@
+.processBanner {
+  width: 1859.9px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: var(--padding-0) var(--padding-20) 219.8px;
+  box-sizing: border-box;
+  max-width: 100%;
+  flex-shrink: 0;
+  text-align: left;
+  font-size: var(--fs-32);
+  color: var(--color-orange-100);
+  font-family: var(--font-mazzard);
+}
+.transitionPanel {
+  width: 1113.5px;
+  flex-direction: column;
+  gap: 94.9px;
+}
+.processStage,
+.processTitles,
+.transitionPanel {
+  display: flex;
+  align-items: flex-start;
+  max-width: 100%;
+}
+.processStage {
+  width: 1059.2px;
+  justify-content: space-between;
+  gap: var(--gap-20);
+}
+.processTitles {
+  width: 420.1px;
+  gap: 35.1px;
+}
+.applicationDetail,
+.weSendAn {
+  position: relative;
+  line-height: 180%;
+  display: inline-block;
+  z-index: 2;
+}
+.applicationDetail {
+  white-space: pre-wrap;
+  min-width: 34px;
+}
+.weSendAn {
+  margin: 0;
+  flex: 1;
+  font-size: inherit;
+  font-weight: 400;
+  font-family: inherit;
+  color: var(--color-white);
+  min-width: 228px;
+  max-width: 100%;
+}
+.processTitles2 {
+  width: 408.1px;
+  display: flex;
+  align-items: flex-start;
+  gap: var(--gap-27_1);
+  max-width: 100%;
+}
+.div,
+.weDiscussThe {
+  position: relative;
+  line-height: 180%;
+  z-index: 2;
+}
+.div {
+  white-space: pre-wrap;
+}
+.weDiscussThe {
+  margin: 0;
+  flex: 1;
+  font-size: inherit;
+  font-weight: 400;
+  font-family: inherit;
+  color: var(--color-white);
+  display: inline-block;
+  min-width: 221px;
+}
+.processFinder,
+.stageFinder {
+  display: flex;
+  align-items: flex-start;
+  max-width: 100%;
+}
+.processFinder {
+  align-self: stretch;
+  justify-content: space-between;
+  padding: var(--padding-0) var(--padding-0) var(--padding-10);
+  box-sizing: border-box;
+  gap: var(--gap-20);
+  text-align: left;
+  font-size: var(--fs-32);
+  color: var(--color-orange-100);
+  font-family: var(--font-mazzard);
+}
+.stageFinder {
+  width: 323.1px;
+  gap: var(--gap-27_1);
+}
+.weLookFor {
+  margin: 0;
+  flex: 1;
+  position: relative;
+  font-size: inherit;
+  line-height: 180%;
+  font-weight: 400;
+  font-family: inherit;
+  color: var(--color-white);
+  z-index: 2;
+}
+.processPort,
+.stepPurchase {
+  display: flex;
+  align-items: flex-start;
+  max-width: 100%;
+}
+.stepPurchase {
+  width: 462.4px;
+  flex-direction: column;
+  padding: 2.3px var(--padding-0) var(--padding-0);
+  box-sizing: border-box;
+}
+.processPort {
+  align-self: stretch;
+  gap: var(--gap-27_1);
+}
+.europeanDetail {
+  position: relative;
+  line-height: 180%;
+  white-space: pre-wrap;
+  flex-shrink: 0;
+  z-index: 2;
+}
+.portPurchase {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 4.6px var(--padding-0) var(--padding-0);
+  box-sizing: border-box;
+  min-width: 256px;
+  max-width: 100%;
+  color: var(--color-white);
+}
+.weBuyAnd {
+  margin: 0;
+  height: 106.7px;
+  position: relative;
+  font-size: inherit;
+  line-height: 150%;
+  font-weight: 400;
+  font-family: inherit;
+  display: inline-block;
+  flex-shrink: 0;
+  z-index: 2;
+}
+.processShipping {
+  align-self: stretch;
+  justify-content: center;
+  padding: var(--padding-0) var(--padding-26) var(--padding-0) var(--padding-20);
+  box-sizing: border-box;
+  text-align: left;
+  font-size: var(--fs-32);
+  color: var(--color-orange-100);
+  font-family: var(--font-mazzard);
+}
+.processShipping,
+.shippingFinish,
+.shippingFinishParent {
+  display: flex;
+  align-items: flex-start;
+  max-width: 100%;
+}
+.shippingFinishParent {
+  width: 491.2px;
+  flex-direction: column;
+  gap: 87.7px;
+}
+.shippingFinish {
+  align-self: stretch;
+  gap: 24.8px;
+}
+.weClearCustoms {
+  margin: 0;
+  height: 104.8px;
+  flex: 1;
+  position: relative;
+  font-size: inherit;
+  line-height: 150%;
+  font-weight: 400;
+  font-family: inherit;
+  color: var(--color-white);
+  display: inline-block;
+  min-width: 276px;
+  max-width: 100%;
+  z-index: 2;
+}
+.actionButton,
+.buttonCall {
+  display: flex;
+  max-width: 100%;
+}
+.actionButton {
+  width: 474.6px;
+  align-items: flex-start;
+  padding: var(--padding-0) var(--padding-40);
+  box-sizing: border-box;
+  text-align: center;
+  font-size: var(--fs-24);
+  color: var(--color-white);
+}
+.buttonCall {
+  flex: 1;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 97.3px;
+}
+.buttonWrapper,
+.rectangleParent {
+  display: flex;
+  align-items: flex-start;
+}
+.buttonWrapper {
+  justify-content: flex-end;
+  padding: var(--padding-0) var(--padding-7);
+  box-sizing: border-box;
+  max-width: 100%;
+}
+.rectangleParent {
+  align-self: stretch;
+  justify-content: center;
+  padding: 25.4px var(--padding-32) 31.5px;
+  position: relative;
+  isolation: isolate;
+  gap: 19.1px;
+}
+.frameChild {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  margin: 0 !important;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  border-radius: var(--br-8);
+  background-color: var(--color-gray-700);
+  z-index: 2;
+  flex-shrink: 0;
+}
+.joinOffers {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: var(--padding-6) var(--padding-0) var(--padding-0);
+  box-sizing: border-box;
+  min-width: 162px;
+  flex-shrink: 0;
+}
+.joinOurGroup {
+  margin: 0;
+  height: var(--height-56);
+  position: relative;
+  font-size: inherit;
+  line-height: 99.9%;
+  font-weight: 400;
+  font-family: inherit;
+  display: inline-block;
+  z-index: 3;
+}
+.basilviberOutlineIcon {
+  width: 62px;
+  position: relative;
+  max-height: 100%;
+  z-index: 3;
+  flex-shrink: 0;
+}
+@media screen and (max-width: 1350px) {
+  .processBanner {
+    padding-bottom: 143px;
+    box-sizing: border-box;
+  }
+  .transitionPanel {
+    gap: var(--gap-47);
+  }
+}
+@media screen and (max-width: 925px) {
+  .processBanner {
+    padding-bottom: 93px;
+    box-sizing: border-box;
+  }
+  .transitionPanel {
+    gap: var(--gap-24);
+  }
+  .processStage {
+    flex-wrap: wrap;
+  }
+  .applicationDetail,
+  .div,
+  .weDiscussThe,
+  .weSendAn {
+    font-size: var(--fs-26);
+    line-height: var(--lh-46);
+  }
+  .processFinder {
+    flex-wrap: wrap;
+  }
+  .weLookFor {
+    font-size: var(--fs-26);
+    line-height: var(--lh-46);
+  }
+  .stepPurchase {
+    flex: 1;
+    min-width: 100%;
+  }
+  .europeanDetail,
+  .weBuyAnd {
+    font-size: var(--fs-26);
+    line-height: var(--lh-46);
+  }
+  .weBuyAnd {
+    line-height: var(--lh-38);
+  }
+  .shippingFinishParent {
+    gap: var(--gap-44);
+  }
+  .shippingFinish {
+    flex-wrap: wrap;
+  }
+  .weClearCustoms {
+    font-size: var(--fs-26);
+    line-height: var(--lh-38);
+  }
+  .rectangleParent {
+    flex-wrap: wrap;
+  }
+}
+@media screen and (max-width: 450px) {
+  .processTitles {
+    gap: var(--gap-18);
+    flex-wrap: wrap;
+  }
+  .applicationDetail,
+  .weSendAn {
+    font-size: var(--fs-19);
+    line-height: var(--lh-35);
+  }
+  .processTitles2 {
+    flex-wrap: wrap;
+  }
+  .div,
+  .weDiscussThe,
+  .weLookFor {
+    font-size: var(--fs-19);
+    line-height: var(--lh-35);
+  }
+  .processPort {
+    flex-wrap: wrap;
+  }
+  .europeanDetail {
+    font-size: var(--fs-19);
+    line-height: var(--lh-35);
+  }
+  .weBuyAnd,
+  .weClearCustoms {
+    font-size: var(--fs-19);
+    line-height: var(--lh-29);
+  }
+  .buttonCall {
+    gap: var(--gap-49);
+  }
+  .joinOurGroup {
+    font-size: var(--fs-19);
+    line-height: var(--lh-19);
+  }
+}

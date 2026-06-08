@@ -1,0 +1,96 @@
+/* ──────────────────────────────────────────────────────────────
+ *  RangeSlider — Figma 1:1, dual-thumb.
+ *
+ *  Container : 24 px tall (== thumb height)
+ *  Rail line : 2 px gray  #4F4F4F, vertically CENTERED (top:50%)
+ *  Fill line : 2 px yellow #FEAE00, vertically CENTERED (top:50%)
+ *  Thumb     : 22.99 × 24 px OVAL, solid #FEAE00, no border, no shadow.
+ *              Rail passes through the middle of the thumb (i.e. thumb
+ *              extends 11 px above and 11 px below the rail line).
+ * ────────────────────────────────────────────────────────────── */
+.slider {
+  position: relative;
+  height: 24px;
+  width: 100%;
+  display: block;
+  /* No extra margin — parent controls 16 px top / 24 px bottom gap. */
+}
+
+/* Rail + active fill — both rest exactly on the vertical center line. */
+.rail,
+.fill {
+  position: absolute;
+  top: 50%;
+  height: 2px;
+  transform: translateY(-50%);
+  pointer-events: none;
+  border-radius: 1px;
+}
+.rail { left: 0; right: 0; background: #4F4F4F; }
+.fill { background: #FEAE00; z-index: 1; }
+
+/* Native range inputs — full-bleed, transparent, pointer-events only on
+ * the thumbs themselves. */
+.input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  appearance: none;
+  -webkit-appearance: none;
+  background: transparent;
+  pointer-events: none;
+  outline: none;
+}
+
+/* Thumb — oval 22.99 × 24, yellow, no border. Rail crosses the center. */
+.input::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 22.99px;
+  height: 24px;
+  border-radius: 999px;     /* fully rounded pill / oval */
+  background: #FEAE00;
+  border: 0;
+  box-shadow: none;
+  cursor: grab;
+  pointer-events: auto;
+  margin-top: 0;            /* center on track (Chrome) */
+  transition: transform 100ms ease;
+}
+.input::-webkit-slider-thumb:active {
+  cursor: grabbing;
+  transform: scale(1.06);
+}
+.input::-moz-range-thumb {
+  width: 22.99px;
+  height: 24px;
+  border-radius: 999px;
+  background: #FEAE00;
+  border: 0;
+  box-shadow: none;
+  cursor: grab;
+  pointer-events: auto;
+  transition: transform 100ms ease;
+}
+.input::-moz-range-thumb:active {
+  cursor: grabbing;
+  transform: scale(1.06);
+}
+
+/* Make the runnable-track tall enough so the thumb stays centered. */
+.input::-webkit-slider-runnable-track {
+  background: transparent;
+  height: 24px;
+  border: 0;
+}
+.input::-moz-range-track {
+  background: transparent;
+  height: 24px;
+  border: 0;
+}
+
+/* Stack: hi input on top so its thumb is always reachable. */
+.inputLo { z-index: 2; }
+.inputHi { z-index: 3; }

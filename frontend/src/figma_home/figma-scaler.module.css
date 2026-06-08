@@ -1,0 +1,32 @@
+/* Pixel-perfect 1920px Figma render.
+ *
+ * Anima/Figma export uses fixed-pixel positioning calibrated to a 1920×N
+ * viewport.  We force the homepage root to render at exactly 1920px and
+ * transform-scale it down so every breakpoint < 1920 still shows the exact
+ * Figma layout (no overlap, no broken positioning).
+ */
+
+.figmaScaler {
+  /* Outer wrapper — its width matches viewport, height matches scaled inner.
+   * BG is pure black so it blends with the footer (the previous #1d1d1b
+   * created a visible gray strip below the footer when the scaled inner
+   * height was 1 px less than expected on certain viewports).
+   *
+   * IMPORTANT: We MUST clip on the y-axis as well. The inner element uses
+   * `transform: scale(...)` which visually shrinks the content but does NOT
+   * affect layout — the inner box still occupies its full natural height
+   * (e.g. 19 700 px) inside the parent. If the parent doesn't clip, that
+   * un-scaled box bleeds below the scaled content and creates an infinite
+   * black void after the footer. `overflow: hidden` on both axes seals the
+   * footer to the bottom of the page on every viewport size. */
+  width: 100%;
+  overflow: hidden;
+  background: #000000;
+  position: relative;
+}
+
+.figmaInner {
+  width: 1920px;
+  transform-origin: top left;
+  /* Scale ratio is set inline from JS so height adjusts dynamically. */
+}

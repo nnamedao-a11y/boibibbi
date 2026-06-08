@@ -1,0 +1,725 @@
+/* ============================================================================
+ * ReviewsArea1 — Figma-accurate "OUR CLIENTS SAY" block.
+ * FULLY FLUID RESPONSIVE: scales smoothly from mobile (320 px) to 4K (3840 px+)
+ * without fixed-pixel breakpoint jumps. Geometric proportions are preserved
+ * across every viewport.
+ *
+ * Design tokens (Figma 1920 viewport reference):
+ *   • Card: 582 × 486 px         (582 = (1179 − 15) / 2)
+ *   • Gap:  15 px
+ *   • 460+ block: 1179 × 455 px  (= 2 cards + gap)
+ *   • Heading "What customers say…": 60 px / Bold / orange
+ *   • Card name (Georgi …):       24 px / Bold / orange
+ *   • Card text:                  24 px / Regular / white / lh 27.5
+ *   • Big "{N} +":                431.35 px / SemiBold Italic / 15 % white
+ *   • Bracketed "Satisfied":      24 px / Medium / uppercase
+ *
+ * The reference column the block sits in is 1179 px at 1920 viewport, i.e.
+ * ~61.4 vw. Below 1024 px viewport the layout collapses to a single column
+ * with heading on top and cards stacked vertically.
+ * ========================================================================== */
+
+/* CSS variables make the whole block scale via a single tunable knob.
+   `--ra-track` is the slider track width (= 460+ block width, fluid). */
+.reviewsArea {
+  /* fluid track between 320 px (mobile) and 1179 px (desktop) */
+  --ra-track: clamp(320px, 61.4vw, 1179px);
+  --ra-gap: clamp(8px, 0.78vw, 15px);
+  /* gap BETWEEN the two layout columns (heading | cards). Exposed as a
+     variable so the heading can stretch across it and land exactly at
+     the arrow tip. */
+  --ra-layout-gap: clamp(16px, 1.6vw, 32px);
+  --ra-card-w: calc((var(--ra-track) - var(--ra-gap)) / 2);
+  /* card aspect ratio 582:486 = 1.198 (preserved for proportional height) */
+  --ra-card-h: calc(var(--ra-card-w) * 0.835);
+  /* 460+ block height: 455/1179 = 0.386 of track width */
+  --ra-block-h: calc(var(--ra-track) * 0.386);
+  /* 460+ font size: 431.35/1179 = 0.366 of track width */
+  --ra-num-size: calc(var(--ra-track) * 0.366);
+  --ra-num-lh: calc(var(--ra-track) * 0.386);
+  /* SATISFIED CLIENTS positioning inside the 460+ block */
+  --ra-sat-top: calc(var(--ra-block-h) * 0.278);
+  --ra-sat-right: calc(var(--ra-track) * 0.158);
+  /* slider top offset: 298/1179 = 0.253 of track width
+     (cards overlap bottom 157 px of 460+ block per canonical Figma) */
+  --ra-slider-top: calc(var(--ra-track) * 0.253);
+  /* Arrow icon (fontisto:arrow-up). In Figma the element is 215×215 px
+     rotated -45.3°. The SVG export at /figma/fontisto_arrow-up.svg already
+     bakes that rotation into its path (viewBox 305×305 → diamond), so we
+     render it at its NATURAL 215 px box and just position it absolutely.
+     FIXED at 215 px on desktop per design spec — the icon is hidden on
+     tablet (<=1024 px) so a fixed size won't cause overflow. */
+  --ra-arrow-size: 215px;
+
+  width: 100%;
+  /* Left padding kept small (Figma uses 12 px); right padding remains generous
+     so the cards row visually breathes from the viewport edge. Top padding
+     reduced so the "OUR CLIENTS SAY" heading sits close to the 460+ block
+     per Figma (small gap, not a large void). */
+  padding: clamp(8px, 0.83vw, 16px) clamp(20px, 5.2vw, 100px) 0
+           clamp(8px, 0.625vw, 12px);
+  box-sizing: border-box;
+  background-color: var(--color-black);
+  color: var(--color-orange-100);
+  font-family: 'Mazzard', 'Mazzard H', system-ui, sans-serif;
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+}
+
+.layout {
+  display: grid;
+  /* Left column widens enough (≥ 491 px at 1920) so the 60 px Bold heading
+     wraps to exactly 3 lines: "What customers / say when they / work with us"
+     — matching the Figma reference. */
+  grid-template-columns: minmax(300px, 1fr) var(--ra-track);
+  gap: var(--ra-layout-gap);
+  align-items: start;
+  position: relative;
+}
+
+/* ── LEFT column — Google block + headline + arrow icon ──────────────────
+ * Layout per Figma reference (audited):
+ *   ┌── leftColumn ──────────────┐  ┌── rightColumn ─────────────────────┐
+ *   │ Google logo + 4.9 + stars  │  │ 460+ [ SATISFIED CLIENTS / ARE     │
+ *   │ "31 Google reviews"        │  │        OUR PRIORITY ]              │
+ *   │                            │  │                                    │
+ *   │ "What customers / say when │  │ [Card][Card][Card][Card][Card]…    │
+ *   │  they / work with us"      │  │                                    │
+ *   └────────────────────────────┘  └────────────────────────────────────┘
+ *
+ * Google block aligns with TOP of 460+ block.
+ * "What customers say…" heading aligns with TOP of cards row.
+ * Both columns share the same grid row, no padding-top on column.
+ */
+.leftColumn {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  position: relative;
+  /* No padding-top — Google block uses absolute positioning to align with
+     the [SATISFIED CLIENTS / ARE OUR PRIORITY] brackets centerline on the
+     right column, regardless of column height. */
+  padding-top: 0;
+  min-width: 0;
+  z-index: 3;
+  gap: 0;
+  /* Reserve space so absolute children are properly contained */
+  min-height: calc(var(--ra-block-h) + 350px);
+}
+
+/* ── Google rating block ──────────────────────────────────────────────────
+ * Top-edge aligned with the [SATISFIED CLIENTS / ARE OUR PRIORITY] caption
+ * on the right column so both blocks sit "facing each other" on the same
+ * horizontal line. Uses the same `--ra-sat-top` token, so they stay glued
+ * at every viewport. */
+.googleBlock {
+  position: absolute;
+  top: var(--ra-sat-top);
+  left: 0;
+  display: flex;
+  align-items: flex-start;
+  gap: 41px;
+  width: auto;
+}
+.googleLogo {
+  width: clamp(160px, 13.5vw, 259px);
+  height: auto;
+  flex-shrink: 0;
+  position: relative;
+}
+.googleMeta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  padding-top: 17px;
+  color: var(--color-white);
+  font-family: var(--font-mazzard);
+}
+.googleRatingRow {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+.googleScore {
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--color-white);
+}
+.googleStars {
+  display: inline-flex;
+  align-items: center;
+  gap: 0;
+}
+.googleStar {
+  width: 24px;
+  height: 24px;
+  display: block;
+}
+.googleReviewsLink {
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--color-white);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.googleReviewsLink:hover {
+  opacity: 0.85;
+}
+
+.whatCustomersSay {
+  margin: 0;
+  /* "What customers say…" — vertically aligned with the CARDS BODY (not the
+     top edge). We anchor to the slider top + the card padding-top so the
+     subtitle starts level with the avatar / name row inside the cards. The
+     padding-top inside `.card` is clamp(28px, 3.33vw, 64px), so we mirror
+     the same expression here to keep the alignment fluid across viewports. */
+  position: absolute;
+  top: calc(var(--ra-slider-top) + clamp(28px, 3.33vw, 64px));
+  left: 0;
+  font-family: 'Mazzard', 'Mazzard H', system-ui, sans-serif;
+  /* Figma typography (audited from layout panel):
+       Font: Mazzard
+       Weight: 700  (H Bold)
+       Size: 60 px
+       Line height: 61 px
+       Letter spacing: 0
+       Color: #FEAE00  ( --color-orange-100 ) */
+  font-size: clamp(28px, 3.125vw, 60px);   /* 60 / 1920 = 3.125 vw */
+  line-height: calc(61 / 60);              /* exact 61 px at 60 px size */
+  font-weight: 700;
+  font-style: normal;
+  color: var(--color-orange-100);          /* #FEAE00 */
+  letter-spacing: 0;
+  text-align: left;
+
+  /* Heading STRETCHES from its left edge all the way to the ARROW TIP
+     (= cards row left edge). Right edge of the heading box therefore
+     lands exactly where the arrow's right corner sits — eliminating the
+     visual gap the user described. We extend the box BY the layout gap
+     using calc(): the heading overflows its grid column into the gap. */
+  width: calc(100% + var(--ra-layout-gap));
+  max-width: none;
+  box-sizing: border-box;
+  /* Tiny right padding so descenders don't kiss the arrow path —
+     keeps the text comfortably ending at the arrow tip. */
+  padding-right: clamp(4px, 0.4vw, 8px);
+}
+
+/* ARROW ICON — pixel-accurate Figma placement (audit-driven):
+ *
+ *   Figma spec (from layout panel):
+ *     • Width  = 215 px
+ *     • Height = 215 px
+ *     • Rotation = -45.3°  (already baked into the exported SVG path —
+ *                            viewBox 305×305, see /figma/fontisto_arrow-up.svg)
+ *
+ *   Geometric anchors (described by the design):
+ *     • RIGHT edge of the arrow icon  ==  LEFT edge of the reviews cards row
+ *     • BOTTOM edge of the arrow icon ==  BOTTOM edge of the cards row
+ *     • The arrow lives in the GAP COLUMN between the heading text and the
+ *       cards row — it is NOT a flow child of the heading any more.
+ *
+ *   We position it absolutely inside `.layout` (which is `position: relative`),
+ *   using the same CSS tokens that drive the cards row geometry so the
+ *   arrow stays glued to the cards on every viewport.
+ */
+.fontistoarrowUpIcon {
+  position: absolute;
+  width: var(--ra-arrow-size);
+  height: var(--ra-arrow-size);
+
+  /* RIGHT-edge anchor:
+       layout-right - track  ==  cards row LEFT edge
+     (no extra gap → "сразу упирается в блок отзывы" per the brief) */
+  right: var(--ra-track);
+
+  /* BOTTOM-edge anchor:
+       cards row TOP   = --ra-slider-top
+       cards row HEIGHT = --ra-card-h
+       cards row BOTTOM = slider-top + card-h
+     so arrow TOP = (slider-top + card-h) - arrow-size */
+  top: calc(var(--ra-slider-top) + var(--ra-card-h) - var(--ra-arrow-size));
+
+  margin: 0;
+  display: block;
+  object-fit: contain;
+  pointer-events: none;
+  user-select: none;
+  z-index: 1; /* above the 460+ backdrop, below the cards */
+}
+
+/* ── RIGHT column — backdrop + slider ────────────────────────────────────── */
+.rightColumn {
+  position: relative;
+  width: var(--ra-track);
+  min-width: 0;
+}
+
+/* The 460+ container — fluid 1179×455 (preserves aspect ratio).
+   Width matches exactly 2 cards + gap, so right edge aligns with card 2 right. */
+.bigNumberBlock {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: var(--ra-track);
+  height: var(--ra-block-h);
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.bigNumber {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  font-family: 'Mazzard', 'Mazzard H', system-ui, sans-serif;
+  font-size: var(--ra-num-size);
+  line-height: var(--ra-num-lh);
+  font-weight: 600;
+  font-style: italic;
+  color: rgba(255, 255, 255, 0.15);
+  letter-spacing: 0;
+  white-space: nowrap;
+  user-select: none;
+  text-align: left;
+  display: inline-block;
+}
+
+/* "Satisfied clients / are our priority" — fluid position inside 460+ block. */
+.satisfiedBlock {
+  position: absolute;
+  top: var(--ra-sat-top);
+  right: var(--ra-sat-right);
+  display: flex;
+  align-items: center;
+  /* 70 px bracket↔text gap on desktop to match the canonical Figma
+     spec used by Vehicle Deals ("Thousands of listings.") and
+     Before/After. Scales down fluidly on smaller viewports so the
+     bracketed block stays within the 460+ stage. */
+  gap: clamp(14px, 4.55vw, 70px);
+  z-index: 4;
+  pointer-events: auto;
+}
+
+.bracketLeft,
+.bracketRight {
+  width: clamp(8px, 0.68vw, 13px);
+  height: clamp(48px, 3.96vw, 76px);
+  flex-shrink: 0;
+  filter: invert(36%) sepia(0%) saturate(0%) hue-rotate(0deg)
+          brightness(95%) contrast(85%);
+}
+.bracketRight { transform: scaleX(-1); }
+
+.satisfiedLabel {
+  margin: 0;
+  font-family: inherit;
+  font-size: clamp(14px, 1.25vw, 24px);
+  line-height: 1.33;
+  font-weight: 500;
+  text-transform: uppercase;
+  white-space: nowrap;
+  letter-spacing: 0;
+}
+.satisfiedYellow { color: var(--color-orange-100); }
+.satisfiedWhite  { color: var(--color-white); }
+
+/* ── Slider track ───────────────────────────────────────────────────────── */
+.sliderWrap {
+  position: relative;
+  margin-top: var(--ra-slider-top);
+  width: var(--ra-track);
+  max-width: 100%;
+  z-index: 2;
+  overflow: visible;
+}
+
+.track {
+  display: flex;
+  gap: var(--ra-gap);
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  padding-bottom: 12px;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.track::-webkit-scrollbar { display: none; }
+
+/* ── Card ───────────────────────────────────────────────────────────────── */
+.card {
+  flex: 0 0 var(--ra-card-w);
+  width: var(--ra-card-w);
+  min-height: var(--ra-card-h);
+  background-color: var(--color-gray-200);
+  padding: clamp(28px, 3.33vw, 64px) clamp(20px, 2.6vw, 50px)
+           clamp(32px, 4.38vw, 84px);
+  box-sizing: border-box;
+  scroll-snap-align: start;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(20px, 3.13vw, 60px);
+
+  /* ── Focus animation — "depth, not damage" ──────────────────────────────
+     The reference does NOT blur the side cards — instead it fades the
+     foreground text into the card surface so the eye reads it as a
+     receded, secondary layer that is still legible. We mirror that exact
+     mental model here using only:
+
+       1. Subtle scale + translateY  → depth
+       2. Text-colour de-emphasis    → foreground hierarchy (NO blur)
+       3. Inner-edge gradient mask   → soft "hiding behind active" feel
+       4. Lifted shadow on active    → bring active card forward
+       5. Long-tail ease-out-expo    → kinematic, professional motion
+
+     The active card stays at full opacity & full text contrast. The
+     inactive cards keep their full background (so the surface is still
+     present, not dissolved) but their text colour drops to a muted tone
+     that visually receeds. Nothing is blurred — everything is readable. */
+  position: relative;
+  isolation: isolate;
+  transform-origin: center center;
+  will-change: transform, opacity, box-shadow;
+  transition:
+    transform 720ms cubic-bezier(0.16, 1, 0.3, 1),
+    opacity 720ms cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 720ms cubic-bezier(0.16, 1, 0.3, 1),
+    -webkit-mask-image 720ms cubic-bezier(0.16, 1, 0.3, 1),
+    mask-image 720ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Inner-text colour transitions live on the children so we get
+   independent timing for the "ink fade" effect (mirroring the reference
+   where the foreground text colour is the primary depth cue). */
+.card .cardName,
+.card .cardText {
+  transition:
+    color 720ms cubic-bezier(0.16, 1, 0.3, 1),
+    opacity 720ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+.card .avatar,
+.card .avatarImg {
+  transition:
+    opacity 720ms cubic-bezier(0.16, 1, 0.3, 1),
+    filter 720ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ── Active card — perfectly clear, lifted forward ───────────────────── */
+.cardActive {
+  transform: scale(1) translateY(0);
+  opacity: 1;
+  z-index: 3;
+  /* The shadow extends beyond the card edges so the neighbouring cards
+     visually sit "behind" it — the same effect the reference design uses
+     to imply z-depth without any blur. */
+  box-shadow:
+    0 32px 60px -28px rgba(0, 0, 0, 0.75),
+    0 12px 24px -16px rgba(0, 0, 0, 0.55),
+    0 0 0 1px rgba(255, 255, 255, 0.03) inset;
+}
+
+/* ── Adjacent / inactive cards — text fades, card stays solid ────────── */
+.cardAdjacent,
+.cardInactive {
+  cursor: pointer;
+  /* A small pull-back (3% smaller) + 6 px down-shift gives a believable
+     "second plane" without ever cropping the card. */
+  transform: scale(0.93) translateY(6px);
+  opacity: 0.92;
+  z-index: 1;
+  /* Soft horizontal mask: the edge that faces the active card fades a
+     touch — emulating the reference's "card peeks out from behind" look. */
+  -webkit-mask-image: linear-gradient(
+    90deg,
+    rgba(0, 0, 0, 0.78) 0%,
+    rgba(0, 0, 0, 1) 18%,
+    rgba(0, 0, 0, 1) 82%,
+    rgba(0, 0, 0, 0.78) 100%
+  );
+  mask-image: linear-gradient(
+    90deg,
+    rgba(0, 0, 0, 0.78) 0%,
+    rgba(0, 0, 0, 1) 18%,
+    rgba(0, 0, 0, 1) 82%,
+    rgba(0, 0, 0, 0.78) 100%
+  );
+}
+/* TEXT-LEVEL depth: this is the dominant cue.
+   Card body text drops from pure white → light grey.
+   Card name (orange) drops to a muted ochre.
+   Avatar dims slightly so the colour identity reads as "background plane". */
+.cardAdjacent .cardText,
+.cardInactive .cardText {
+  color: rgba(255, 255, 255, 0.34);
+}
+.cardAdjacent .cardName,
+.cardInactive .cardName {
+  color: rgba(254, 174, 0, 0.4);
+}
+.cardAdjacent .avatar,
+.cardInactive .avatar,
+.cardAdjacent .avatarImg,
+.cardInactive .avatarImg {
+  opacity: 0.45;
+  filter: saturate(0.7);
+}
+
+/* ── Far cards (≥2 positions away) — same model, pushed deeper. ────── */
+.cardFar {
+  cursor: pointer;
+  transform: scale(0.9) translateY(10px);
+  opacity: 0.82;
+  z-index: 1;
+  -webkit-mask-image: linear-gradient(
+    90deg,
+    rgba(0, 0, 0, 0.55) 0%,
+    rgba(0, 0, 0, 0.95) 22%,
+    rgba(0, 0, 0, 0.95) 78%,
+    rgba(0, 0, 0, 0.55) 100%
+  );
+  mask-image: linear-gradient(
+    90deg,
+    rgba(0, 0, 0, 0.55) 0%,
+    rgba(0, 0, 0, 0.95) 22%,
+    rgba(0, 0, 0, 0.95) 78%,
+    rgba(0, 0, 0, 0.55) 100%
+  );
+}
+.cardFar .cardText { color: rgba(255, 255, 255, 0.22); }
+.cardFar .cardName { color: rgba(254, 174, 0, 0.28); }
+.cardFar .avatar,
+.cardFar .avatarImg { opacity: 0.32; filter: saturate(0.55); }
+
+/* Hover lifts a dimmed card halfway toward "active" — readable preview. */
+.cardAdjacent:hover,
+.cardInactive:hover,
+.cardFar:hover {
+  transform: scale(0.96) translateY(3px);
+  opacity: 1;
+}
+.cardAdjacent:hover .cardText,
+.cardInactive:hover .cardText,
+.cardFar:hover .cardText { color: rgba(255, 255, 255, 0.62); }
+.cardAdjacent:hover .cardName,
+.cardInactive:hover .cardName,
+.cardFar:hover .cardName { color: rgba(254, 174, 0, 0.75); }
+.cardAdjacent:hover .avatar,
+.cardInactive:hover .avatar,
+.cardFar:hover .avatar,
+.cardAdjacent:hover .avatarImg,
+.cardInactive:hover .avatarImg,
+.cardFar:hover .avatarImg { opacity: 0.8; filter: saturate(0.9); }
+
+/* Respect users with reduced-motion preference. */
+@media (prefers-reduced-motion: reduce) {
+  .card,
+  .card .cardName,
+  .card .cardText,
+  .card .avatar,
+  .card .avatarImg {
+    transition: none;
+  }
+}
+
+.avatarRow {
+  display: flex;
+  align-items: center;
+  gap: clamp(14px, 1.4vw, 27px);
+  flex-shrink: 0;
+}
+.avatar {
+  width: clamp(40px, 3.65vw, 70px);
+  height: clamp(40px, 3.65vw, 70px);
+  border-radius: 50%;
+  background-color: var(--color-dimgray-100);
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+.avatarImg {
+  width: clamp(40px, 3.65vw, 70px);
+  height: clamp(40px, 3.65vw, 70px);
+  border-radius: 50%;
+  flex-shrink: 0;
+  object-fit: cover;
+  display: block;
+  background-color: var(--color-dimgray-100);
+}
+.avatarInitial {
+  color: var(--color-orange-100);
+  font-size: clamp(16px, 1.4vw, 26px);
+  font-weight: 700;
+  line-height: 1;
+  text-transform: uppercase;
+  font-family: inherit;
+  user-select: none;
+}
+.emptyState {
+  width: 100%;
+  margin-top: var(--ra-slider-top);
+  padding: 60px 20px;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.6);
+  font-family: inherit;
+  font-size: clamp(14px, 1.04vw, 20px);
+  z-index: 2;
+  position: relative;
+}
+
+.cardName {
+  margin: 0;
+  font-family: inherit;
+  font-size: clamp(16px, 1.25vw, 24px);
+  line-height: 1;
+  font-weight: 700;
+  color: var(--color-orange-100);
+  letter-spacing: 0;
+}
+
+.cardText {
+  margin: 0;
+  font-family: inherit;
+  font-size: clamp(15px, 1.25vw, 24px);
+  line-height: 1.146;
+  font-weight: 400;
+  color: var(--color-white);
+  letter-spacing: 0;
+}
+
+/* ── Bottom navigation ──────────────────────────────────────────────────── */
+.nav {
+  margin-top: clamp(24px, 2.6vw, 50px);
+  margin-bottom: clamp(32px, 3.13vw, 60px);
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: clamp(12px, 1.15vw, 22px);
+}
+
+.navBtn {
+  width: clamp(28px, 1.98vw, 38px);
+  height: clamp(28px, 1.98vw, 38px);
+  border-radius: 50%;
+  border: 1.5px solid var(--color-orange-100);
+  background: transparent;
+  color: var(--color-orange-100);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+.navBtn:hover:not(:disabled) {
+  background-color: var(--color-orange-100);
+  color: #000;
+}
+.navBtn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.dots {
+  display: flex;
+  align-items: center;
+  gap: clamp(8px, 0.73vw, 14px);
+}
+.dot {
+  width: clamp(4px, 0.31vw, 6px);
+  height: clamp(4px, 0.31vw, 6px);
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.45);
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  flex-shrink: 0;
+}
+.dot:hover { background-color: rgba(255, 255, 255, 0.8); }
+.dotActive {
+  width: clamp(10px, 0.73vw, 14px);
+  height: clamp(10px, 0.73vw, 14px);
+  background-color: var(--color-orange-100);
+}
+
+/* ── Tablet (≤1024 px) — collapse to single column ───────────────────────── */
+@media (max-width: 1024px) {
+  .reviewsArea {
+    /* on tablet/mobile the track fills the available width minus padding */
+    --ra-track: min(640px, 100%);
+    --ra-card-h: calc(var(--ra-card-w) * 1.05);
+  }
+  .layout {
+    grid-template-columns: 1fr;
+    gap: clamp(20px, 3vw, 40px);
+  }
+  .leftColumn {
+    padding-top: 0;
+    padding-bottom: clamp(16px, 3vw, 30px);
+    width: 100%;
+  }
+  .whatCustomersSay {
+    font-size: clamp(34px, 6vw, 56px);
+    max-width: 100%;
+  }
+  .fontistoarrowUpIcon { display: none; }
+
+  .rightColumn { width: 100%; }
+}
+
+/* ── Mobile (≤640 px) — Compact layout, single card visible per slide ──── */
+@media (max-width: 640px) {
+  .reviewsArea {
+    --ra-track: 100%;
+    --ra-gap: 12px;
+    /* On mobile card width = full track width (single card visible) */
+    --ra-card-w: 100%;
+    --ra-card-h: auto;
+    --ra-block-h: 220px;
+    --ra-num-size: 145px;
+    --ra-num-lh: 145px;
+    --ra-sat-top: 50px;
+    --ra-sat-right: 16px;
+    --ra-slider-top: 110px;
+  }
+  .whatCustomersSay {
+    font-size: clamp(28px, 8vw, 40px);
+    line-height: 1.05;
+  }
+  .satisfiedLabel { font-size: clamp(13px, 3.6vw, 18px); }
+  .card {
+    width: 100%;
+    flex: 0 0 calc(100% - 12px);
+    min-height: auto;
+    padding: 28px 20px 36px;
+    gap: 20px;
+  }
+  .cardName { font-size: 18px; }
+  .cardText { font-size: 16px; line-height: 1.35; }
+  .nav { justify-content: center; }
+}
+
+/* ── Ultra-wide (≥2400 px) — cap on desktop scaling ──────────────────────── */
+@media (min-width: 2400px) {
+  .reviewsArea {
+    --ra-track: 1179px;
+  }
+}
+
+/* ────────── Bulgarian (BG) adaptive overrides ──────────
+   Bracketed subtitle: "Доволни клиенти / са наш приоритет" ≈
+   "Satisfied clients / are our priority" — fits naturally, keep proportions.
+*/
+:global(html[lang="bg"]) .satisfiedYellow,
+:global(html[lang="bg"]) .satisfiedWhite {
+  letter-spacing: -0.005em;
+}

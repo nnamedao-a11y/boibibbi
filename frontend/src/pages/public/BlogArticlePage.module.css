@@ -1,0 +1,917 @@
+/* =========================================================================
+ *  BlogArticlePage — pixel-precise (Figma May 2026, 1920) — Session 30.
+ *
+ *  USER SPEC (verbatim, vertical anchors measured from the top of the
+ *  header bar — NOT from page top — every spec line preserved):
+ *
+ *    • Page L/R padding ............................ 100 px
+ *    • HOME / BLOG breadcrumb (font H Semibold 20).. 52 px from header
+ *    • Title (font H Bold 64, color #FFFFFF) ....... 148 px from header
+ *    • Category pill (H Regular 14, radius 20)..... 332 px from header
+ *      └ gap pill ↔ date (H Regular 14) ........... 24 px
+ *      └ gap date ↔ min-read (gray) ............... 24 px
+ *    • Cover / body block top ...................... 422 px from header
+ *
+ *    Body block geometry:
+ *      • Container size .......................... 1720 × 950 px (gray) +
+ *        cover image 1720 × 640 stacked on top
+ *      • Top padding (cover bottom → first text).. 128 px
+ *      • Bottom padding (last text → block end)... 128 px
+ *      • Body paragraph font ..................... H Regular 20
+ *      • Body heading font ....................... H Regular 32
+ *
+ *    "You may also be interested in":
+ *      • Gap heading → cards ...................... 72 px
+ *      • Card cell padding ....................... 24 px
+ *      • Gap card image → text inside card ........ 24 px
+ *      • Gap date → card title ................... 32 px
+ *      • Gap subtitle → text ..................... 24 px
+ *      • Inter-card gap (horizontal) ............. 24 px
+ *      • Left margin .............................. 100 px (matches page)
+ *      • Right edge .............................. → scrollable, no right
+ *        padding (per spec — "по правой части идет боковой скролл")
+ *      • Pagination = arrow buttons + numbered counter (01 / 10).
+ * ===================================================================== */
+
+.shell {
+  /* This wrapper supersedes the inherited .container so we can apply the
+   * 100 px L/R padding without breaking other pages that use the standard
+   * container.  Anchors below are computed relative to this shell. */
+  padding: 0 100px;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.breadcrumb {
+  margin-top: 52px;                              /* 52 px from header bottom (user spec) */
+  font-family: 'Mazzard H', var(--font-mazzard, system-ui, sans-serif);
+  font-weight: 600;                               /* H Semibold */
+  font-size: 20px;
+  line-height: 100%;
+  text-transform: uppercase;
+  color: #FFFFFF;
+}
+/* HOME / BLOG segments stay white; the active TITLE segment is amber.
+ * Component output Breadcrumbs uses <a> for linked items + <span> for
+ * the trailing active label.  We re-color via descendant selectors so
+ * the existing component keeps working. */
+.breadcrumb :global(a) { color: #FFFFFF; }
+.breadcrumb :global(a:hover) { color: #FEAE00; }
+.breadcrumb :global(span:last-child) { color: #FEAE00; }
+.breadcrumb :global(svg) { color: #5E5E5E; }     /* slash separators */
+
+.header {
+  margin-top: 76px;                              /* 76 + breadcrumb(20) + 52 = 148 — title top per spec */
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0;
+  text-align: left;
+}
+.title {
+  margin: 0;
+  font-family: 'Mazzard H', var(--font-mazzard, system-ui, sans-serif);
+  font-weight: 700;                              /* H Bold */
+  font-size: 64px;
+  line-height: 1.0;
+  color: #FFFFFF;
+  text-transform: none;
+  max-width: 1240px;                             /* line wrap when overflow */
+  word-break: break-word;
+}
+.metaRow {
+  margin-top: 56px;                              /* aimed at 332 px anchor — adjustable per title height */
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+.pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 16px;
+  border-radius: 20px;                           /* user spec: same shape as catalog filters */
+  background: rgba(254, 174, 0, 0.10);
+  border: 1px solid rgba(254, 174, 0, 0.40);
+  color: #FEAE00;
+  font-family: 'Mazzard H', var(--font-mazzard, system-ui, sans-serif);
+  font-weight: 400;                              /* H Regular 14 */
+  font-size: 14px;
+  line-height: 100%;
+  text-transform: uppercase;
+  letter-spacing: 0;
+}
+.dateRow {
+  display: inline-flex;
+  align-items: center;
+  gap: 24px;                                     /* 24 between date and min-read */
+  font-family: 'Mazzard H', var(--font-mazzard, system-ui, sans-serif);
+  font-weight: 400;                              /* H Regular 14 */
+  font-size: 14px;
+  line-height: 100%;
+  color: #FFFFFF;
+  white-space: nowrap;
+}
+.dateRow .dot { display: none; }                 /* dot bullets removed per spec — gaps handle separation */
+.dateRow .minRead { color: #949494; }
+
+/* Cover image — 1720 × 640, top corners rounded 4 px.  Anchor: 422 px
+ * from header.  Achieved via header margin (148) + title (~64) +
+ * meta-row gap (56) + meta-row height (~30) + cover margin-top below. */
+.cover {
+  margin-top: 60px;                              /* tuned so cover.top = 422 from header bottom */
+  width: 100%;
+}
+.cover img {
+  display: block;
+  width: 100%;
+  height: 640px;                                 /* 1720 × 640 fixed */
+  object-fit: cover;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+  background: #0F0F0F;
+}
+
+/* Body wrapper — gray 1720 × 950 (extends if content longer) attached
+ * to cover (no gap → both share visual block).  Inner padding 128/128. */
+.bodyWrap {
+  background: #1D1D1B;
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 128px 0;                              /* 128 top + 128 bottom (user spec) */
+  min-height: 950px;
+  box-sizing: border-box;
+}
+.bodyContent {
+  width: 1140px;
+  max-width: calc(100% - 48px);
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  color: #FFFFFF;
+  font-family: 'Mazzard H', var(--font-mazzard, system-ui, sans-serif);
+  font-size: 20px;                               /* H Regular 20 */
+  font-weight: 400;
+  line-height: 1.5;
+  text-align: left;
+}
+.bodyContent p { margin: 0; line-height: 1.5; color: #D6D6D6; font-size: 20px; }
+.bodyContent h1,
+.bodyContent h2,
+.bodyContent h3,
+.bodyContent h4 {
+  margin: 24px 0 0;
+  color: #FFFFFF;
+  font-family: 'Mazzard H', var(--font-mazzard, system-ui, sans-serif);
+  font-weight: 400;                              /* H Regular per user spec for body headings */
+  line-height: 1.1;
+}
+.bodyContent h1 { font-size: 40px; }
+.bodyContent h2 { font-size: 32px; }             /* H Regular 32 user spec */
+.bodyContent h3 { font-size: 24px; }
+.bodyContent h4 { font-size: 20px; }
+.bodyContent ul,
+.bodyContent ol {
+  margin: 0;
+  padding-left: 22px;
+  color: #D6D6D6;
+  line-height: 1.5;
+}
+.bodyContent li { margin: 6px 0; }
+.bodyContent strong { color: #FFFFFF; font-weight: 700; }
+.bodyContent a { color: #FEAE00; text-decoration: underline; text-underline-offset: 3px; }
+.bodyContent a:hover { color: #FFC83F; }
+.bodyContent blockquote {
+  margin: 0;
+  padding: 12px 24px;
+  border-left: 3px solid #FEAE00;
+  color: #FFFFFF;
+  font-family: 'Mazzard H', var(--font-mazzard, system-ui, sans-serif);
+  font-size: 32px;
+  line-height: 1.1;
+  font-weight: 400;
+  background: transparent;
+}
+.bodyContent blockquote p { color: #FFFFFF; font-size: inherit; }
+.bodyContent img { width: 100%; border-radius: 4px; margin: 8px 0; }
+.bodyContent iframe { width: 100%; aspect-ratio: 16 / 9; border-radius: 4px; border: 0; }
+.bodyContent table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 12px 0;
+  font-size: 16px;
+}
+.bodyContent th,
+.bodyContent td { border: 1px solid #3F3F46; padding: 8px 10px; vertical-align: top; }
+.bodyContent th { background: #27272A; color: #FFFFFF; font-weight: 600; }
+
+/* Tags chip row below body */
+.tagList {
+  width: 1140px;
+  max-width: calc(100% - 48px);
+  margin: 40px auto 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.tagChip {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 12px;
+  border-radius: 20px;
+  background: rgba(254, 174, 0, 0.12);
+  border: 1px solid rgba(254, 174, 0, 0.35);
+  color: #FEAE00;
+  font-family: 'Mazzard H', var(--font-mazzard, system-ui, sans-serif);
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 1;
+}
+
+/* ====================================================================
+ * YOU MAY ALSO BE INTERESTED IN
+ *   • Heading gap → cards = 72 px
+ *   • Grid is horizontal scroll: 100 px left, no right padding (per spec)
+ *   • Card cell = ~560 px, fixed
+ *   • Pagination: arrows + counter, 24 px above cards
+ * ==================================================================*/
+.interestWrap {
+  width: 100%;
+  margin-top: 76px;
+  padding: 0 0 0 100px;                          /* 100 px left only — right edge open for horizontal scroll per user spec */
+  box-sizing: border-box;
+}
+.interestInner {
+  display: flex;
+  flex-direction: column;
+  gap: 72px;                                     /* heading → cards = 72 (user spec) */
+}
+.interestHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  flex-wrap: wrap;
+  padding-right: 100px;                          /* keep right gutter for view-all button */
+  box-sizing: border-box;
+}
+.interestTitle {
+  margin: 0;
+  font-family: 'Mazzard H', var(--font-mazzard, system-ui, sans-serif);
+  font-weight: 700;                              /* H Bold 40 per user spec */
+  font-size: 40px;
+  line-height: 1;
+  text-transform: uppercase;
+  color: #FFFFFF;
+}
+.accent { color: #FEAE00; }
+.viewAllBtn {
+  border: 0;
+  background: transparent;
+  padding: 0;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  color: #FFFFFF;
+  font-family: 'Mazzard H', var(--font-mazzard, system-ui, sans-serif);
+  font-weight: 500;                              /* H Medium */
+  font-size: 14px;
+  text-transform: uppercase;
+  transition: color 120ms ease;
+}
+.viewAllBtn:hover { color: #FEAE00; }
+.viewAllBtn svg { width: 24px; height: 24px; }   /* 24×24 arrow (user spec) */
+/* Desktop-only & mobile-only variants — toggled in media queries below. */
+.viewAllBtnMobile { display: none; }              /* hidden on desktop */
+
+/* Horizontal scroller — anchors to the same 100 px left padding as the
+ * heading, right edge runs out so the 4th card peeks beyond the right
+ * edge ("боковой скролл" per user spec). */
+.scrollerOuter {
+  position: relative;
+  /* Break out of .interestWrap's 100 px left padding so we can re-anchor
+   * the scroller exactly at the viewport-100 left and let the right run
+   * out infinitely. */
+  margin-left: -100px;
+  width: calc(100% + 100px);
+  overflow: hidden;
+}
+.scroller {
+  display: flex;
+  gap: 24px;                                     /* 24 between cards (user spec) */
+  padding: 0 0 0 100px;                          /* left 100, right open */
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.scroller::-webkit-scrollbar { display: none; }
+
+/* Related card — strict 560 × 574 (user spec), image 513 × 320 inside,
+ * hover yellow outline must re-appear. */
+.relatedCard {
+  flex: 0 0 560px;
+  width: 560px;
+  height: 574px;                                 /* 574 px (user spec — corrected from earlier 612) */
+  background: #1D1D1B;
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  padding: 24px;                                 /* 24 inner padding */
+  cursor: pointer;
+  outline: 1px solid transparent;
+  /* Use a transparent border that turns yellow on hover.  outline alone
+   * was getting overridden by some global reset — using outline keeps
+   * the box-size identical so layout doesn't shift. */
+  transition: outline-color 150ms ease, background-color 150ms ease;
+  box-sizing: border-box;
+  scroll-snap-align: start;
+  overflow: hidden;
+}
+.relatedCard:hover {
+  outline-color: #FEAE00;                        /* yellow outline on hover (user req) */
+}
+.relatedImg {
+  width: 513px;                                  /* 513 × 320 exact (user spec) */
+  height: 320px;
+  flex: 0 0 320px;
+  object-fit: cover;
+  display: block;
+  background: #0F0F0F;
+  margin-bottom: 24px;                           /* image → text = 24 (user spec) */
+  border-radius: 2px;
+  align-self: center;
+}
+.relatedMeta {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  flex-wrap: wrap;
+  margin-bottom: 32px;                           /* date row → title = 32 (user spec) */
+}
+.relatedTitle {
+  margin: 0 0 24px;                              /* title → excerpt = 24 (user spec) */
+  font-family: 'Mazzard H', var(--font-mazzard, system-ui, sans-serif);
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 1.1;
+  text-transform: uppercase;
+  color: #FFFFFF;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.relatedExcerpt {
+  margin: 0;
+  font-family: 'Mazzard H', var(--font-mazzard, system-ui, sans-serif);
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 1.4;
+  color: #949494;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.pager {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 24px;
+  font-family: 'Mazzard H', var(--font-mazzard, system-ui, sans-serif);
+  font-weight: 500;                              /* H Medium 14 (user spec for counter) */
+  font-size: 14px;
+  color: #FFFFFF;
+  padding-right: 100px;
+  box-sizing: border-box;
+}
+.pagerLabel { letter-spacing: 0.04em; min-width: 56px; text-align: center; }
+.pagerBtn {
+  border: 0;
+  background: transparent;
+  padding: 0;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: transform 120ms ease, opacity 120ms ease;
+}
+.pagerBtn svg { width: 40px; height: 40px; }      /* 40×40 (user spec) */
+.pagerBtn:hover:not(:disabled) { transform: translateX(2px); }
+.pagerBtn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+/* ====================================================================
+ * CTA block — Stop reading. Start driving.
+ * ==================================================================*/
+.ctaWrap {
+  width: 100%;
+  padding: 0 100px 76px;
+  box-sizing: border-box;
+  margin-top: 76px;
+}
+.ctaInner {
+  width: 100%;
+  background: #1D1D1B;
+  border-radius: 4px;
+  padding: clamp(64px, 6.66vw, 128px) clamp(36px, 3.75vw, 72px);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 36px;
+}
+.ctaText {
+  width: 640px;
+  max-width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 36px;
+  color: #FEAE00;
+  font-family: 'Mazzard H', var(--font-mazzard, system-ui, sans-serif);
+  font-weight: 400;                              /* H Regular */
+  font-size: 20px;                               /* H Regular 20 */
+}
+.ctaSmallTitle {
+  margin: 0;
+  font-size: 20px;                               /* H Regular 20 (user spec) */
+  font-weight: 400;
+  color: #FEAE00;
+  text-transform: uppercase;
+}
+.ctaBigTitle {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  font-family: 'Mazzard H', var(--font-mazzard, system-ui, sans-serif);
+  font-weight: 600;                              /* H Semibold 64 (user spec) */
+  font-size: 64px;
+  line-height: 0.95;
+  letter-spacing: -0.04em;
+  color: #FFFFFF;
+  text-transform: uppercase;
+}
+.ctaDesc {
+  margin: 0;
+  font-size: 20px;                               /* H Regular 20 (user spec) */
+  line-height: 1.35;
+  color: #D6D6D6;
+  font-weight: 400;
+  text-transform: none;
+  letter-spacing: 0;
+}
+.ctaButtons {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 16px;
+  min-width: 327px;
+}
+.ctaPrimary,
+.ctaSecondary {
+  cursor: pointer;
+  padding: 12px 32px;
+  height: 45px;
+  border-radius: 6px;
+  box-sizing: border-box;
+  font-family: 'Mazzard H', var(--font-mazzard, system-ui, sans-serif);
+  font-weight: 500;                              /* H Medium */
+  font-size: 14px;                               /* H Medium 14 (user spec) */
+  text-transform: uppercase;
+  text-align: center;
+  transition: background-color 120ms ease, color 120ms ease;
+  white-space: nowrap;
+}
+.ctaPrimary { background: #FEAE00; color: #18181B; border: 0; }
+.ctaPrimary:hover { background: #FFC83F; }
+.ctaSecondary { background: transparent; color: #FEAE00; border: 1px solid #FEAE00; }
+.ctaSecondary:hover { background: rgba(254, 174, 0, 0.1); }
+
+/* Loading + 404 */
+.skeleton {
+  padding: 160px 0;
+  text-align: center;
+  font-family: 'Mazzard H', var(--font-mazzard, system-ui, sans-serif);
+  font-size: 16px;
+  color: #555452;
+}
+.notFound {
+  padding: 160px 0;
+  text-align: center;
+  color: #FFFFFF;
+}
+.notFound h1 {
+  margin: 0 0 16px;
+  font-family: 'Mazzard H', var(--font-mazzard, system-ui, sans-serif);
+  font-weight: 700;
+  font-size: clamp(36px, 3vw, 56px);
+  letter-spacing: -0.04em;
+}
+.notFound p {
+  margin: 0 0 32px;
+  color: #949494;
+  font-size: 16px;
+}
+.backBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 32px;
+  background: #FEAE00;
+  color: #18181B;
+  border: 0;
+  border-radius: 6px;
+  cursor: pointer;
+  font-family: 'Mazzard H', var(--font-mazzard, system-ui, sans-serif);
+  font-weight: 500;
+  font-size: 14px;
+  text-transform: uppercase;
+  transition: background-color 120ms ease;
+}
+.backBtn:hover { background: #FFC83F; }
+
+@media (max-width: 1280px) {
+  .shell { padding: 0 40px; }
+  .interestHeader { padding: 0 40px; }
+  .pager { padding: 0 40px; }
+  .scroller { padding-left: 40px; }
+  .ctaWrap { padding-left: 40px; padding-right: 40px; }
+}
+
+/* =========================================================================
+ *  MOBILE LAYOUT (≤768 px) — pixel-precise per user spec session 33.
+ *  Reference viewport: 360 px.
+ *
+ *  Page L/R padding: 12 px (everywhere except cover image — full bleed).
+ *
+ *  Vertical anchors (from page top — i.e. from below header):
+ *    • Breadcrumb top                 ≈  24 px
+ *    • Title top                      = breadcrumb bottom + 24 px
+ *    • MARKET ANALYSIS meta top       = title bottom + 24 px
+ *    • Cover image top                = meta bottom + 24 px
+ *    • "YOU MAY ALSO BE INTERESTED"   ≈ 1369 px from header (content-driven)
+ *    • "VIEW ALL ARTICLES" link       ≈ 2079 px from header
+ *    • "STOP READING / START DRIVING" ≈ 2226 px from header
+ *
+ *  Fonts (Mazzard H):
+ *    • Breadcrumb     : H SemiBold 12  (HOME/BLOG white, title yellow)
+ *    • Article title  : H Bold     24  white
+ *    • Tag pill       : H Regular  10  yellow on translucent
+ *    • Date / minRead : H Regular  12  white / gray
+ *    • Body paragraph : H Regular  14  #C8C8C8
+ *    • Body headings  : H Regular  18  white
+ *    • "YOU MAY ALSO" : H Bold     24
+ *    • Related card title  : H Bold    20
+ *    • Related card excerpt: H Regular 14
+ *    • CTA "READY TO IMPORT YOUR CAR?": H Regular 12 yellow
+ *    • CTA "STOP READING / START DRIVING": H SemiBold 32 white / yellow
+ *    • CTA manager paragraph : H Regular 12 gray
+ *    • CTA button text       : H Medium  14
+ *
+ *  Card geometry:
+ *    • Article cover image      : 360 × 234 (full-bleed, no L/R padding)
+ *    • Related card             : 396 × auto, image inside 396 × 234
+ *    • Card overflow → horizontal scroll, snap, arrows 40×40, 70 % activator
+ *    • REQUEST A VEHICLE button : 328 × 45 (yellow filled)
+ *    • USE OUR CALCULATOR button: 308 × 45 (yellow outline, centered)
+ *
+ *  Inner spacings (CTA):
+ *    • READY → STOP READING       = 32 px
+ *    • STOP READING → START DRIV. = 32 px
+ *    • START DRIVING → manager    = 32 px
+ *    • Manager paragraph → button = 56 px
+ *    • REQUEST → USE OUR CALC     = 36 px
+ *    • USE OUR CALC → footer top  = 72 px
+ * ===================================================================== */
+@media (max-width: 768px) {
+  /* ─── Page shell ─────────────────────────────────────────────────── */
+  .shell {
+    padding: 0 12px;                                /* 12 L/R (user spec) */
+  }
+
+  /* ─── Breadcrumb (HOME / BLOG / TITLE) ──────────────────────────── */
+  .breadcrumb {
+    margin-top: 24px;                               /* 24 from header bottom */
+    font-weight: 600;                               /* H SemiBold */
+    font-size: 12px;                                /* H SemiBold 12 */
+    line-height: 1;                                 /* no extra line-gap on wrap */
+    letter-spacing: 0.02em;
+    white-space: normal;                            /* allow wrap onto 2 lines if title long */
+  }
+  /* Mobile: HOME / BLOG segments must be gray (#5E5E5E), not white, and
+   * the "/" slash must sit tight to its neighbours (no extra mx-2 gap). */
+  .breadcrumb :global(a),
+  .breadcrumb :global(a:visited) { color: #5E5E5E !important; }
+  .breadcrumb :global(a:hover) { color: #FEAE00 !important; }
+  .breadcrumb :global(.mx-2) {
+    margin-left: 2px !important;                    /* tighten slash spacing */
+    margin-right: 2px !important;
+  }
+  /* The shared Breadcrumbs component wraps each segment in a flex row with
+   * its own gap.  On mobile we kill the row gap so wrapped segments sit
+   * tightly without a visible vertical seam between lines (user spec). */
+  .breadcrumb :global(> *) {
+    row-gap: 4px !important;
+    column-gap: 6px !important;
+  }
+
+  /* ─── Article header (title + meta) ─────────────────────────────── */
+  .header {
+    margin-top: 24px;                               /* 24 from breadcrumb bottom */
+    gap: 24px;
+  }
+  .title {
+    font-size: 24px;                                /* H Bold 24 (user spec) */
+    font-weight: 700;
+    line-height: 1.15;
+    letter-spacing: 0;
+    max-width: 100%;
+  }
+  .metaRow {
+    margin-top: 0;                                  /* 24 already provided by .header gap */
+    gap: 12px;
+  }
+  .pill {
+    padding: 6px 10px;
+    border-radius: 999px;
+    font-size: 10px;                                /* H Regular 10 (user spec) */
+    font-weight: 400;
+    letter-spacing: 0.04em;
+  }
+  .dateRow {
+    font-size: 12px;                                /* H Regular 12 (user spec) */
+    gap: 8px;
+  }
+  .dateRow .minRead { font-size: 12px; color: #949494; }
+
+  /* ─── Cover image — FULL-BLEED 360 × 234 (no L/R padding) ───────── */
+  .cover {
+    margin-top: 24px;                               /* 24 from meta bottom */
+    margin-left: -12px;                             /* escape .shell L padding */
+    margin-right: -12px;                            /* escape .shell R padding */
+    width: calc(100% + 24px);                       /* fill full viewport */
+  }
+  .cover img {
+    height: 234px;                                  /* user spec: 360 × 234 */
+    border-radius: 0;                               /* no corner radius on mobile */
+  }
+
+  /* ─── Body block — DARK GREY card runs edge-to-edge (full viewport),
+   *      while the inner article text keeps 12 px L/R padding (user spec).
+   *      We escape .shell's 12 px padding via negative margins. ───────── */
+  .bodyWrap {
+    margin-top: 0;
+    margin-left: -12px;                             /* escape .shell L padding */
+    margin-right: -12px;                            /* escape .shell R padding */
+    width: calc(100% + 24px);                       /* fill full viewport (360) */
+    padding: 32px 0;                                /* compact mobile padding */
+    min-height: 0;
+    border-radius: 0;                               /* edge-to-edge → no rounding */
+  }
+  .bodyContent {
+    width: 100%;
+    max-width: 100%;
+    padding: 0 12px;                                /* 12 px text inset within grey card (user spec) */
+    box-sizing: border-box;
+    gap: 16px;
+    font-size: 14px;                                /* H Regular 14 (user spec) */
+    line-height: 1.5;
+  }
+  .bodyContent p {
+    font-size: 14px;                                /* H Regular 14 (user spec) */
+    line-height: 1.5;
+    color: #C8C8C8;
+  }
+  .bodyContent h1 { font-size: 24px; line-height: 1.2; margin-top: 16px; }
+  .bodyContent h2 { font-size: 18px; line-height: 1.25; margin-top: 16px; }   /* H Regular 18 (user spec) */
+  .bodyContent h3 { font-size: 18px; line-height: 1.25; margin-top: 12px; }
+  .bodyContent h4 { font-size: 16px; line-height: 1.3;  margin-top: 12px; }
+  .bodyContent blockquote { padding: 8px 16px; font-size: 18px; line-height: 1.3; }
+  .bodyContent ul,
+  .bodyContent ol { padding-left: 18px; }
+  .bodyContent table { font-size: 12px; }
+  .bodyContent th,
+  .bodyContent td { padding: 6px 8px; }
+
+  /* Tags chip row */
+  .tagList {
+    width: 100%;
+    max-width: calc(100% - 24px);
+    margin-top: 24px;
+    gap: 6px;
+  }
+  .tagChip {
+    padding: 4px 10px;
+    font-size: 12px;
+  }
+
+  /* ─── "YOU MAY ALSO BE INTERESTED IN" block ──────────────────────── */
+  .interestWrap {
+    margin-top: 56px;
+    padding: 0 0 0 12px;                            /* 12 L only, right open for scroll */
+  }
+  .interestInner {
+    gap: 32px;                                      /* heading → first card = 32 (user spec) */
+  }
+  .interestHeader {
+    padding-left: 0;                                /* reset 1280 px breakpoint's 40 px */
+    padding-right: 12px;                            /* 12 R for header alignment */
+    gap: 16px;
+  }
+  .interestTitle {
+    font-size: 24px;                                /* H Bold 24 (user spec) */
+    line-height: 1.15;
+  }
+  .viewAllBtn {
+    font-size: 12px;                                /* compact on mobile */
+    gap: 8px;
+  }
+  .viewAllBtn svg { width: 20px; height: 20px; }
+  /* Hide the in-header "VIEW ALL" on mobile — the standalone link
+   * (between pager and CTA) takes over per user spec. */
+  .viewAllBtnDesktop { display: none; }
+  .viewAllBtnMobile {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    align-self: center;                             /* center inside flex column */
+    /* interestInner has gap: 32 — pager already sits 32 px above this link.
+     * Add 96 to reach the spec 128 px from pager bottom to link.  Bottom
+     * spacing (128 px to CTA top) is enforced by .ctaWrap margin-top. */
+    margin: 96px auto 0;
+    padding: 0;
+    background: transparent;
+    border: 0;
+    color: #FEAE00;                                 /* link-yellow */
+    font-family: 'Mazzard H', var(--font-mazzard, system-ui, sans-serif);
+    font-weight: 500;                               /* H Medium */
+    font-size: 14px;                                /* H Medium 14 */
+    line-height: 1;
+    text-transform: uppercase;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    cursor: pointer;
+  }
+  .viewAllBtnMobile:hover { color: #FFC83F; }
+
+  /* Horizontal scroller (related cards) — full-bleed */
+  .scrollerOuter {
+    margin-left: -12px;                             /* escape .interestWrap left pad */
+    width: calc(100% + 12px);
+  }
+  .scroller {
+    gap: 16px;                                      /* 16 px between cards on mobile */
+    padding: 0 0 0 12px;
+    scroll-snap-type: x mandatory;
+  }
+
+  /* Related card — 396 px wide (wider than 360 viewport → horizontal scroll
+   * trigger at 70 % of the next card visible).  Image 396 × 234 full-bleed
+   * inside the card, then text below with 16 px padding. */
+  .relatedCard {
+    flex: 0 0 396px;
+    width: 396px;
+    height: auto;                                   /* let content size — 234 image + text below */
+    padding: 0;
+    background: #1A1B19;
+    border-radius: 4px;
+    overflow: hidden;
+    outline: 0;
+    scroll-snap-align: start;
+  }
+  .relatedImg {
+    width: 100%;
+    height: 234px;                                  /* user spec — 234 high image inside card */
+    flex: 0 0 234px;
+    margin: 0;
+    border-radius: 0;
+    align-self: stretch;
+  }
+  .relatedMeta {
+    padding: 16px 16px 0;
+    margin-bottom: 12px;                            /* tag/date → title */
+    gap: 12px;
+  }
+  .relatedTitle {
+    padding: 0 16px;
+    margin: 0 0 12px;
+    font-size: 20px;                                /* H Bold 20 (user spec) */
+    line-height: 1.2;
+  }
+  .relatedExcerpt {
+    padding: 0 16px 16px;
+    margin: 0;
+    font-size: 14px;                                /* H Regular 14 (user spec) */
+    line-height: 1.45;
+    color: #C8C8C8;
+  }
+
+  /* Pager (arrows + counter) — centered horizontally, 40×40 arrows */
+  .pager {
+    margin-top: 0;                                  /* gap from interestInner = 32 */
+    padding-left: 0;                                /* reset 1280 shorthand padding */
+    padding-right: 0;
+    justify-content: center;                        /* center pager in viewport (user spec) */
+    gap: 16px;
+  }
+  .pagerBtn svg { width: 40px; height: 40px; }
+  .pagerLabel { font-size: 14px; min-width: 48px; }
+
+  /* ─── CTA block — "Stop reading. Start driving." ─────────────────── */
+  /* Full-bleed: dark grey card spans the entire viewport width with NO
+   * L/R padding (per user spec — "блок полностью серый и вливается во
+   * всю ширину мобильного экрана").  All inner text is CENTERED. */
+  .ctaWrap {
+    margin-top: 128px;                              /* 128 from VIEW ALL link bottom to CTA card top (user spec) */
+    padding: 0;                                     /* spacing to footer is provided by .ctaInner padding-bottom */
+  }
+  .ctaInner {
+    width: 100%;
+    background: #1A1B19;                             /* dark grey card */
+    border-radius: 0;                                /* edge-to-edge → no rounding */
+    /* Bottom padding 72 → from USE OUR CALCULATOR button bottom to footer
+     * top = exactly 72 px (user spec).  Top padding 32 preserves spacing
+     * above the "READY TO IMPORT YOUR CAR?" small title. */
+    padding: 32px 0 72px;
+    flex-direction: column;
+    align-items: center;                             /* center all children horizontally */
+    text-align: center;
+    gap: 32px;
+  }
+  .ctaText {
+    width: 100%;
+    max-width: 328px;                               /* user spec text-block width */
+    margin: 0 auto;                                 /* center within viewport */
+    padding: 0 16px;                                /* breathing room from card edge */
+    gap: 32px;                                      /* READY → STOP, STOP → START, START → manager = 32 each */
+    align-items: center;                            /* center every line inside text column */
+    text-align: center;
+    box-sizing: border-box;
+  }
+  .ctaSmallTitle {
+    font-size: 12px;                                /* H Regular 12 yellow (user spec) */
+    line-height: 1.2;
+    letter-spacing: 0.02em;
+    text-align: center;
+  }
+  .ctaBigTitle {
+    font-size: 32px;                                /* H SemiBold 32 (user spec) */
+    font-weight: 600;                               /* SemiBold */
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    gap: 32px;                                      /* STOP READING → START DRIVING = 32 (user spec) */
+    align-items: center;                            /* center both STOP / START lines */
+    text-align: center;
+  }
+  .ctaDesc {
+    font-size: 12px;                                /* H Regular 12 gray (user spec) */
+    line-height: 1.5;
+    color: #949494;
+    text-transform: none;
+    text-align: center;
+  }
+  .ctaButtons {
+    width: 100%;
+    max-width: 328px;
+    min-width: 0;
+    margin: 0 auto;
+    align-items: center;
+    gap: 36px;                                      /* REQUEST → USE CALC = 36 (user spec) */
+    margin-top: 24px;                               /* visual gap from text to first button = 56 total (32 from gap + 24) */
+  }
+  .ctaPrimary {
+    width: 328px;                                   /* user spec: 328 × 45 */
+    max-width: none;
+    height: 45px;
+    padding: 0 24px;
+    font-size: 14px;                                /* H Medium 14 (user spec) */
+    border-radius: 4px;
+  }
+  .ctaSecondary {
+    width: 308px;                                   /* user spec: 308 × 45 (centered, narrower) */
+    max-width: none;
+    height: 45px;
+    padding: 0 24px;
+    font-size: 14px;
+    border-radius: 4px;
+  }
+}
+
+/* Legacy 700 px breakpoint — kept for very small viewports between the
+ * mobile spec (≤768) and ultra-narrow phones; ensures graceful fallback. */
+@media (max-width: 700px) {
+  .title { font-size: 24px; }
+  .cover img { height: 234px; }
+  .bodyWrap { padding: 32px 0; min-height: 0; }
+  .ctaInner { flex-direction: column; align-items: stretch; }
+  .ctaText { width: 100%; }
+}

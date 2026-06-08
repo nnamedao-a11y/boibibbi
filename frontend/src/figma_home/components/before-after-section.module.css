@@ -1,0 +1,330 @@
+/* ============================================================================
+ * BeforeAfterSection — Figma-accurate, fully functional carousel.
+ *
+ * Typography (verified against the canonical Figma export in BIBICARS 5.zip
+ * — frame-component19.module.css, frame-component16.module.css and
+ * homepage1.module.css). EVERY weight is 400 (regular) per canonical CSS:
+ *
+ *   • Title    "BEFORE AND AFTER"        → Mazzard 64px / weight 400 / uppercase / orange
+ *   • Subhead  "Our clients receive…"    → Mazzard 24px / weight 400 / uppercase
+ *                                           – yellow first line, white second line
+ *   • Labels   "/ before"   /   "/ after" → Mazzard 20px / weight 400
+ *                                           – white  /  orange
+ *   • Card title "BMV 328"               → Mazzard 32px / weight 400 / uppercase / white
+ *   • Field labels (mixed case)          → Mazzard 16px / weight 400 / white
+ *     • "Order date"
+ *     • "The date of the finished car"
+ *     • "Turnkey price in Bulgaria"
+ *   • Field values (uppercase)           → Mazzard 20px / weight 400 / white
+ *     • "12.12.2025"  "12.04.2026"  "6,500 euro"
+ *
+ * Brackets use the canonical /figma/Vector.svg ( #555452, 3 px stroke ).
+ * ========================================================================== */
+
+.section {
+  width: 100%;
+  background-color: var(--color-black);
+  padding: 90px 0 110px;
+  font-family: 'Mazzard', 'Mazzard H', system-ui, sans-serif;
+  color: var(--color-white);
+  overflow: hidden;
+}
+
+/* ── Title ───────────────────────────────────────────────────────────────── */
+.title {
+  margin: 0;
+  text-align: center;
+  font-family: inherit;
+  font-size: 64px;
+  line-height: 99.9%;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--color-orange-100);
+  letter-spacing: 0;
+  white-space: nowrap;
+  padding: 0 40px;
+}
+
+/* ── Bracketed subheading ────────────────────────────────────────────────── */
+.bracketRow {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 70px;                              /* Figma spec — 70 px from bracket to text both sides */
+  margin: 60px 0 0 100px;                 /* left-align with card; bracket sits at card edge */
+  padding: 16px 0;
+}
+.bracketLeft,
+.bracketRight {
+  width: 13px;
+  height: 76px;
+  flex-shrink: 0;
+}
+.bracketRight { transform: scaleX(-1); }
+
+.subhead {
+  margin: 0;
+  font-family: inherit;
+  font-size: 24px;
+  line-height: 100%;
+  font-weight: 400;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.subheadYellow {
+  color: var(--color-orange-100);
+  display: inline-block;
+  margin-bottom: 14px;
+}
+.subheadWhite {
+  color: var(--color-white);
+  display: inline-block;
+}
+
+/* ── Carousel ───────────────────────────────────────────────────────────── */
+.carousel {
+  margin-top: 70px;
+  padding-left: 100px;
+  width: 100%;
+  box-sizing: border-box;
+  overflow: visible;
+}
+
+.track {
+  display: flex;
+  gap: 24px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-padding-left: 100px;
+  padding-bottom: 12px;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.track::-webkit-scrollbar { display: none; }
+
+/* ── Card ───────────────────────────────────────────────────────────────── */
+.card {
+  flex: 0 0 auto;
+  width: 880px;
+  max-width: 90vw;
+  background-color: #1C1C1C;
+  border-radius: 0;
+  padding: 32px 40px 40px;
+  box-sizing: border-box;
+  scroll-snap-align: start;
+  display: flex;
+  flex-direction: column;
+}
+
+.labelsRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  font-family: inherit;
+  font-size: 14px;                          /* Mazzard H Medium 14 (Figma) */
+  line-height: 100%;
+  font-weight: 500;                          /* Medium */
+  letter-spacing: 0;
+}
+.labelBefore { color: var(--color-white); }
+.labelAfter  { color: var(--color-orange-100); }
+
+.imagesRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  margin-top: 18px;
+}
+.cardImg {
+  width: 100%;
+  height: 360px;
+  object-fit: cover;
+  border-radius: 0;
+  display: block;
+  background: #0a0a0a;
+}
+
+.cardTitle {
+  margin: 60px 0 0;
+  font-family: inherit;
+  font-size: 32px;
+  line-height: 99.9%;
+  font-weight: 400;
+  text-transform: uppercase;
+  color: var(--color-white);
+  letter-spacing: 0;
+}
+
+.cardFooter {
+  margin-top: 36px;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 32px;
+  position: relative;
+}
+.cardFooter::before,
+.cardFooter::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: rgba(255, 255, 255, 0.18);
+}
+.cardFooter::before {
+  left: calc(33.333% - 16px);
+}
+.cardFooter::after {
+  left: calc(66.666% - 16px);
+}
+.footerCell {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+.footerLabel {
+  font-family: inherit;
+  font-size: 16px;
+  line-height: 100%;
+  font-weight: 400;
+  color: var(--color-white);
+  text-transform: none;
+  letter-spacing: 0;
+}
+.footerValue {
+  font-family: inherit;
+  font-size: 20px;
+  line-height: 99.9%;
+  font-weight: 400;
+  color: var(--color-white);
+  text-transform: uppercase;
+  letter-spacing: 0;
+}
+/* Note: per canonical Figma all 3 footer values share the same 20 px / 400
+   treatment (Order date · Finished date · Turnkey price). No special-case
+   for the price column — it is white, not amber. */
+
+/* ── Navigation ─────────────────────────────────────────────────────────── */
+.nav {
+  margin-top: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 22px;
+}
+
+.navBtn {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 1.5px solid var(--color-orange-100);
+  background: transparent;
+  color: var(--color-orange-100);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.navBtn:hover:not(:disabled) {
+  background-color: var(--color-orange-100);
+  color: #000;
+}
+.navBtn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.dots {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.45);
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+.dot:hover {
+  background-color: rgba(255, 255, 255, 0.8);
+}
+.dotActive {
+  width: 14px;
+  height: 14px;
+  background-color: var(--color-orange-100);
+}
+
+/* ── Responsive (mirrors canonical Figma media queries) ──────────────────── */
+
+/* ≤1350px — title gracefully shrinks (canonical doesn't define an exact bp,
+   but on narrow desktops 64 px overflows). */
+@media screen and (max-width: 1350px) {
+  .title { font-size: 51px; }
+}
+
+/* ≤1100px — tighter cards, but typography stays at canonical sizes. */
+@media screen and (max-width: 1100px) {
+  .bracketRow { margin-left: 40px; }
+  .carousel { padding-left: 40px; }
+  .track { scroll-padding-left: 40px; }
+  .card { width: 720px; padding: 24px 28px 32px; }
+  .cardImg { height: 280px; }
+}
+
+/* ≤925px — canonical: BMV 328 → 26 px (.bmv328). */
+@media screen and (max-width: 925px) {
+  .title { font-size: 51px; line-height: 51px; }
+  .cardTitle { font-size: 26px; line-height: 26px; }
+}
+
+/* ≤700px — narrow tablets / large phones. */
+@media screen and (max-width: 700px) {
+  .bracketRow { margin-left: 20px; }
+  .carousel { padding-left: 20px; }
+  .track { scroll-padding-left: 20px; }
+  .card { width: 86vw; padding: 20px; }
+  .cardImg { height: 200px; }
+  .cardFooter { grid-template-columns: 1fr; gap: 20px; }
+  .cardFooter::before,
+  .cardFooter::after { display: none; }
+}
+
+/* ≤450px — canonical: title 38 px, subhead 19 px, labels/values 16 px,
+   BMV 328 19 px. */
+@media screen and (max-width: 450px) {
+  .title { font-size: 38px; line-height: 38px; }
+  .subhead { font-size: 19px; line-height: 19px; }
+  .labelsRow { font-size: 14px; line-height: 14px; }
+  .cardTitle { font-size: 19px; line-height: 19px; }
+  .footerLabel { font-size: 14px; line-height: 14px; }
+  .footerValue { font-size: 16px; line-height: 16px; }
+}
+
+/* Empty state — no enabled before/after cards. */
+.empty {
+  width: 100%;
+  text-align: center;
+  padding: 60px 20px;
+  color: rgba(255, 255, 255, 0.55);
+  font-family: 'Mazzard', system-ui, sans-serif;
+  font-size: 18px;
+}
+
+/* ────────── Bulgarian (BG) adaptive overrides ──────────
+   "Преди и след" is shorter than "Before and after" so the title is OK.
+   But the bracketed sub-line "Нашите клиенти получават / най-добрата услуга"
+   is longer than "Our clients receive / the best service" — keep same box.
+*/
+:global(html[lang="bg"]) .title {
+  letter-spacing: -0.005em;
+}
+:global(html[lang="bg"]) .bracketRow {
+  /* Slightly tighter letter spacing on the inner labels so the long BG
+     phrase still hugs the bracket like the EN version did. */
+  letter-spacing: -0.005em;
+}

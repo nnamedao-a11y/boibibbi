@@ -1,0 +1,103 @@
+/* SingleCarPage root — layout container. Each child section manages its
+ * own padding so we can hit pixel-precise vertical offsets. No global
+ * vertical gap between sections.
+ */
+.singleCar {
+  width: 100%;
+  position: relative;
+  background-color: var(--color-black);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  /* No root-level bottom padding. The trailing block (SimilarCars) controls
+   * its own 128 px gap to the public footer via its padding-bottom. */
+  padding: 0;
+  box-sizing: border-box;
+  gap: 0;
+  line-height: normal;
+  letter-spacing: normal;
+  color: var(--color-white);
+}
+@media screen and (max-width: 925px) {
+  .singleCar { padding-bottom: 0; }
+}
+
+/* ── Loading / error / not-found state boxes ─────────────────────────── */
+
+/* Phase B2 — Freshness row sits between the header breadcrumb and the
+ * ImageGrid, right-aligned on desktop. Solid background — never
+ * transparent. */
+.freshnessRow {
+  display: flex;
+  justify-content: flex-end;
+  padding: 12px 64px 0 64px;
+  background: var(--color-black);
+}
+@media screen and (max-width: 925px) {
+  .freshnessRow {
+    padding: 8px 16px 0 16px;
+    justify-content: flex-start;
+  }
+}
+.stateBox {
+  align-self: center;
+  width: 100%;
+  max-width: 720px;
+  margin: 80px 24px;
+  padding: 48px 32px;
+  border: 1px solid rgba(254, 174, 0, 0.18);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.02);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  color: var(--color-white);
+}
+.stateTitle {
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  color: #fff;
+}
+.stateText {
+  font-size: 15px;
+  color: #b8b8b8;
+  line-height: 1.55;
+  max-width: 540px;
+}
+.stateText code {
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  background: rgba(254, 174, 0, 0.1);
+  color: #FEAE00;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 14px;
+}
+.stateBtn {
+  margin-top: 8px;
+  padding: 12px 28px;
+  border-radius: 999px;
+  border: none;
+  background: #FEAE00;
+  color: #000;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  transition: background 0.15s ease;
+}
+.stateBtn:hover { background: #FFBF2D; }
+
+.spinner {
+  width: 36px;
+  height: 36px;
+  border: 3px solid rgba(254, 174, 0, 0.25);
+  border-top-color: #FEAE00;
+  border-radius: 50%;
+  animation: scp-spin 0.8s linear infinite;
+}
+@keyframes scp-spin { to { transform: rotate(360deg); } }

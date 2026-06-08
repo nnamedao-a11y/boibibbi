@@ -1,0 +1,50 @@
+/* =============================================================================
+ * Single Car page CTA — yellow primary button.
+ *
+ * STRICT pixel spec (May 2026 Figma):
+ *   • Button frame  : 327 × 45 px
+ *   • Border-radius : 6 px
+ *   • Padding       : 14 px (vert) / 32 px (horiz)
+ *   • Text frame    : 263 × 17 px  (= 327 - 64 horizontal padding)
+ *   • Typography    : Mazzard H Medium (500), 14 px, line-height ≈ 17 px
+ *   • Surface       : #FEAE00 (--color-orange-100), hover → chocolate
+ *   • Text color    : #000 (--color-black)
+ *
+ * The 14-px text natural line-height (~17 px) fills the 263 × 17 inner
+ * frame exactly when the padding is 14 / 32. The component is reused on
+ * the public site (card1 / card2 / etc.), so the size can still be
+ * overridden via the `bUTTONWidth` inline prop; defaults stay locked.
+ * ====================================================================== */
+.button,
+.contactUs {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.button {
+  cursor: pointer;
+  border: 0;
+  padding: 14px 32px;
+  background-color: var(--color-orange-100);
+  width: 327px;
+  height: 45px;
+  border-radius: 6px;
+  box-sizing: border-box;
+  transition: background-color 0.15s ease, transform 0.15s ease;
+  flex-shrink: 0;
+}
+.button:hover { background-color: var(--color-chocolate-100); }
+.button:active { transform: translateY(1px); }
+.contactUs {
+  height: 17px;
+  width: 263px;
+  flex: 0 0 auto;
+  position: relative;
+  font-size: 14px;
+  line-height: 17px;
+  font-family: var(--font-mazzard);
+  font-weight: 500;          /* Medium */
+  color: var(--color-black);
+  text-align: center;
+  white-space: nowrap;
+}

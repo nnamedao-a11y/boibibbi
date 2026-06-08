@@ -1,0 +1,615 @@
+.heroContentWrapper {
+  align-self: stretch;
+  display: flex;
+  width: 100%;
+  max-width: 100%;
+  padding: 0;
+  font-family: var(--font-mazzard);
+  color: var(--color-white);
+  flex-shrink: 0;
+}
+.heroContent {
+  position: relative;
+  width: 100%;
+  height: 1011px;
+  background-color: var(--color-black);
+  overflow: visible;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+/* LEFT half: solid black base (no image) — the mirrored car image sits
+   on top of it at 10% opacity (see .image60Mirror below). */
+.heroContent::before {
+  content: "";
+  grid-column: 1 / 2;
+  background-color: var(--color-black);
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+
+/* LEFT-HALF DARKENING — plain black rectangle 962×1012 over the left
+   half of the hero on top of the full-width main car image. The
+   rectangle is mostly opaque (the underlying image is lightened by
+   only 10%, i.e. ~90% black wash). */
+.leftMirrorClip {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 962px;
+  height: 1012px;
+  background-color: #000;
+  opacity: 0.9;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Legacy class kept hidden in case any historic selector references it. */
+.image60Mirror { display: none; }
+
+/* FULL-WIDTH car image — absolutely positioned background spanning the
+   entire hero so the photograph reads as ONE coherent car. The left
+   half is dimmed by .leftMirrorClip on top of it, the right half is
+   shown at full brightness. */
+.image60Parent {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  overflow: hidden;
+}
+.image60Icon {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center center;
+}
+.image61Icon { display: none; }
+
+.heroInner {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  padding: 165px 64px 156px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 60px;
+  z-index: 2;
+}
+.heroTextStack {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  max-width: 50%;
+}
+/* Regular 400 — small caps subtitle */
+.americaKorea {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 400;
+  letter-spacing: 0.07em;
+  line-height: 100%;
+  text-transform: uppercase;
+  color: var(--color-white);
+  font-family: inherit;
+}
+.heroHeadline {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+/* Bold 700 — main display headline (FROM AUCTION / TO KEYS / IN YOUR HANDS) */
+.fromAuction,
+.toKeys,
+.inYourHands {
+  margin: 0;
+  font-size: 100px;
+  font-weight: 700;
+  line-height: 100%;
+  text-transform: uppercase;
+  font-family: inherit;
+  letter-spacing: -0.02em;
+}
+.fromAuction {
+  color: var(--color-orange-100);
+}
+.toKeys {
+  color: var(--color-white);
+}
+.inYourHands {
+  color: var(--color-orange-100);
+}
+
+/* Regular 400 — stats row */
+.clientStats {
+  margin-top: 18px;
+  display: flex;
+  align-items: center;
+  gap: 80px;
+  font-size: 20px;
+  white-space: nowrap;
+  flex-wrap: nowrap;
+}
+.statItem {
+  margin: 0;
+  color: var(--color-white);
+  font-weight: 400;
+  font-family: inherit;
+  white-space: nowrap;
+  font-size: 20px;
+}
+
+/* Filter controls bar */
+.filterControlsWrapper {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  position: relative;
+  z-index: 3;
+}
+.filterControls {
+  width: 100%;
+  max-width: 870px;
+  display: flex;
+  align-items: center;
+  background-color: #000;
+  border: 1px solid var(--color-orange-100);
+  border-radius: 8px;
+  padding: 0;
+  height: 68px;
+  overflow: visible;
+  position: relative;
+}
+.filterCellWrap {
+  flex: 1 1 0;
+  position: relative;
+  height: 100%;
+  display: flex;
+}
+.filterCell {
+  flex: 1 1 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+  height: 100%;
+  cursor: pointer;
+  user-select: none;
+  background: transparent;
+  border: 0;
+  font-family: inherit;
+  color: inherit;
+  text-align: left;
+  width: 100%;
+  transition: background-color 0.15s;
+}
+.filterCell:hover {
+  background-color: rgba(254, 174, 0, 0.08);
+}
+.filterCellOpen {
+  background-color: rgba(254, 174, 0, 0.12);
+}
+/* Regular 400 — labels */
+.filterLabel {
+  color: var(--color-white);
+  font-size: 16px;
+  font-weight: 400;
+  text-transform: capitalize;
+  font-family: inherit;
+}
+.filterCaret {
+  width: 20px;
+  height: 20px;
+  filter: brightness(2);
+  transition: transform 0.2s ease;
+}
+.filterCaretOpen {
+  transform: rotate(180deg);
+}
+
+/* === Dropdown panel === */
+.dropdownPanel {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  right: 0;
+  background-color: #0a0a0a;
+  border: 1px solid var(--color-orange-100);
+  border-radius: 8px;
+  padding: 0;
+  z-index: 9999;
+  max-height: 380px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.85), 0 0 0 1px rgba(0,0,0,0.6);
+  animation: dropdownIn 0.16s ease-out;
+  isolation: isolate;
+}
+.dropdownSearchBox {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 14px;
+  border-bottom: 1px solid rgba(254, 174, 0, 0.4);
+  background-color: #0a0a0a;
+  flex-shrink: 0;
+}
+.dropdownSearchIcon {
+  width: 18px;
+  height: 18px;
+  filter: brightness(2);
+  opacity: 0.85;
+  flex-shrink: 0;
+}
+.dropdownSearchInput {
+  flex: 1;
+  background: transparent;
+  border: 0;
+  outline: 0;
+  color: var(--color-white);
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 400;
+}
+.dropdownSearchInput::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+.dropdownList {
+  overflow-y: auto;
+  padding: 6px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-orange-100) transparent;
+  flex: 1;
+}
+.dropdownList::-webkit-scrollbar {
+  width: 6px;
+}
+.dropdownList::-webkit-scrollbar-track {
+  background: transparent;
+}
+.dropdownList::-webkit-scrollbar-thumb {
+  background: var(--color-orange-100);
+  border-radius: 3px;
+}
+.dropdownEmpty {
+  padding: 14px 18px;
+  color: rgba(255,255,255,0.5);
+  font-size: 14px;
+  text-align: center;
+  font-family: inherit;
+}
+@keyframes dropdownIn {
+  from { opacity: 0; transform: translateY(-6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.dropdownItem {
+  display: block;
+  width: 100%;
+  padding: 12px 18px;
+  background: transparent;
+  border: 0;
+  color: var(--color-white);
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 400;
+  text-align: left;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background-color 0.12s, color 0.12s;
+}
+.dropdownItem:hover {
+  background-color: var(--color-orange-100);
+  color: #000;
+  font-weight: 500;
+}
+.dropdownItemActive {
+  background-color: rgba(254, 174, 0, 0.18);
+  color: var(--color-orange-100);
+  font-weight: 500;
+}
+/* Items for brands/models/years that have ZERO cars in the catalog right
+   now. We still let the user click them (they'll land on an empty catalog
+   page with their filter applied — UX consistent with the catalog itself)
+   but render them dimmed so they know in advance. */
+.dropdownItemUnavailable {
+  color: rgba(255, 255, 255, 0.36);
+}
+.dropdownItemUnavailable:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+  color: rgba(255, 255, 255, 0.55);
+  font-weight: 400;
+}
+.dropdownItemCount {
+  display: inline-block;
+  margin-left: 8px;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.45);
+  font-weight: 400;
+  font-variant-numeric: tabular-nums;
+}
+.filterDivider {
+  width: 1px;
+  height: 36px;
+  background-color: var(--color-orange-100);
+  flex-shrink: 0;
+  opacity: 1;
+}
+/* Bold 700 — CTA button */
+.findBtn {
+  flex: 0 0 auto;
+  height: 100%;
+  padding: 0 28px;
+  background-color: var(--color-orange-100);
+  color: #000;
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  border: 0;
+  border-top-right-radius: 7px;
+  border-bottom-right-radius: 7px;
+  cursor: pointer;
+  text-transform: uppercase;
+  min-width: 171px;
+  transition: filter 0.15s;
+}
+.findBtn:hover { filter: brightness(1.05); }
+
+@media screen and (max-width: 1350px) {
+  .heroContent { height: 820px; }
+  .heroInner { padding: 120px 40px 90px; }
+  .fromAuction, .toKeys, .inYourHands { font-size: 76px; }
+  .clientStats { gap: 50px; font-size: 18px; }
+  /* Scale the mirrored left-half image proportionally so it never
+     overflows the shorter hero container at this breakpoint. */
+  .image60Mirror {
+    top: 80px;
+    width: 100%;
+    height: 100%;
+  }
+}
+@media screen and (max-width: 925px) {
+  .heroContent {
+    height: auto;
+    min-height: 720px;
+    grid-template-columns: 1fr;
+  }
+  .heroContent::before { display: none; }
+  .leftMirrorClip { display: none; }
+  .image60Parent { grid-column: 1; }
+  .heroInner { padding: 100px 24px 60px; gap: 36px; }
+  .heroTextStack { max-width: 100%; }
+  .fromAuction, .toKeys, .inYourHands { font-size: 50px; line-height: 60px; }
+  .americaKorea { font-size: 19px; }
+  .clientStats { flex-wrap: wrap; gap: 16px 36px; font-size: 16px; }
+  .filterControls { flex-wrap: wrap; height: auto; padding: 8px; }
+  .filterCellWrap { flex: 1 1 40%; min-width: 140px; }
+  .filterCell { padding: 12px 16px; height: 48px; }
+  .filterDivider { display: none; }
+  .findBtn { width: 100%; padding: 14px; height: 50px; }
+  .dropdownPanel { left: 0; right: 0; }
+}
+@media screen and (max-width: 450px) {
+  .heroInner { padding: 90px 16px 48px; }
+  .fromAuction, .toKeys, .inYourHands { font-size: 30px; line-height: 40px; }
+}
+
+
+/* ============================================================
+   HERO REVEAL ANIMATIONS — "per-character diagonal slide-up"
+   ------------------------------------------------------------
+   Inspired by studionamma.com (Playground / Selected Projects).
+   Each letter has its own small mask. The inner span is a
+   BLOCK-LEVEL element inside the inline-block mask, so its
+   `translateY(100%)` is exactly the mask's height — guaranteed
+   to start fully hidden BELOW the mask's bottom edge, then
+   rise UP into view.
+   Per-character animation-delay grows left-to-right, producing
+   the signature diagonal "wave" reveal.
+   GPU-only properties (transform + opacity) for 60fps.
+   Respects prefers-reduced-motion.
+   IMPORTANT: line-heights are kept identical to the original
+   typographic design (no extra vertical padding) so the
+   animation NEVER affects final spacing/composition.
+   ============================================================ */
+
+/* --- Per-character mask + slider for the headline ---
+   The headline is ALL UPPERCASE (no descenders) so we keep
+   line-height: 1 — identical to the original CSS for these
+   classes. No padding hacks. */
+.charMask {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: top;
+  line-height: 1;
+}
+
+.charInner {
+  display: block;
+  line-height: 1;
+  transform: translate3d(0, 100%, 0); /* start fully BELOW the mask */
+  opacity: 0;
+  will-change: transform, opacity;
+  animation-name: heroCharSlideUp;
+  animation-duration: 900ms;
+  animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1); /* ease-out-quint */
+  animation-fill-mode: both;
+}
+
+@keyframes heroCharSlideUp {
+  0% {
+    transform: translate3d(0, 100%, 0);
+    opacity: 0;
+  }
+  40% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate3d(0, 0, 0);
+    opacity: 1;
+  }
+}
+
+/* --- Headline line boxes: keep ORIGINAL design line-height,
+   no extra spacing introduced by the animation. --- */
+.heroHeadline .fromAuction,
+.heroHeadline .toKeys,
+.heroHeadline .inYourHands {
+  display: block;
+  overflow: visible;
+  padding-bottom: 0;
+  margin-bottom: 0;
+  /* line-height comes from the existing rule above (100%) */
+}
+
+/* --- Eyebrow ("AMERICA | KOREA") — also UPPERCASE, no descenders.
+   Keep its original line-height (100%) so it doesn't grow. --- */
+.heroTextStack .americaKorea {
+  display: block;
+  overflow: hidden;
+}
+.heroTextStack .americaKorea .lineInner {
+  display: block;
+  line-height: inherit;
+  transform: translate3d(0, 100%, 0);
+  opacity: 0;
+  will-change: transform, opacity;
+  animation: heroLineSlideUp 760ms cubic-bezier(0.22, 1, 0.36, 1) 100ms both;
+}
+
+/* --- KPI rows: mixed case ("Over", "Real-time", "happy") so
+   descenders ('p', 'y') exist. Use a tiny padding hack to
+   give them room while keeping outward spacing intact. --- */
+.clientStats .statItem {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: top;
+  /* descender breathing room */
+  padding-bottom: 0.18em;
+  margin-bottom: -0.18em;
+  line-height: 1;
+}
+.clientStats .statItem .lineInner {
+  display: block;
+  line-height: 1;
+  transform: translate3d(0, 100%, 0);
+  opacity: 0;
+  will-change: transform, opacity;
+  animation-name: heroLineSlideUp;
+  animation-duration: 720ms;
+  animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  animation-fill-mode: both;
+}
+.clientStats .statItem:nth-child(1) .lineInner { animation-delay: 1300ms; }
+.clientStats .statItem:nth-child(2) .lineInner { animation-delay: 1400ms; }
+.clientStats .statItem:nth-child(3) .lineInner { animation-delay: 1500ms; }
+
+@keyframes heroLineSlideUp {
+  0% {
+    transform: translate3d(0, 100%, 0);
+    opacity: 0;
+  }
+  35% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate3d(0, 0, 0);
+    opacity: 1;
+  }
+}
+
+/* --- Filter bar fade-up --- */
+.filterControlsWrapper {
+  opacity: 0;
+  transform: translate3d(0, 22px, 0);
+  animation: heroBarFadeUp 820ms cubic-bezier(0.22, 1, 0.36, 1) 1700ms both;
+  will-change: opacity, transform;
+}
+@keyframes heroBarFadeUp {
+  from { opacity: 0; transform: translate3d(0, 22px, 0); }
+  to   { opacity: 1; transform: translate3d(0, 0, 0); }
+}
+
+/* Accessibility — disable motion entirely */
+@media (prefers-reduced-motion: reduce) {
+  .charMask,
+  .heroTextStack .americaKorea,
+  .clientStats .statItem {
+    overflow: visible;
+    padding-bottom: 0;
+    margin-bottom: 0;
+    line-height: inherit;
+  }
+  .charInner,
+  .lineInner,
+  .filterControlsWrapper {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
+/* ────────── Bulgarian (BG) adaptive overrides ──────────
+   Bulgarian translations are longer than the English originals
+   (e.g. "FIND A CAR" → "НАМЕРИ АВТОМОБИЛ", "Any year" → "Всяка година").
+   To preserve the SAME visual proportions of the English layout,
+   we shrink font-size + letter-spacing on the BG variant only.
+   The boxes / padding / gaps remain identical to the EN version.
+*/
+:global(html[lang="bg"]) .findBtn {
+  font-size: 13px;
+  letter-spacing: 0.04em;
+  padding: 0 22px;
+  white-space: nowrap;
+}
+:global(html[lang="bg"]) .filterLabel {
+  font-size: 14px;
+  letter-spacing: -0.005em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+:global(html[lang="bg"]) .filterCell {
+  padding: 0 18px;
+}
+/* Tablet / smaller hero: scale BG label down a bit more so it always fits */
+@media screen and (max-width: 1350px) {
+  :global(html[lang="bg"]) .findBtn { font-size: 12px; padding: 0 18px; }
+  :global(html[lang="bg"]) .filterLabel { font-size: 13px; }
+  :global(html[lang="bg"]) .filterCell { padding: 0 14px; }
+}
+
+/* ────────── Bulgarian (BG) hero title overrides ──────────
+   "До ключове / във Вашите ръце" is longer per-line than "to keys /
+   in your hands" — shrink font-size + tighter letter-spacing on the
+   BG variant so the hero title sits inside the same visual block
+   as the English original (no wrap to extra lines, no overflow).
+*/
+:global(html[lang="bg"]) .fromAuction,
+:global(html[lang="bg"]) .toKeys,
+:global(html[lang="bg"]) .inYourHands {
+  font-size: 84px;
+  letter-spacing: -0.01em;
+}
+@media screen and (max-width: 1350px) {
+  :global(html[lang="bg"]) .fromAuction,
+  :global(html[lang="bg"]) .toKeys,
+  :global(html[lang="bg"]) .inYourHands { font-size: 64px; }
+}
+@media screen and (max-width: 925px) {
+  :global(html[lang="bg"]) .fromAuction,
+  :global(html[lang="bg"]) .toKeys,
+  :global(html[lang="bg"]) .inYourHands { font-size: 42px; line-height: 52px; }
+}
+@media screen and (max-width: 600px) {
+  :global(html[lang="bg"]) .fromAuction,
+  :global(html[lang="bg"]) .toKeys,
+  :global(html[lang="bg"]) .inYourHands { font-size: 26px; line-height: 34px; }
+}

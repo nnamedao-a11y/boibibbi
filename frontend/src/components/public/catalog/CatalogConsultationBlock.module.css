@@ -1,0 +1,378 @@
+/* ──────────────────────────────────────────────────────────────
+ *  CatalogConsultationBlock — Figma 1:1 spec.
+ *  Block size  : 1920 × 1788 px (fixed height)
+ *  Padding-top : 172 px (top of block to first heading)
+ *  Padding-bot : 161 px (contact card bottom to block bottom)
+ *  H2 → H3 gap : 32 px
+ *  H3 → form   : 128 px
+ *  Form → card : 128 px
+ *  Form width  : 372 px (centered)
+ *  Contact     : 566 × 333 px, 1 px yellow border
+ * ────────────────────────────────────────────────────────────── */
+.section {
+  background: #1A1B19;
+  width: 100%;
+  /* Figma fixes the block at 1920 × 1788 px.  min-height locks the minimum
+   * dimension so the block always reaches the Figma height, even if the form
+   * content is slightly shorter than the design assumes. */
+  min-height: 1788px;
+  padding: 172px 0 161px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-sizing: border-box;
+  font-family: 'Mazzard H', var(--font-mazzard, system-ui, sans-serif);
+}
+
+/* ─── Headings ─────────────────────────────────────────────────────── */
+.titleYellow,
+.titleWhite {
+  font-weight: 700;             /* H Bold */
+  font-size: 80px;
+  line-height: 1;
+  letter-spacing: 0;
+  margin: 0;
+  text-align: center;
+}
+.titleYellow {
+  color: #FEAE00;
+  text-transform: uppercase;
+}
+.titleWhite {
+  color: #FFFFFF;
+  margin-top: 32px;             /* 32 px gap title ↔ title */
+}
+
+/* ─── Form ────────────────────────────────────────────────────────── */
+.form {
+  width: 372px;
+  margin-top: 128px;            /* 128 px from "Free consultation" */
+  display: flex;
+  flex-direction: column;
+  gap: 32px;                    /* 32 px between rows (Figma) */
+}
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;                    /* Figma spec: 16 px between label and input */
+}
+.label {
+  font-weight: 500;             /* H Medium */
+  font-size: 14px;
+  line-height: 1;
+  color: #FFFFFF;
+}
+.req { color: #FEAE00; }
+
+/* Inputs */
+.input {
+  width: 100%;
+  height: 45px;
+  box-sizing: border-box;
+  background: transparent;
+  border: 1px solid #4F4F4F;
+  border-radius: 4px;
+  padding: 0 16px;
+  font-family: 'Mazzard H', var(--font-mazzard, system-ui, sans-serif);
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 1;
+  color: #FFFFFF;
+  outline: none;
+  transition: border-color 120ms ease;
+}
+.input::placeholder { color: #5E5E5E; }
+.input:hover { border-color: #6B6B6B; }
+.input:focus { border-color: #FEAE00; }
+.inputError { border-color: #DC2626; }
+.inputError:focus { border-color: #DC2626; box-shadow: 0 0 0 3px rgba(220,38,38,0.18); }
+.textarea {
+  height: 160px;                /* taller textarea — completes form to Figma block height */
+  padding: 12px 16px;
+  resize: none;
+  line-height: 1.3;
+}
+
+/* Inputs with a left icon (flag / €) */
+.inputWithIcon {
+  position: relative;
+}
+.icon {
+  position: absolute;
+  top: 50%;
+  left: 16px;
+  transform: translateY(-50%);
+  pointer-events: none;
+  user-select: none;
+}
+.inputPadIcon {
+  padding-left: 46px;
+}
+
+/* Per-field error message */
+.fieldError {
+  margin-top: 6px;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.2;
+  color: #F87171;
+}
+
+/* Submit button — 372 × 45 */
+.submit {
+  width: 372px;
+  height: 45px;
+  background: #FEAE00;
+  color: #18181B;
+  border: 0;
+  border-radius: 4px;
+  font-family: 'Mazzard H', var(--font-mazzard, system-ui, sans-serif);
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 1;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  transition: background 120ms ease, opacity 120ms ease;
+  outline: none;
+  margin-top: 8px;
+}
+.submit:hover         { background: #FFC23A; }
+.submit:focus-visible { background: #FFC23A; }
+.submit:disabled      { opacity: 0.6; cursor: not-allowed; }
+
+/* ─── Contact card ─────────────────────────────────────────── */
+.contactCard {
+  width: 566px;
+  height: 333px;
+  /* margin-top: auto pushes contact card to the bottom of the flex container,
+   * locking the 161 px padding-bottom = visual gap to the section's lower edge
+   * for the strict Figma 1788 px block.  Form-to-contact gap is at least 128 px
+   * but expands when the form is shorter than the Figma design. */
+  margin-top: auto;
+  border: 1px solid #FEAE00;
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  text-align: center;
+  box-sizing: border-box;
+  padding: 40px;
+}
+.contactQuestion,
+.contactUs {
+  font-weight: 700;
+  font-size: 32px;
+  line-height: 1.15;
+  color: #FFFFFF;
+  margin: 0;
+}
+.contactUs { margin-bottom: 16px; }
+.phone {
+  font-weight: 500;
+  font-size: 24px;
+  line-height: 1.25;
+  color: #FEAE00;
+  text-decoration: none;
+  transition: color 120ms ease;
+}
+.phone:hover         { color: #FFC23A; }
+.phone:focus-visible { outline: none; color: #FFC23A; }
+
+/* ─── Success modal (brand style, no gradients) ─── */
+.modalBackdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: rgba(0, 0, 0, 0.72);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  animation: fadeIn 0.18s ease-out both;
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(12px) scale(0.985); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+.modalCard {
+  position: relative;
+  width: 100%;
+  max-width: 520px;
+  background: #0F0F11;
+  border: 1px solid #FEAE00;
+  border-radius: 12px;
+  padding: 48px 40px 40px;
+  color: #FFFFFF;
+  text-align: center;
+  font-family: 'Mazzard H', var(--font-mazzard, system-ui, sans-serif);
+  animation: slideIn 0.24s ease-out both;
+  box-shadow: 0 30px 90px rgba(0, 0, 0, 0.55);
+}
+.modalClose {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 36px;
+  height: 36px;
+  border: 1px solid #2A2A2D;
+  background: transparent;
+  color: #FFFFFF;
+  font-size: 22px;
+  line-height: 1;
+  border-radius: 999px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.18s ease;
+}
+.modalClose:hover {
+  background: rgba(254, 174, 0, 0.10);
+  border-color: #FEAE00;
+  color: #FEAE00;
+}
+.modalIcon {
+  width: 88px;
+  height: 88px;
+  margin: 0 auto 20px;
+  border-radius: 50%;
+  background: rgba(254, 174, 0, 0.10);
+  border: 2px solid #FEAE00;
+  color: #FEAE00;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.modalTitle {
+  margin: 0 0 12px;
+  font-weight: 700;
+  font-size: 28px;
+  line-height: 1.15;
+  color: #FEAE00;
+}
+.modalText {
+  margin: 0 0 28px;
+  font-weight: 400;
+  font-size: 15px;
+  line-height: 1.55;
+  color: #D4D4D6;
+  max-width: 380px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.modalBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 45px;
+  min-width: 200px;
+  padding: 0 24px;
+  background: #FEAE00;
+  color: #18181B;
+  border: 0;
+  border-radius: 4px;
+  font-family: inherit;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 1;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  transition: background 120ms ease;
+  margin-top: 8px;
+}
+.modalBtn:hover { background: #FFC23A; }
+.modalBtn:focus-visible { outline: none; background: #FFC23A; }
+
+/* ═════════════════════════════════════════════════════════════════════
+ *  MOBILE LAYOUT (≤ 768 px viewport) — Figma "Form mobile".
+ *  ───────────────────────────────────────────────────────────────────
+ *  Total block ≈ 360 × 1214 px.
+ *  Spacings (per Figma annotation):
+ *    • L/R padding ............. 12 px
+ *    • Show More CTA → DON'T... 128 px (handled by .section padding-top)
+ *    • DON'T → Free consult ....  24 px
+ *    • Free → Full Name ........  64 px (form margin-top)
+ *    • Field ↔ Field ...........  24 px (form gap)
+ *    • Send → Have a question ..  64 px (contactCard margin-top)
+ *    • Have card → Footer ......  72 px (handled by .section padding-bottom)
+ *  Typography:
+ *    • DON'T / Free consultation : H Bold  32 px
+ *    • Labels                    : H Medium 14 px
+ *    • Inputs / placeholders     : H Regular 14 px
+ *    • Send Request              : H Medium 14 px
+ *    • Have a question? Contact us: H Bold 24 px
+ *    • Phone number              : H Medium 16 px
+ *  Element sizes:
+ *    • Send Request button: 336 × 45 px (full width minus 2 × 12 px padding)
+ *    • Contact card:        336 × auto, 1 px yellow border
+ *  ═══════════════════════════════════════════════════════════════════ */
+@media (max-width: 768px) {
+  .section {
+    min-height: 0;
+    /* 128 px above the gray section is now provided by the page-level
+     * `catalog-consultation-spacer`.  Internal padding remains for the
+     * "DON'T POSTPONE" title breathing room (64 px) and 72 px to footer. */
+    padding: 64px 12px 72px;
+    align-items: stretch;
+  }
+
+  .titleYellow,
+  .titleWhite {
+    font-size: 32px;                   /* Figma H Bold 32 */
+    line-height: 1.1;
+  }
+  .titleWhite {
+    margin-top: 24px;                  /* 24 px between titles */
+  }
+
+  .form {
+    width: 100%;                       /* full container width */
+    margin-top: 64px;                  /* 64 px from "Free consultation" */
+    gap: 24px;                         /* 24 px between fields */
+  }
+  .field { gap: 8px; }
+  .label { font-size: 14px; }          /* H Medium 14 stays */
+
+  .input {
+    font-size: 14px;                   /* H Regular 14 */
+    font-weight: 400;
+  }
+  .textarea { height: 120px; }
+
+  .submit {
+    width: 100%;                       /* full = 336 px after 2×12 padding */
+    height: 45px;
+    font-size: 14px;
+    font-weight: 500;                  /* H Medium */
+    margin-top: 8px;
+  }
+
+  .contactCard {
+    width: 100%;                       /* 336 px after padding */
+    height: auto;
+    margin-top: 64px;                  /* 64 px Send → Have a question */
+    padding: 32px 20px;
+    gap: 8px;
+  }
+  .contactQuestion,
+  .contactUs {
+    font-size: 24px;                   /* H Bold 24 */
+    line-height: 1.15;
+  }
+  .contactUs { margin-bottom: 12px; }
+  .phone {
+    font-size: 16px;                   /* H Medium 16 */
+    font-weight: 500;
+    line-height: 1.4;
+  }
+}

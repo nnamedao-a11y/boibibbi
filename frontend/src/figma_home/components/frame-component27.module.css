@@ -1,0 +1,170 @@
+/* ============================================================================
+ * "Want to drive your dream car?" — Hero CTA block
+ *
+ * Figma spec (audited from layout panel):
+ *   Section:     1921 × 1041 px (full-bleed at 1920 design width)
+ *   Background:  /figma/dream-car-bg.png  (object-fit: cover)
+ *   Logo:        264 × 90 px,  top-left overlay  (offset ≈ 100 px from edges)
+ *   Heading:     H Bold 100 px,  line-height ~100 px,  uppercase
+ *                  line 1 = "WANT TO DRIVE"   color #FEAE00
+ *                  line 2 = "YOUR DREAM CAR?" color #FFFFFF
+ *   Sub-copy:    H Bold 32 px,  line-height ~36 px,  white,  3 lines
+ *   Button:      width 380 px,  height 60 px,  bg #FEAE00,
+ *                label "CONTACT US",  H Medium 14 px,  black,  uppercase
+ *
+ * Layout uses a single absolutely-positioned section with the image as a
+ * CSS background and the content overlaid via flexbox.
+ * ========================================================================== */
+
+.heroSection {
+  position: relative;
+  align-self: stretch;
+  width: 100%;
+  /* Lock to the Figma 1921 × 1041 aspect at the design viewport.
+     Below that the section scales via the figmaScaler transform wrapper.
+     The background image is set inline from JSX (CSS modules can't
+     resolve /public absolute URLs through postcss-loader). */
+  height: 1041px;
+  margin-left: -3.6px;
+  background-color: var(--color-black);
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  overflow: hidden;
+  z-index: 5;
+  font-family: 'Mazzard', 'Mazzard H', system-ui, sans-serif;
+  box-sizing: border-box;
+  padding: 100px 100px 90px 100px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+/* Top-left BIBI logo overlay */
+.logo {
+  width: 264px;
+  height: 90px;
+  display: block;
+  align-self: flex-start;
+  z-index: 2;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* Bottom row holds the heading on the left and the form column on the right.
+   Flex with space-between keeps them anchored to opposite edges. */
+.bottomRow {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 60px;
+  width: 100%;
+  z-index: 2;
+}
+
+/* ── Heading "WANT TO DRIVE / YOUR DREAM CAR?" ─────────────────────────── */
+.heading {
+  margin: 0;
+  font-family: inherit;
+  /* Figma: 100 px H Bold, line-height ~100 % */
+  font-size: 100px;
+  line-height: 1;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0;
+  text-align: left;
+  /* Stacks the two lines tightly. */
+  display: block;
+  max-width: 100%;
+}
+.headingOrange {
+  color: var(--color-orange-100); /* #FEAE00 */
+}
+.headingWhite {
+  color: var(--color-white);
+}
+
+/* ── Right-side form column ──────────────────────────────────────────────── */
+.formColumn {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 60px;
+  flex-shrink: 0;
+  width: 380px;
+}
+
+.subcopy {
+  margin: 0;
+  font-family: inherit;
+  /* Figma: H Bold 32 px white */
+  font-size: 32px;
+  line-height: 1.125;        /* 36 / 32 — comfortable 3-line block */
+  font-weight: 700;
+  color: var(--color-white);
+  letter-spacing: 0;
+  text-align: left;
+  text-transform: none;
+}
+
+/* ── Responsive scaling ──────────────────────────────────────────────────── */
+@media screen and (max-width: 1350px) {
+  .heroSection {
+    height: auto;
+    min-height: 720px;
+    padding: 60px 60px 60px 60px;
+  }
+  .heading {
+    font-size: 80px;
+  }
+  .subcopy {
+    font-size: 26px;
+    line-height: 1.2;
+  }
+  .formColumn {
+    width: 320px;
+    gap: 40px;
+  }
+}
+
+@media screen and (max-width: 925px) {
+  .heroSection {
+    min-height: 600px;
+    padding: 40px 32px 40px 32px;
+  }
+  .heading {
+    font-size: 56px;
+  }
+  .bottomRow {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 40px;
+  }
+  .formColumn {
+    width: 100%;
+    max-width: 380px;
+  }
+  .subcopy {
+    font-size: 22px;
+  }
+  .logo {
+    width: 180px;
+    height: auto;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .heroSection {
+    min-height: 520px;
+    padding: 24px 20px;
+  }
+  .heading {
+    font-size: 40px;
+  }
+  .subcopy {
+    font-size: 18px;
+  }
+  .logo {
+    width: 140px;
+  }
+}

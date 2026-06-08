@@ -1,0 +1,147 @@
+/* ──────────────────────────────────────────────────────────────
+   VehicleDeals1 — header of the "Top vehicles deals of the week".
+
+   Spec (from the Figma Dev-Mode inspector the user shared):
+     • Bracket "Vector" : 13 × 76 px,  stroke 3 px,  color #555452
+     • Title gap         : 28 px between the two H2 lines
+     • Title-→-tagline gap : ≈ 100 px (matches the Figma render)
+     • Tagline alignment : right edge of the inner content area
+       (flush with the right edge of the cards grid)
+   Typography: Mazzard H Bold (700) + Mazzard H Medium (500).
+   ────────────────────────────────────────────────────────────── */
+
+.vehicleDeals {
+  align-self: stretch;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 100px;                /* generous breathing room between title and tagline */
+  font-family: var(--font-mazzard);
+}
+
+/* ── Title block (centered, full-width) ──────────────────────── */
+.titleBlock {
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 28px;                 /* original Figma gap-28 between the two lines */
+  text-align: center;
+}
+.titleOrange,
+.titleWhite {
+  margin: 0;
+  font-weight: 700;          /* Mazzard H Bold */
+  font-size: clamp(40px, 4.4vw, 70px);
+  line-height: 1;
+  letter-spacing: -0.005em;
+  text-transform: uppercase;
+}
+.titleOrange { color: var(--color-orange-100); }
+.titleWhite  { color: #fff; }
+
+/* ── Tagline wrap : right-align the bracket frame ────────────── */
+.taglineWrap {
+  align-self: stretch;
+  display: flex;
+  justify-content: flex-end;
+}
+.tagline {
+  display: inline-flex;
+  align-items: stretch;
+  gap: 70px;                                   /* Figma: 70 px inside brackets (matches Before/After) */
+  padding: 4px 0;
+}
+
+/* ── Brackets (gray #555452, 3 px stroke, full tagline height) ── */
+.bracket,
+.bracketRight {
+  flex: 0 0 auto;
+  width: 13px;
+  height: auto;
+  align-self: stretch;
+  display: block;
+}
+.bracketRight {
+  transform: scaleX(-1);     /* mirror "[" into "]" */
+}
+
+/* ── Tagline text ───────────────────────────────────────────── */
+.taglineText {
+  margin: 0;
+  font-size: 24px;            /* original Figma --fs-24 */
+  /* All three lines render with the SAME weight (Bold) so the rotating
+     amber accent below never causes a width-jump as the active line
+     changes. */
+  font-weight: 700;
+  line-height: 1.0;
+  text-transform: uppercase;
+  color: #fff;
+  letter-spacing: 0.01em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;          /* center each line so brackets look symmetric */
+  gap: 22px;                  /* visible spacing between the 3 lines */
+  justify-content: center;
+  text-align: center;
+  white-space: nowrap;
+}
+
+/* Static colors — no animation. Line 1 yellow, lines 2 & 3 white. */
+.taglineLine {
+  color: #ffffff;
+}
+.taglineLine1 { color: var(--color-orange-100); }
+.taglineLine2,
+.taglineLine3 { color: #ffffff; }
+
+/* Legacy alias kept so any external consumer of `.taglineAmber` still
+   gets the brand color (the homepage no longer uses it). */
+.taglineAmber {
+  color: var(--color-orange-100);
+}
+
+/* ── Responsive ─────────────────────────────────────────────── */
+@media screen and (max-width: 1100px) {
+  .vehicleDeals { gap: 60px; }
+  .taglineWrap { justify-content: center; }
+}
+@media screen and (max-width: 925px) {
+  .titleBlock { gap: 18px; }
+  .titleOrange,
+  .titleWhite { font-size: 44px; }
+  .taglineText { font-size: 18px; gap: 14px; }
+}
+@media screen and (max-width: 600px) {
+  .vehicleDeals { gap: 40px; }
+  .titleBlock { gap: 14px; }
+  .titleOrange,
+  .titleWhite { font-size: 32px; }
+  .taglineText {
+    font-size: 14px;
+    gap: 10px;
+    white-space: normal;
+  }
+  .tagline { gap: 14px; }
+}
+
+/* ────────── Bulgarian (BG) adaptive overrides ──────────
+   BG title "Топ автомобилни оферти" is wider than "Top vehicles deals".
+   Shrink font + tighten letter-spacing so it occupies the SAME visual width.
+*/
+:global(html[lang="bg"]) .titleOrange,
+:global(html[lang="bg"]) .titleWhite {
+  font-size: clamp(34px, 3.9vw, 60px);
+  letter-spacing: -0.01em;
+}
+:global(html[lang="bg"]) .taglineText {
+  letter-spacing: 0;
+}
+@media screen and (max-width: 925px) {
+  :global(html[lang="bg"]) .titleOrange,
+  :global(html[lang="bg"]) .titleWhite { font-size: 38px; }
+}
+@media screen and (max-width: 600px) {
+  :global(html[lang="bg"]) .titleOrange,
+  :global(html[lang="bg"]) .titleWhite { font-size: 28px; }
+}

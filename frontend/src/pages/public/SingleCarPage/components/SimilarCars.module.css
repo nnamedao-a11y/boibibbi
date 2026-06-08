@@ -1,0 +1,313 @@
+/* ──────────────────────────────────────────────────────────────────────────
+ * SingleCarPage / SimilarCars
+ *
+ * STRICT Figma spec (desktop ≥ 1280 px, reference viewport 1920 px).
+ *
+ *   ┌─ width: 1720 ──────────────────────────────────────────────────────┐
+ *   │ SIMILAR CARS              (Mazzard H Bold 40, “SIMILAR” white,    │
+ *   │                            “CARS” #FEAE00, uppercase, left 100)   │
+ *   │   ↕ 72 px                                                          │
+ *   │ ┌─ card 560×764 ─┐ 20 ┌─ 560×764 ─┐ 20 ┌─ 560×764 ─┐                │
+ *   │ │  …             │    │  …        │    │  …        │  → scroll     │
+ *   │ └────────────────┘    └───────────┘    └───────────┘                │
+ *   │   ↕ 72 px                                                          │
+ *   │                              ← 24  01/10  24 →   (right padding 100)
+ *   └────────────────────────────────────────────────────────────────────┘
+ *
+ *   Cards top from public-header bottom : 3781 px
+ *   Total block height (title → pag.)   : ≈ 995 px
+ *   Page side padding                   : 100 px L / 100 px R
+ *
+ *   Single car card: 560 × 764  (defined in CarCard.module.css)
+ *   Pagination arrows: 40 × 40 circle icons
+ *   Pagination text: Mazzard H Medium 14, white
+ * ───────────────────────────────────────────────────────────────────────── */
+
+.similarCarsContainerWrapper {
+  align-self: stretch;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  /* top padding lands the cards row at top = 3781 from the public-header bottom */
+  /* bottom padding = 128 → public footer top sits at 4785 (pag bottom 4656 + 128 + 1 sub-pixel) */
+  padding: 59px 100px 128px 100px;
+  box-sizing: border-box;
+  max-width: 100%;
+  text-align: left;
+  color: var(--color-white);
+  font-family: var(--font-mazzard);
+}
+.similarCarsContainer {
+  width: 1720px;
+  max-width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 72px;
+}
+
+/* ── Title row ──────────────────────────────────────────────────────────── */
+.similarCars {
+  margin: 0;
+  font-size: 40px;
+  line-height: 99.9%;
+  text-transform: uppercase;
+  font-weight: 700;          /* Mazzard H Bold */
+  font-family: inherit;
+  letter-spacing: 0;
+  color: var(--color-white);
+}
+.cars { color: var(--color-orange-100); }
+
+/* ── Cards row ──────────────────────────────────────────────────────────── */
+.carCards {
+  align-self: stretch;
+  display: flex;
+  align-items: stretch;
+  flex-wrap: nowrap;
+  gap: 20px;
+  /* On wider-than-page-padding viewports the row that exceeds 1720
+   * scrolls horizontally — but the active page slice is always 3 cards
+   * so visually the row is fixed and the carousel is driven by the
+   * pagination controls below. */
+  overflow-x: visible;
+  scroll-snap-type: x mandatory;
+}
+
+/* ── Pagination row ─────────────────────────────────────────────────────── */
+.pagination {
+  align-self: stretch;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 24px;                 /* arrow ↔ pageNum ↔ arrow */
+  font-size: 14px;
+  font-weight: 500;          /* Mazzard H Medium 14 */
+  line-height: 99.9%;
+  color: var(--color-white);
+}
+.pageBtn {
+  cursor: pointer;
+  border: 0;
+  padding: 0;
+  background-color: transparent;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.pageBtn:hover { background-color: rgba(254, 174, 0, 0.08); }
+/* The SVG itself draws the disabled (grey) state; we no longer fade the
+ * button via opacity because that made the chevron near-invisible on the
+ * dark page background. */
+.pageBtn:disabled { cursor: not-allowed; }
+.pageBtn:disabled:hover { background-color: transparent; }
+/* The "filled" arrow gets its orange fill from the SVG <circle fill>, but
+ * the button wrapper should not show its own hover ring on top — it would
+ * outline the already-orange filled circle. Suppress the hover bg when
+ * the filled state is active. */
+.pageBtn.pageBtnFilled:hover { background-color: transparent; }
+.lsiconleftFilled,
+.lsiconrightFilled {
+  width: 40px;
+  height: 40px;
+  display: block;
+}
+/* Inner chevron glyph natively 5.7 × 9.3 px inside the 40 × 40 viewBox — see
+ * /single-car/lsicon-left-filled.svg (outlined) and lsicon-right-filled.svg
+ * (filled orange CTA variant). No transform-scale used so the chevron stays
+ * pixel-accurate. */
+.pageNum {
+  position: relative;
+  line-height: 99.9%;
+  font-weight: 500;
+  font-size: 14px;
+  text-align: center;
+  min-width: 36px;           /* "01/10" comfortable width */
+  color: var(--color-white);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── Responsive fallbacks ──────────────────────────────────────────────── */
+@media screen and (max-width: 1875px) {
+  /* Below 1720 px page content width we let the cards row become a
+   * horizontal scroll instead of forcing wrap (carousel behaviour).
+   * Pagination still controls the slice, but a fallback drag/scroll
+   * also keeps the layout usable on slightly-cropped widths. */
+  .carCards {
+    overflow-x: auto;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(254, 174, 0, 0.4) transparent;
+  }
+  .carCards::-webkit-scrollbar { height: 6px; }
+  .carCards::-webkit-scrollbar-track { background: transparent; }
+  .carCards::-webkit-scrollbar-thumb {
+    background: rgba(254, 174, 0, 0.4);
+    border-radius: 3px;
+  }
+}
+@media screen and (max-width: 1400px) {
+  .similarCarsContainerWrapper { padding-bottom: 49px; box-sizing: border-box; }
+}
+@media screen and (max-width: 925px) {
+  .similarCarsContainerWrapper {
+    padding: 40px 32px 32px;
+    box-sizing: border-box;
+  }
+  .similarCarsContainer { gap: 36px; }
+  .similarCars { font-size: 32px; line-height: 99.9%; }
+}
+
+/* ============================================================================
+ * MOBILE PIXEL-PERFECT (≤ 768 px) — May 2026 Figma spec
+ *
+ *   • 128 px gap from previous block (Have a question?) → SIMILAR CARS title
+ *   • 32 px gap from SIMILAR CARS title → first card
+ *   • Card: 336 wide (12 L/R page padding inside the section)
+ *   • Pagination: arrows + "01/10" centered, 24 px gap on each side of
+ *     the number; 128 px gap from pagination → public footer
+ *
+ *   Typography:
+ *     • SIMILAR (white) + CARS (orange) → H Bold 24
+ *     • Pagination "01/10"             → H Medium 14
+ * ========================================================================= */
+@media screen and (max-width: 768px) {
+  .similarCarsContainerWrapper {
+    padding: 128px 0 128px;          /* 128 above title; 128 below pagination */
+    box-sizing: border-box;
+  }
+  .similarCarsContainer {
+    width: 100%;
+    max-width: 100%;
+    gap: 32px;                       /* SIMILAR CARS title → first card = 32 */
+    padding: 0 12px;                 /* 12 L/R applies to title + pagination */
+    box-sizing: border-box;
+  }
+  .similarCars {
+    font-size: 24px;                 /* H Bold 24 per spec */
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: 0;
+  }
+  .carCards {
+    /* Horizontal scroll-snap slider — one card per viewport.
+     * The scroller sits flush inside the container which already provides
+     * the 12 L/R page padding, so each card naturally has 12 L/R margins
+     * from the screen edges.
+     * scroll-snap-type mandatory + scroll-snap-stop always = snap on swipe
+     * after the browser default ~50–60 % visibility threshold. */
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    gap: 16px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+  }
+  .carCards::-webkit-scrollbar { display: none; }
+  .carCards > * {
+    flex: 0 0 100%;                  /* exactly one card per slide */
+    width: 100%;
+    max-width: 100%;
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+  }
+
+  /* Pagination — uses inline SVG (ArrowLeftCircle / ArrowRightCircle), the
+   * same components as BlogArticlePage so the visual matches the rest of
+   * the platform pixel-for-pixel. Each SVG already draws its 40 × 40 circle
+   * with the chevron centered inside — the wrapping <button> simply provides
+   * a click target and disabled fade. */
+  .pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 24px;
+    flex-wrap: nowrap;
+    width: 100%;
+  }
+  .pageNum {
+    font-size: 14px;
+    font-weight: 500;
+    text-align: center;
+    min-width: 0;
+    color: #FFFFFF;
+    line-height: 1;
+  }
+  .pageBtn {
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    background: transparent;
+    border: 0;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: opacity 0.15s ease;
+  }
+  .pageBtn:disabled { cursor: not-allowed; }
+  .pageBtn svg { display: block; width: 40px; height: 40px; }
+  /* Remove every visual override on prev/next — disabled state is rendered
+   * by the SVG itself (grey stroke), not by CSS opacity. */
+  .pageBtnPrev,
+  .pageBtnNext {
+    background: transparent;
+    border: 0;
+  }
+}
+
+@media screen and (max-width: 450px) {
+  /* No additional overrides — all rules live in the 768 px block above. */
+}
+
+/* ── Skeleton placeholders while /api/public/featured is loading ────────── */
+.skeletonCard {
+  width: 560px;
+  height: 764px;
+  flex-shrink: 0;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 8px;
+  padding: 26px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  box-sizing: border-box;
+}
+.skeletonImage {
+  width: 100%;
+  height: 388px;
+  background: linear-gradient(90deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.1) 50%, rgba(255,255,255,0.04) 100%);
+  background-size: 200% 100%;
+  animation: simskel-shimmer 1.4s linear infinite;
+  border-radius: 8px;
+}
+.skeletonLines {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 0 4px;
+}
+.skeletonLine {
+  height: 14px;
+  width: 80%;
+  background: linear-gradient(90deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.12) 50%, rgba(255,255,255,0.05) 100%);
+  background-size: 200% 100%;
+  animation: simskel-shimmer 1.4s linear infinite;
+  border-radius: 4px;
+}
+@keyframes simskel-shimmer {
+  from { background-position: 200% 0; }
+  to   { background-position: -200% 0; }
+}
