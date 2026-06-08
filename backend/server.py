@@ -12554,6 +12554,26 @@ from app.services.customers import (  # noqa: E402, F401
 fastapi_app.post("/api/calculator/calculate")(calculator_calculate)
 
 
+# ── Phase Final / Block 5 — Calculator visibility wrapper ────────────
+# Wrap the USA path's result with admin overrides. (Korea applies them
+# in-place inside _calculate_korea already.)
+from fastapi import Body as _Body_block5  # noqa: E402
+from app.services.calculator import _apply_usa_visibility_overrides as _apply_usa_vis  # noqa: E402
+
+_orig_calc_fn = calculator_calculate
+
+@fastapi_app.post("/api/calculator/calculate-with-visibility")
+async def calculator_calculate_with_visibility(data: Dict[str, Any] = _Body_block5(...)):
+    """Same as /api/calculator/calculate but post-applies admin visibility overrides.
+
+    Phase Final / Block 5. Primary `/api/calculator/calculate` route stays
+    backwards-compatible; this is the new endpoint when caller wants
+    admin-controlled visibility applied.
+    """
+    result = await _orig_calc_fn(data)
+    return await _apply_usa_vis(result)
+
+
 # ══════════════════════════════════════════════════════════════════════
 # Calculator — ADMIN config endpoints (profile / routes / auction fees)
 # ══════════════════════════════════════════════════════════════════════
@@ -26176,3 +26196,7 @@ fastapi_app.include_router(_sales_customers_router)
 from app.routers.meetings import router as _meetings_router, customers_router as _meetings_customers_router  # noqa: E402
 fastapi_app.include_router(_meetings_router)
 fastapi_app.include_router(_meetings_customers_router)
+
+# ── Phase Final / Block 5 — Calculator visibility overrides ──────────
+from app.routers.admin_calculator_visibility import router as _calc_vis_router  # noqa: E402
+fastapi_app.include_router(_calc_vis_router)

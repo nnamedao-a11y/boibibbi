@@ -475,6 +475,14 @@ async def _calculate_korea(data: Dict[str, Any]) -> Dict[str, Any]:
         "shippingSea":     r(sea_shipping if not use_package else 0.0),
         "customs":         r(customs_duty + vat_amount),
     }
+    # Phase Final / Block 5 — apply admin visibility overrides.
+    try:
+        from app.services.calculator_visibility import load_overrides, apply_overrides
+        _overrides = await load_overrides()
+        breakdown[:] = apply_overrides(breakdown, _overrides)
+        calculation["breakdown"] = breakdown
+    except Exception:
+        pass  # never block calculation on overrides failure
     return {
         "success": True,
         "calculation": calculation,
@@ -844,6 +852,23 @@ async def calculator_calculate(data: Dict[str, Any] = Body(...)):
             "controllableMargin": 0,
         },
     }
+
+
+async def _apply_usa_visibility_overrides(result: dict) -> dict:
+    """Phase Final / Block 5 — wrap USA calculator result with overrides."""
+    try:
+        from app.services.calculator_visibility import load_overrides, apply_overrides
+        overrides = await load_overrides()
+        if overrides:
+            calc = result.get("calculation") or {}
+            bd = calc.get("breakdown") or []
+            new_bd = apply_overrides(bd, overrides)
+            calc["breakdown"] = new_bd
+            result["calculation"] = calc
+            result["formattedBreakdown"] = new_bd
+    except Exception:
+        pass
+    return result
 
 
 __all__ = ["_calculate_korea", "calculator_calculate"]
